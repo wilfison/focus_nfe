@@ -50,7 +50,7 @@ URLS.each do |name, url|
   schema = load_schema(url)
 
   file_name = "./tmp/shemas/schema_#{name}.json"
-  FileUtils.rm(file_name) if File.exist?(file_name)
+  FileUtils.rm_f(file_name)
   File.write(file_name, JSON.pretty_generate(schema))
 
   puts "Fields from #{name} API saved to #{file_name}"

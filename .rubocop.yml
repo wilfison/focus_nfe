@@ -1,5 +1,15 @@
+plugins:
+  - rubocop-performance
+  - rubocop-rspec
+
 AllCops:
   TargetRubyVersion: 3.2
+  NewCops: enable
+  SuggestExtensions: false
+
+# Dependências de desenvolvimento ficam no gemspec (layout padrão do bundler para gems).
+Gemspec/DevelopmentDependencies:
+  EnforcedStyle: gemspec
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
