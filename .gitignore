@@ -10,7 +10,6 @@
 /taks/
 
 # Ignore ai related files
-CLAUDE.md
 .claude/
 AGENTS.md
 .agents/
