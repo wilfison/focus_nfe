@@ -7,7 +7,7 @@
 /pkg/
 /spec/reports/
 /tmp/
-/taks/
+/tasks/
 
 # Ignore ai related files
 .claude/
