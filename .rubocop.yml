@@ -16,3 +16,8 @@ Style/StringLiterals:
 
 Style/StringLiteralsInInterpolation:
   EnforcedStyle: double_quotes
+
+# Argumentos nomeados são autodescritivos e imunes ao problema de ordem dos
+# posicionais. Configuracao/Cliente recebem legitimamente vários kwargs.
+Metrics/ParameterLists:
+  CountKeywordArgs: false
