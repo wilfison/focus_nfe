@@ -16,9 +16,20 @@ The project is at its very start: `lib/focus_nfe.rb` currently holds only the `F
 Code identifiers in this project follow the Focus NFe API's language — **Portuguese** — to keep a
 single, consistent vocabulary between the gem and the API it wraps. Classes, modules, methods,
 attributes, variables, and constants are named in Portuguese (e.g. `Nfe`, `emitir`, `consultar`,
-`cancelar`, `justificativa`). Comments and prose documentation may be written in Portuguese as well.
+`cancelar`, `justificativa`).
 Follow established Ruby and gem best practices throughout (file/dir naming, `frozen_string_literal`,
 double-quoted strings, Ruby 3.2 target — see `.rubocop.yml`).
+
+### Comments
+
+- **No unnecessary comments.** Code must be self-explanatory through clear names; do not narrate what the
+  code already says, restate logic, or leave section/banner comments. If a comment only paraphrases the
+  next line, delete it and improve the name instead.
+- **The only allowed comments are YARD documentation** on public classes, modules, and methods — including
+  type tags (`@param name [Type]`, `@return [Type]`, `@raise [Type]`). Prose may be written in Portuguese.
+- Prefer expressing intent in code (well-named methods/constants) over explanatory prose. A genuinely
+  non-obvious *why* (a workaround, an external constraint) belongs in the YARD doc of the relevant method,
+  not as a loose inline comment.
 
 ## Test-Driven Development (mandatory)
 
