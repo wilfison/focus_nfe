@@ -9,11 +9,22 @@ module FocusNfe
   # (client-side) e de conexão (transporte). O mapeamento status → classe e a
   # construção a partir de uma `Resposta` chegam na US-005.
   module Erros
-    # Falha HTTP retornada pela API. Carrega o `status`, o `corpo` já parseado
-    # (mensagens de erro da API) e a `Resposta` original que originou a exceção.
+    # Falha HTTP retornada pela API, carregando o status, o corpo parseado com
+    # as mensagens de erro da API e a {FocusNfe::HTTP::Resposta} original.
     class ErroHttp < Erro
-      attr_reader :status, :corpo, :resposta
+      # @return [Integer, nil] código de status HTTP da resposta
+      attr_reader :status
 
+      # @return [Object, nil] corpo parseado com as mensagens de erro da API
+      attr_reader :corpo
+
+      # @return [FocusNfe::HTTP::Resposta, nil] resposta original que originou o erro
+      attr_reader :resposta
+
+      # @param mensagem [String, nil] mensagem da exceção
+      # @param status [Integer, nil] código de status HTTP
+      # @param corpo [Object, nil] corpo parseado da resposta
+      # @param resposta [FocusNfe::HTTP::Resposta, nil] resposta original
       def initialize(mensagem = nil, status: nil, corpo: nil, resposta: nil)
         @status = status
         @corpo = corpo

@@ -5,7 +5,7 @@ module FocusNfe
   # timeouts, logger, adaptador HTTP e cabeçalhos extras. Serve tanto ao modo
   # global (FocusNfe.configurar) quanto ao Cliente explícito (multi-empresa).
   class Configuracao
-    # Ambiente -> URL base da API (sem o prefixo /v2, que é da Conexao).
+    # @return [Hash{Symbol=>String}] ambiente => URL base da API (sem o prefixo /v2)
     URLS_BASE = {
       producao: "https://api.focusnfe.com.br",
       homologacao: "https://homologacao.focusnfe.com.br"
@@ -18,6 +18,13 @@ module FocusNfe
     attr_accessor :token, :ambiente, :timeout, :open_timeout, :logger,
                   :adaptador_http, :cabecalhos
 
+    # @param token [String, nil] token de acesso da API
+    # @param ambiente [Symbol] :producao ou :homologacao
+    # @param timeout [Integer] timeout de leitura, em segundos
+    # @param open_timeout [Integer] timeout de conexão, em segundos
+    # @param logger [Logger, nil] logger apenas armazenado nesta fase
+    # @param adaptador_http [FocusNfe::HTTP::Adaptador, nil] instância pronta (nil => Conexao cria a default)
+    # @param cabecalhos [Hash] cabeçalhos extras enviados em toda requisição
     def initialize(token: nil, ambiente: AMBIENTE_PADRAO, timeout: TIMEOUT_PADRAO,
                    open_timeout: OPEN_TIMEOUT_PADRAO, logger: nil,
                    adaptador_http: nil, cabecalhos: {})
@@ -30,15 +37,17 @@ module FocusNfe
       @cabecalhos = cabecalhos
     end
 
-    # URL base correspondente ao ambiente atual. Levanta ErroDeConfiguracao se o
-    # ambiente não for reconhecido.
+    # @return [String] URL base correspondente ao ambiente atual
+    # @raise [FocusNfe::Erros::ErroDeConfiguracao] se o ambiente for desconhecido
     def url_base
       validar_ambiente!
       URLS_BASE.fetch(ambiente)
     end
 
-    # Falha cedo quando a configuração é inutilizável: token ausente/vazio ou
-    # ambiente desconhecido. Devolve self para permitir encadeamento.
+    # Valida a configuração, falhando cedo quando inutilizável.
+    #
+    # @return [self]
+    # @raise [FocusNfe::Erros::ErroDeConfiguracao] token ausente/vazio ou ambiente inválido
     def validar!
       raise Erros::ErroDeConfiguracao, "token é obrigatório" if token.to_s.strip.empty?
 
@@ -48,6 +57,7 @@ module FocusNfe
 
     private
 
+    # @raise [FocusNfe::Erros::ErroDeConfiguracao] se o ambiente não for reconhecido
     def validar_ambiente!
       return if URLS_BASE.key?(ambiente)
 
