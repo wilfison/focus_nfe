@@ -6,8 +6,8 @@ module FocusNfe
   class Erro < StandardError; end
 
   # Exceções tipadas: falhas HTTP (por faixa de status), de configuração
-  # (client-side) e de conexão (transporte). O mapeamento status → classe e a
-  # construção a partir de uma `Resposta` chegam na US-005.
+  # (client-side) e de conexão (transporte). Reúne também o mapeamento
+  # status → classe e a construção da exceção a partir de uma `Resposta`.
   module Erros
     # Falha HTTP retornada pela API, carregando o status, o corpo parseado com
     # as mensagens de erro da API e a {FocusNfe::HTTP::Resposta} original.
@@ -66,5 +66,40 @@ module FocusNfe
 
     # Falha de transporte (timeout, conexão recusada, excesso de redirects).
     class ErroDeConexao < Erro; end
+
+    # @return [Hash{Integer=>Class}] status HTTP específico => classe de exceção
+    POR_STATUS = {
+      400 => RequisicaoInvalida,
+      401 => NaoAutorizado,
+      403 => Proibido,
+      404 => NaoEncontrado,
+      409 => Conflito,
+      422 => ErroDeValidacao,
+      429 => LimiteDeRequisicoes
+    }.freeze
+
+    module_function
+
+    # Resolve a classe de exceção correspondente a um status HTTP.
+    #
+    # @param status [Integer] código de status HTTP não-2xx
+    # @return [Class] subclasse de {ErroHttp}; qualquer 5xx vira {ErroDoServidor}
+    #   e qualquer status sem mapeamento específico vira {RespostaInesperada}
+    def classe_para(status)
+      POR_STATUS[status] || (status.between?(500, 599) ? ErroDoServidor : RespostaInesperada)
+    end
+
+    # Constrói a exceção tipada já preenchida a partir de uma resposta.
+    #
+    # @param resposta [FocusNfe::HTTP::Resposta] resposta não-2xx recebida
+    # @return [ErroHttp] instância da classe certa com status/corpo/resposta
+    def a_partir_de(resposta)
+      classe_para(resposta.status).new(
+        "requisição falhou com status #{resposta.status}",
+        status: resposta.status,
+        corpo: resposta.corpo,
+        resposta: resposta
+      )
+    end
   end
 end
