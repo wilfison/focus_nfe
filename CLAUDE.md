@@ -13,10 +13,36 @@ The project is at its very start: `lib/focus_nfe.rb` currently holds only the `F
 
 ## Coding conventions
 
-Code identifiers in this project follow the Focus NFe API's language — **Portuguese** — to keep a
-single, consistent vocabulary between the gem and the API it wraps. Classes, modules, methods,
-attributes, variables, and constants are named in Portuguese (e.g. `Nfe`, `emitir`, `consultar`,
-`cancelar`, `justificativa`).
+### Language of identifiers (hybrid — English plumbing, Portuguese domain)
+
+This gem uses a **two-language naming rule**. The dividing line is one question:
+
+> **Does this identifier appear in, or directly name, something in the Focus NFe / SEFAZ fiscal domain?**
+> If yes → **Portuguese**. If it is the gem's own machinery → **English**.
+
+- **English — the gem's own plumbing** (everything that does *not* exist in the Focus NFe API):
+  - Classes/modules: `Client`, `Configuration`, `Connection`, `Response`, `Adapter`,
+    `Adapters::NetHttp`, `Authentication`, `Error`, `Errors::*` (`HttpError`, `BadRequest`,
+    `Unauthorized`, `ValidationError`, `ServerError`, `ConfigurationError`, `ConnectionError`, …).
+  - Structural methods: `configure`, `configuration`, `client`, `connection`, `call`,
+    `get`/`post`/`put`/`delete`, `validate!`, `success?`, `from_response`, `class_for`.
+  - Generic infrastructure config options & HTTP identifiers: `environment`, `timeout`,
+    `open_timeout`, `logger`, `http_adapter`, `headers`, `path`, `params`, `body`, `status`, `url`.
+  - All internal variables, private methods, and constants (`BASE_URLS`, `DEFAULT_HEADERS`, `VERBS`, …).
+- **Portuguese — the Focus NFe / SEFAZ fiscal domain** (the API's own vocabulary):
+  - Resource accessors and fiscal operations that map 1:1 to API actions: `nfe`, `nfce`, `nfse`,
+    `cte`, `mdfe`, `emitir`, `consultar`, `cancelar`, `inutilizar`, `justificativa`, `referencia`.
+  - **Payload field names: verbatim from the schemas — never translated** (`natureza_operacao`,
+    `cnpj_emitente`, `valor_total`, …). These are generated from `campos.focusnfe.com.br`; translating
+    them would be a bug. See *Field schemas* below.
+- **Domain data *values* stay Portuguese even behind an English identifier.** The key is the gem's API
+  (English), the value is fiscal data (Portuguese): e.g. `config.environment = :homologacao`
+  (`:producao`/`:homologacao`), or fiscal status strings like `"autorizado"`/`"cancelado"`.
+
+Rule of thumb for the two debated boundaries: the *attribute* `environment` is English (it's gem
+machinery that resolves the base URL — `ambiente` is not an API field); `referencia` is Portuguese
+(it's the API's `ref`).
+
 Follow established Ruby and gem best practices throughout (file/dir naming, `frozen_string_literal`,
 double-quoted strings, Ruby 3.2 target — see `.rubocop.yml`).
 
@@ -26,7 +52,9 @@ double-quoted strings, Ruby 3.2 target — see `.rubocop.yml`).
   code already says, restate logic, or leave section/banner comments. If a comment only paraphrases the
   next line, delete it and improve the name instead.
 - **The only allowed comments are YARD documentation** on public classes, modules, and methods — including
-  type tags (`@param name [Type]`, `@return [Type]`, `@raise [Type]`). Prose may be written in Portuguese.
+  type tags (`@param name [Type]`, `@return [Type]`, `@raise [Type]`). **Comment/YARD prose is written in
+  Portuguese**, regardless of the identifier language above (type references in tags use the real English
+  identifier, e.g. `@return [FocusNfe::Configuration]`).
 - Prefer expressing intent in code (well-named methods/constants) over explanatory prose. A genuinely
   non-obvious *why* (a workaround, an external constraint) belongs in the YARD doc of the relevant method,
   not as a loose inline comment.

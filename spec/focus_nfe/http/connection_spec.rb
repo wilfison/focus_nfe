@@ -1,39 +1,39 @@
 # frozen_string_literal: true
 
-RSpec.describe FocusNfe::HTTP::Conexao do
-  subject(:conexao) { described_class.new(config) }
+RSpec.describe FocusNfe::HTTP::Connection do
+  subject(:connection) { described_class.new(config) }
 
-  let(:config) { FocusNfe::Configuracao.new(token: "tok", ambiente: ambiente, cabecalhos: extras) }
-  let(:ambiente) { :homologacao }
+  let(:config) { FocusNfe::Configuration.new(token: "tok", environment: environment, headers: extras) }
+  let(:environment) { :homologacao }
   let(:extras) { {} }
 
   def homologacao = "https://homologacao.focusnfe.com.br"
   def producao = "https://api.focusnfe.com.br"
 
-  def autorizacao(token)
-    FocusNfe::HTTP::Autenticacao.cabecalho(token).fetch("Authorization")
+  def authorization(token)
+    FocusNfe::HTTP::Authentication.header(token).fetch("Authorization")
   end
 
-  def cabecalho_enviado(url, headers)
+  def sent_header(url, headers)
     a_request(:get, url).with(headers: headers)
   end
 
   describe "montagem de URL" do
-    it "monta url_base + /v2/ + caminho em homologação" do
+    it "monta base_url + /v2/ + caminho em homologação" do
       stub = stub_request(:get, "#{homologacao}/v2/nfe").to_return(status: 200, body: "")
 
-      conexao.get("nfe")
+      connection.get("nfe")
 
       expect(stub).to have_been_requested
     end
 
     context "when ambiente é produção" do
-      let(:ambiente) { :producao }
+      let(:environment) { :producao }
 
       it "usa o host de produção" do
         stub = stub_request(:get, "#{producao}/v2/nfe").to_return(status: 200, body: "")
 
-        conexao.get("nfe")
+        connection.get("nfe")
 
         expect(stub).to have_been_requested
       end
@@ -42,16 +42,16 @@ RSpec.describe FocusNfe::HTTP::Conexao do
     it "normaliza barra inicial no caminho" do
       stub = stub_request(:get, "#{homologacao}/v2/nfe").to_return(status: 200, body: "")
 
-      conexao.get("/nfe")
+      connection.get("/nfe")
 
       expect(stub).to have_been_requested
     end
 
-    it "codifica parametros como query string" do
+    it "codifica params como query string" do
       stub = stub_request(:get, "#{homologacao}/v2/nfe").with(query: { ref: "pedido-42" })
       stub.to_return(status: 200, body: "")
 
-      conexao.get("nfe", parametros: { ref: "pedido-42" })
+      connection.get("nfe", params: { ref: "pedido-42" })
 
       expect(stub).to have_been_requested
     end
@@ -59,22 +59,22 @@ RSpec.describe FocusNfe::HTTP::Conexao do
 
   describe "verbos" do
     it "expõe get, post, put e delete", :aggregate_failures do
-      %i[get post put delete].each { |verbo| expect(conexao).to respond_to(verbo) }
+      %i[get post put delete].each { |verb| expect(connection).to respond_to(verb) }
     end
 
     it "serializa corpo Hash para JSON no POST" do
       stub = stub_request(:post, "#{homologacao}/v2/nfe").with(body: '{"ref":"x"}').to_return(status: 200, body: "")
 
-      conexao.post("nfe", corpo: { ref: "x" })
+      connection.post("nfe", body: { ref: "x" })
 
       expect(stub).to have_been_requested
     end
 
-    it "não envia corpo quando corpo: é nil" do
+    it "não envia corpo quando body: é nil" do
       stub = stub_request(:get, "#{homologacao}/v2/nfe").with { |req| req.body.nil? || req.body.empty? }
       stub.to_return(status: 200, body: "")
 
-      conexao.get("nfe")
+      connection.get("nfe")
 
       expect(stub).to have_been_requested
     end
@@ -83,7 +83,7 @@ RSpec.describe FocusNfe::HTTP::Conexao do
       stub = stub_request(:delete, "#{homologacao}/v2/nfe/42").with(body: '{"justificativa":"erro"}')
       stub.to_return(status: 200, body: "")
 
-      conexao.delete("nfe/42", corpo: { justificativa: "erro" })
+      connection.delete("nfe/42", body: { justificativa: "erro" })
 
       expect(stub).to have_been_requested
     end
@@ -95,22 +95,22 @@ RSpec.describe FocusNfe::HTTP::Conexao do
     before { stub_request(:get, url).to_return(status: 200, body: "") }
 
     it "envia Content-Type e Accept JSON" do
-      conexao.get("nfe")
+      connection.get("nfe")
 
       headers = { "Content-Type" => "application/json", "Accept" => "application/json" }
-      expect(cabecalho_enviado(url, headers)).to have_been_made
+      expect(sent_header(url, headers)).to have_been_made
     end
 
     it "envia User-Agent baseado em FocusNfe::VERSION" do
-      conexao.get("nfe")
+      connection.get("nfe")
 
-      expect(cabecalho_enviado(url, "User-Agent" => "focus_nfe/#{FocusNfe::VERSION}")).to have_been_made
+      expect(sent_header(url, "User-Agent" => "focus_nfe/#{FocusNfe::VERSION}")).to have_been_made
     end
 
     it "envia o Authorization Basic do token" do
-      conexao.get("nfe")
+      connection.get("nfe")
 
-      expect(cabecalho_enviado(url, "Authorization" => autorizacao("tok"))).to have_been_made
+      expect(sent_header(url, "Authorization" => authorization("tok"))).to have_been_made
     end
   end
 
@@ -126,9 +126,9 @@ RSpec.describe FocusNfe::HTTP::Conexao do
       let(:extras) { { "X-Empresa" => "loja-1" } }
 
       it "adiciona o header extra à requisição" do
-        conexao.get("nfe")
+        connection.get("nfe")
 
-        expect(cabecalho_enviado(url, "X-Empresa" => "loja-1")).to have_been_made
+        expect(sent_header(url, "X-Empresa" => "loja-1")).to have_been_made
       end
     end
 
@@ -136,22 +136,22 @@ RSpec.describe FocusNfe::HTTP::Conexao do
       let(:extras) { { "Authorization" => "Basic invasor" } }
 
       it "mantém o Authorization calculado" do
-        conexao.get("nfe")
+        connection.get("nfe")
 
-        expect(cabecalho_enviado(url, "Authorization" => autorizacao("tok"))).to have_been_made
+        expect(sent_header(url, "Authorization" => authorization("tok"))).to have_been_made
       end
     end
 
     it "permite a chamada sobrescrever o Content-Type (ex.: XML)" do
-      conexao.post("nfe", corpo: "<x/>", cabecalhos: { "Content-Type" => "application/xml" })
+      connection.post("nfe", body: "<x/>", headers: { "Content-Type" => "application/xml" })
 
       expect(a_request(:post, url).with(headers: { "Content-Type" => "application/xml" })).to have_been_made
     end
 
     it "ignora um Authorization per-call, mantendo o calculado" do
-      conexao.get("nfe", cabecalhos: { "Authorization" => "Basic invasor" })
+      connection.get("nfe", headers: { "Authorization" => "Basic invasor" })
 
-      expect(cabecalho_enviado(url, "Authorization" => autorizacao("tok"))).to have_been_made
+      expect(sent_header(url, "Authorization" => authorization("tok"))).to have_been_made
     end
   end
 
@@ -159,38 +159,38 @@ RSpec.describe FocusNfe::HTTP::Conexao do
     let(:url) { "#{homologacao}/v2/nfe" }
     let(:json) { { "Content-Type" => "application/json" } }
 
-    it "devolve a Resposta em 2xx", :aggregate_failures do
+    it "devolve a Response em 2xx", :aggregate_failures do
       stub_request(:get, url).to_return(status: 200, body: '{"ok":true}', headers: json)
 
-      resposta = conexao.get("nfe")
+      response = connection.get("nfe")
 
-      expect(resposta).to be_a(FocusNfe::HTTP::Resposta)
-      expect(resposta.corpo).to eq("ok" => true)
+      expect(response).to be_a(FocusNfe::HTTP::Response)
+      expect(response.body).to eq("ok" => true)
     end
 
     {
-      400 => FocusNfe::Erros::RequisicaoInvalida,
-      401 => FocusNfe::Erros::NaoAutorizado,
-      403 => FocusNfe::Erros::Proibido,
-      404 => FocusNfe::Erros::NaoEncontrado,
-      409 => FocusNfe::Erros::Conflito,
-      422 => FocusNfe::Erros::ErroDeValidacao,
-      429 => FocusNfe::Erros::LimiteDeRequisicoes,
-      500 => FocusNfe::Erros::ErroDoServidor,
-      418 => FocusNfe::Erros::RespostaInesperada
-    }.each do |status, classe|
-      it "levanta #{classe} em status #{status}" do
+      400 => FocusNfe::Errors::BadRequest,
+      401 => FocusNfe::Errors::Unauthorized,
+      403 => FocusNfe::Errors::Forbidden,
+      404 => FocusNfe::Errors::NotFound,
+      409 => FocusNfe::Errors::Conflict,
+      422 => FocusNfe::Errors::ValidationError,
+      429 => FocusNfe::Errors::RateLimited,
+      500 => FocusNfe::Errors::ServerError,
+      418 => FocusNfe::Errors::UnexpectedResponse
+    }.each do |status, klass|
+      it "levanta #{klass} em status #{status}" do
         stub_request(:get, url).to_return(status: status, body: "")
 
-        expect { conexao.get("nfe") }.to raise_error(classe)
+        expect { connection.get("nfe") }.to raise_error(klass)
       end
     end
 
     it "preenche a exceção com status e corpo da resposta", :aggregate_failures do
       stub_request(:get, url).to_return(status: 422, body: '{"erro":"ref"}', headers: json)
 
-      expect { conexao.get("nfe") }.to raise_error do |erro|
-        expect(erro).to have_attributes(status: 422, corpo: { "erro" => "ref" })
+      expect { connection.get("nfe") }.to raise_error do |error|
+        expect(error).to have_attributes(status: 422, body: { "erro" => "ref" })
       end
     end
   end

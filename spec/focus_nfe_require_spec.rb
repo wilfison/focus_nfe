@@ -6,13 +6,13 @@ RSpec.describe FocusNfe do
   describe "require \"focus_nfe\" em processo limpo" do
     def constantes
       %w[
-        FocusNfe::Cliente
-        FocusNfe::Configuracao
-        FocusNfe::HTTP::Conexao
-        FocusNfe::Erro
-        FocusNfe::Erros::ErroHttp
-        FocusNfe::Erros::ErroDeConfiguracao
-        FocusNfe::Erros::ErroDeConexao
+        FocusNfe::Client
+        FocusNfe::Configuration
+        FocusNfe::HTTP::Connection
+        FocusNfe::Error
+        FocusNfe::Errors::HttpError
+        FocusNfe::Errors::ConfigurationError
+        FocusNfe::Errors::ConnectionError
       ]
     end
 
@@ -31,7 +31,7 @@ RSpec.describe FocusNfe do
       expect(saida).to eq("ok")
     end
 
-    it "expõe Cliente, Configuracao, HTTP::Conexao, Erro e Erros::*" do
+    it "expõe Client, Configuration, HTTP::Connection, Error e Errors::*" do
       checagem = constantes.map { |const| %(defined?(#{const}) || abort("faltou #{const}")) }.join("; ")
       saida, status = executar_ruby(%(require "focus_nfe"; #{checagem}; print "ok"))
 
@@ -45,7 +45,7 @@ RSpec.describe FocusNfe do
     end
 
     it "monta o Authorization sem depender de base64", :aggregate_failures do
-      corpo = 'require "focus_nfe"; print FocusNfe::HTTP::Autenticacao.cabecalho("x").fetch("Authorization")'
+      corpo = 'require "focus_nfe"; print FocusNfe::HTTP::Authentication.header("x").fetch("Authorization")'
       saida, status = executar_ruby(corpo)
 
       expect(status).to be_success, saida

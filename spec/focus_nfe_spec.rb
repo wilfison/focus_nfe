@@ -6,6 +6,6 @@ RSpec.describe FocusNfe do
   end
 
   it "define uma classe de erro base" do
-    expect(FocusNfe::Erro.new).to be_a(StandardError)
+    expect(FocusNfe::Error.new).to be_a(StandardError)
   end
 end
