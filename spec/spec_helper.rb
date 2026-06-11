@@ -36,4 +36,6 @@ RSpec.configure do |config|
 
   config.order = :random
   Kernel.srand config.seed
+
+  config.before { FocusNfe.resetar_configuracao! }
 end
