@@ -14,7 +14,7 @@ task default: %i[spec rubocop]
 
 desc "Pull fields from FocusNFe API and save to JSON files"
 task :pull_fields do
-  sh "ruby #{File.join(__dir__, "scripts", "pull_fields.rb")}"
+  sh "ruby #{File.join(__dir__, "tools", "pull_fields.rb")}"
 end
 
 namespace :docs do

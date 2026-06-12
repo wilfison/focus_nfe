@@ -6,7 +6,7 @@ SimpleCov.start do
   enable_coverage :branch
 
   add_filter "/spec/"
-  add_filter "/scripts/"
+  add_filter "/tools/"
   add_filter "lib/focus_nfe/version.rb"
 
   add_group "Recursos", "lib/focus_nfe/recursos"
