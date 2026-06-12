@@ -21,3 +21,15 @@ Style/StringLiteralsInInterpolation:
 # posicionais. Configuracao/Cliente recebem legitimamente vários kwargs.
 Metrics/ParameterLists:
   CountKeywordArgs: false
+
+# Descrições de context/shared_context em português (projeto é pt-BR).
+RSpec/ContextWording:
+  Enabled: true
+  Prefixes:
+    - "quando"
+    - "com"
+    - "sem"
+    - "enquanto"
+    - "dado"
+    - "considerando"
+    - "retorna"

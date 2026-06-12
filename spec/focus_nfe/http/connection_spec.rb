@@ -27,7 +27,7 @@ RSpec.describe FocusNfe::HTTP::Connection do
       expect(stub).to have_been_requested
     end
 
-    context "when ambiente é produção" do
+    context "quando ambiente é produção" do
       let(:environment) { :producao }
 
       it "usa o host de produção" do
@@ -122,7 +122,7 @@ RSpec.describe FocusNfe::HTTP::Connection do
       stub_request(:post, url).to_return(status: 200, body: "")
     end
 
-    context "with extra customizado na config" do
+    context "com extra customizado na config" do
       let(:extras) { { "X-Empresa" => "loja-1" } }
 
       it "adiciona o header extra à requisição" do
@@ -132,7 +132,7 @@ RSpec.describe FocusNfe::HTTP::Connection do
       end
     end
 
-    context "with extra tentando trocar o Authorization" do
+    context "com extra tentando trocar o Authorization" do
       let(:extras) { { "Authorization" => "Basic invasor" } }
 
       it "mantém o Authorization calculado" do

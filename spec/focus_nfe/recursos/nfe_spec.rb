@@ -33,7 +33,7 @@ RSpec.describe FocusNfe::Recursos::Nfe do
       expect(doc.ref).to eq("pedido-42")
     end
 
-    context "when o ambiente é produção" do
+    context "quando o ambiente é produção" do
       let(:environment) { :producao }
 
       it "usa o host de produção" do

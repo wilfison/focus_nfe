@@ -69,7 +69,7 @@ RSpec.describe FocusNfe::Client do
     end
   end
 
-  describe "acessores de documentos emitidos" do
+  describe "acessores de recurso" do
     subject(:client) { described_class.new(token: "tok") }
 
     {
@@ -82,7 +82,20 @@ RSpec.describe FocusNfe::Client do
       mdfe: FocusNfe::Recursos::Mdfe,
       nfcom: FocusNfe::Recursos::Nfcom,
       dce: FocusNfe::Recursos::Dce,
-      nfgas: FocusNfe::Recursos::Nfgas
+      nfgas: FocusNfe::Recursos::Nfgas,
+      nfes_recebidas: FocusNfe::Recursos::NfesRecebidas,
+      ctes_recebidas: FocusNfe::Recursos::CtesRecebidas,
+      nfses_nacionais_recebidas: FocusNfe::Recursos::NfsesNacionaisRecebidas,
+      ceps: FocusNfe::Recursos::Ceps,
+      municipios: FocusNfe::Recursos::Municipios,
+      cfops: FocusNfe::Recursos::Cfops,
+      cnaes: FocusNfe::Recursos::Cnaes,
+      ncms: FocusNfe::Recursos::Ncms,
+      cnpjs: FocusNfe::Recursos::Cnpjs,
+      empresas: FocusNfe::Recursos::Empresas,
+      webhooks: FocusNfe::Recursos::Webhooks,
+      emails_bloqueados: FocusNfe::Recursos::EmailsBloqueados,
+      backups: FocusNfe::Recursos::Backups
     }.each do |acessor, classe|
       describe "##{acessor}" do
         it "devolve um #{classe}" do
@@ -95,14 +108,6 @@ RSpec.describe FocusNfe::Client do
           expect(client.public_send(acessor)).to be(primeiro)
         end
       end
-    end
-  end
-
-  describe "acessores de recurso ainda não implementados" do
-    subject(:client) { described_class.new(token: "tok") }
-
-    it "ainda não expõe empresas" do
-      expect(client).not_to respond_to(:empresas)
     end
   end
 end

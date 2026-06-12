@@ -74,5 +74,70 @@ module FocusNfe
     def nfgas
       @nfgas ||= Recursos::Nfgas.new(connection)
     end
+
+    # @return [FocusNfe::Recursos::NfesRecebidas] recurso de NF-e recebidas, memoizado
+    def nfes_recebidas
+      @nfes_recebidas ||= Recursos::NfesRecebidas.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::CtesRecebidas] recurso de CT-e recebidos, memoizado
+    def ctes_recebidas
+      @ctes_recebidas ||= Recursos::CtesRecebidas.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::NfsesNacionaisRecebidas] recurso de NFS-e nacionais recebidas, memoizado
+    def nfses_nacionais_recebidas
+      @nfses_nacionais_recebidas ||= Recursos::NfsesNacionaisRecebidas.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::Ceps] recurso de consulta de CEP, memoizado
+    def ceps
+      @ceps ||= Recursos::Ceps.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::Municipios] recurso de consulta de municípios, memoizado
+    def municipios
+      @municipios ||= Recursos::Municipios.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::Cfops] recurso de consulta de CFOP, memoizado
+    def cfops
+      @cfops ||= Recursos::Cfops.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::Cnaes] recurso de consulta de CNAE, memoizado
+    def cnaes
+      @cnaes ||= Recursos::Cnaes.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::Ncms] recurso de consulta de NCM, memoizado
+    def ncms
+      @ncms ||= Recursos::Ncms.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::Cnpjs] recurso de consulta de CNPJ, memoizado
+    def cnpjs
+      @cnpjs ||= Recursos::Cnpjs.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::Empresas] recurso de gestão de empresas, memoizado
+    def empresas
+      @empresas ||= Recursos::Empresas.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::Webhooks] recurso de gestão de webhooks, memoizado
+    def webhooks
+      @webhooks ||= Recursos::Webhooks.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::EmailsBloqueados] recurso de e-mails bloqueados, memoizado
+    def emails_bloqueados
+      @emails_bloqueados ||= Recursos::EmailsBloqueados.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::Backups] recurso de backups de XML, memoizado
+    def backups
+      @backups ||= Recursos::Backups.new(connection)
+    end
   end
 end
