@@ -80,7 +80,8 @@ Rules:
 
 ## Commands
 
-- `bin/setup` — install dependencies.
+- `bin/setup` — install dependencies. Após o `bundle install`, instale os git hooks com
+  `bundle exec overcommit --install` (veja *Git hooks / commits* abaixo).
 - `bin/console` — IRB session with the gem loaded.
 - `bin/rspec` — run the RSpec suite directly (binstub; faster than `bundle exec rspec`). Pass paths/options
   through, e.g. `bin/rspec spec/focus_nfe_spec.rb`.
@@ -95,6 +96,22 @@ Rules:
 - `bundle exec rake install` / `rake release` — build/publish the gem (gemspec still has TODO metadata to fill in).
 
 Note: CI (`.github/workflows/main.yml`) pins Ruby `4.0.2`, while `focus_nfe.gemspec` requires `>= 3.2.0`.
+
+## Git hooks / commits (overcommit + Conventional Commits)
+
+Os git hooks são gerenciados pelo [overcommit](https://github.com/sds/overcommit) (`.overcommit.yml`).
+Após clonar e instalar as dependências, ative-os uma vez com `bundle exec overcommit --install`.
+
+- **pre-commit** — roda `bundle exec rubocop` nos arquivos alterados, além de checagens de espaços em
+  branco, tabs, conflitos de merge e sintaxe YAML.
+- **pre-push** — roda a suíte completa (`bundle exec rspec`).
+- **commit-msg** — exige que a mensagem siga o padrão
+  [Conventional Commits](https://www.conventionalcommits.org): `<tipo>(escopo opcional)!: <descrição>`.
+  Tipos aceitos: `build`, `chore`, `ci`, `docs`, `feat`, `fix`, `perf`, `refactor`, `revert`, `style`,
+  `test`. Exemplo: `feat(nfe): adiciona emissão de NFe`. Mensagens de `Merge`/`Revert`/`fixup!`/`squash!`
+  são liberadas. O assunto vai até 72 colunas e não pode terminar em ponto.
+
+Ao alterar o `.overcommit.yml`, o overcommit pede para reassinar a configuração: `bundle exec overcommit --sign`.
 
 ## Field schemas (the source of truth for API fields)
 

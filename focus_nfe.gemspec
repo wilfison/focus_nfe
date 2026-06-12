@@ -40,6 +40,7 @@ Gem::Specification.new do |spec|
   # spec.add_dependency "example-gem", "~> 1.0"
 
   # Dependências de desenvolvimento e teste
+  spec.add_development_dependency "overcommit", "~> 0.71"
   spec.add_development_dependency "rake", "~> 13.3"
   spec.add_development_dependency "rspec", "~> 3.13"
   spec.add_development_dependency "rubocop", "~> 1.86"
