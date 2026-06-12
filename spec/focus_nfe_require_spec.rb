@@ -51,5 +51,37 @@ RSpec.describe FocusNfe do
       expect(status).to be_success, saida
       expect(saida).to eq("Basic eDo=")
     end
+
+    def carregados(corpo)
+      executar_ruby(%(require "focus_nfe"; #{corpo}; print $LOADED_FEATURES.grep(%r{focus_nfe/}).join("\\n"))).first
+    end
+
+    it "não carrega nenhum recurso de documento só no require" do
+      expect(carregados("")).not_to match(%r{focus_nfe/recursos/})
+    end
+
+    it "não carrega os modelos só no require" do
+      expect(carregados("")).not_to match(%r{focus_nfe/modelos/})
+    end
+
+    it "não carrega a máquina de validação de esquemas só no require" do
+      expect(carregados("")).not_to match(%r{focus_nfe/esquemas/(esquema|campo|validador)\.rb})
+    end
+
+    it "carrega só o recurso referenciado sob demanda, e suas dependências", :aggregate_failures do
+      saida = carregados("FocusNfe::Recursos::NfseNacional")
+
+      expect(saida).to match(%r{focus_nfe/recursos/nfse_nacional\.rb})
+      expect(saida).to match(%r{focus_nfe/recursos/base\.rb})
+      expect(saida).to match(%r{focus_nfe/recursos/concerns/emitivel\.rb})
+    end
+
+    it "não puxa recursos irmãos nem os modelos ao referenciar um recurso", :aggregate_failures do
+      saida = carregados("FocusNfe::Recursos::NfseNacional")
+
+      expect(saida).not_to match(%r{focus_nfe/recursos/cte\.rb})
+      expect(saida).not_to match(%r{focus_nfe/recursos/nfe\.rb})
+      expect(saida).not_to match(%r{focus_nfe/modelos/documento\.rb})
+    end
   end
 end
