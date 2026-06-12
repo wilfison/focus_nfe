@@ -1,43 +1,227 @@
 # FocusNfe
 
-TODO: Delete this and the text below, and describe your gem
+Cliente Ruby **não-oficial** para a API da [Focus NFe](https://focusnfe.com.br) —
+serviço brasileiro de emissão de documentos fiscais eletrônicos (NFe, NFCe, NFSe,
+CTe, MDFe, NFCom, DCe e outros).
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/focus_nfe`. To experiment with that code, run `bin/console` for an interactive prompt.
+> ⚠️ **Não-oficial.** Esta gem não tem vínculo com a Focus NFe. A autoridade
+> final sobre campos, regras e validações fiscais é sempre a API da Focus/SEFAZ.
 
-## Installation
+A gem é uma camada fina sobre HTTP: transporta JSON, autentica, trata os status
+HTTP em **erros tipados** e devolve objetos Ruby úteis. Não reimplementa regras
+fiscais. Não tem dependências de runtime (usa apenas a stdlib).
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Cobre:
 
-Install the gem and add to the application's Gemfile by executing:
+- **Documentos emitidos** — `nfe`, `nfce`, `nfse`, `nfse_nacional`, `cte`,
+  `cte_os`, `mdfe`, `nfcom`, `dce`, `nfgas`.
+- **Documentos recebidos** — `nfes_recebidas`, `ctes_recebidas`,
+  `nfses_nacionais_recebidas` (listagem com sincronização incremental,
+  consulta, downloads, manifestação e eventos).
+- **APIs auxiliares** (somente leitura) — `ceps`, `municipios`, `cfops`,
+  `cnaes`, `ncms`, `cnpjs`.
+- **APIs de gestão** — `empresas`, `webhooks`, `emails_bloqueados`, `backups`.
+
+## Instalação
+
+Adicione a gem ao `Gemfile` da aplicação:
 
 ```bash
-bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+bundle add focus_nfe
 ```
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+Ou instale diretamente:
 
 ```bash
-gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+gem install focus_nfe
 ```
 
-## Usage
+## Configuração
 
-TODO: Write usage instructions here
+Há dois modos de uso, que coexistem.
 
-## Development
+### Global — para aplicações de uma empresa só
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```ruby
+FocusNfe.configure do |config|
+  config.token       = ENV["FOCUS_NFE_TOKEN"]
+  config.environment = :producao         # ou :homologacao (padrão)
+  config.timeout     = 30
+  config.logger      = Rails.logger
+end
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+client = FocusNfe.client                 # usa a config global
+```
 
-## Contributing
+### Explícito — várias empresas no mesmo processo
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/focus_nfe. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/focus_nfe/blob/main/CODE_OF_CONDUCT.md).
+O token é por empresa; cada `Client` carrega seu próprio token e ambiente, sem
+estado compartilhado.
 
-## License
+```ruby
+loja   = FocusNfe::Client.new(token: "TOKEN_LOJA",   environment: :producao)
+filial = FocusNfe::Client.new(token: "TOKEN_FILIAL", environment: :homologacao)
+```
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+O ambiente resolve a URL base (o prefixo `/v2` é interno):
 
-## Code of Conduct
+- `:producao` → `https://api.focusnfe.com.br`
+- `:homologacao` → `https://homologacao.focusnfe.com.br`
 
-Everyone interacting in the FocusNfe project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/focus_nfe/blob/main/CODE_OF_CONDUCT.md).
+## Uso
+
+### Emissão e ciclo assíncrono
+
+A emissão é assíncrona na maioria dos documentos. A `ref` é a referência única do
+documento na sua aplicação (validada client-side como alfanumérica antes do
+envio). As respostas de emissão e consulta são encapsuladas em
+`FocusNfe::Modelos::Documento`.
+
+```ruby
+doc = client.nfe.emitir(ref: "pedido-42", dados: payload_nfe)
+doc.status           # => "processando_autorizacao"
+doc.processando?     # => true
+doc.ref              # => "pedido-42"
+
+# Acompanhamento por polling (ou via webhooks — ver Gestão).
+doc = client.nfe.consultar("pedido-42")
+if doc.autorizado?
+  doc.chave_nfe
+  doc.caminho_xml_nota_fiscal
+  doc.caminho_danfe
+elsif doc.erro?
+  doc.status_sefaz
+  doc.mensagem_sefaz
+end
+```
+
+Predicados de status disponíveis: `autorizado?`, `cancelado?`, `processando?`,
+`erro?`, `denegado?`. Campos não mapeados continuam acessíveis via `doc["campo"]`
+ou `doc.dados`.
+
+A NFC-e é **síncrona** — o resultado já vem na própria chamada de emissão:
+
+```ruby
+nota = client.nfce.emitir(ref: "venda-1001", dados: payload_nfce)
+nota.autorizado?   # => true/false na mesma chamada
+```
+
+### Cancelamento
+
+```ruby
+client.nfe.cancelar("pedido-42", justificativa: "Cliente desistiu da compra.")
+```
+
+### Documentos recebidos e sincronização incremental
+
+`listar` devolve uma `FocusNfe::Modelos::Pagina` (enumerável). O cabeçalho
+`X-Max-Version` é exposto em `versao_maxima`, para retomar a sincronização do
+ponto onde parou.
+
+```ruby
+pagina = client.nfes_recebidas.listar(cnpj: "12345678000123", versao: ultima_versao)
+pagina.cada { |nfe| processar(nfe) }
+proxima_versao = pagina.versao_maxima
+
+# Consulta, downloads e manifestação do destinatário:
+client.nfes_recebidas.consultar(chave, completa: true)
+xml = client.nfes_recebidas.baixar_xml(chave)
+pdf = client.nfes_recebidas.baixar_pdf(chave)
+client.nfes_recebidas.manifestar(chave, tipo: "confirmacao")
+```
+
+### APIs auxiliares
+
+```ruby
+client.ceps.consultar("69909032")
+client.cnpjs.consultar("12345678000123")
+client.ncms.consultar("01012100")
+```
+
+### APIs de gestão
+
+```ruby
+# Cadastro de empresa (apenas produção); dry_run valida sem persistir.
+client.empresas.criar(dados: dados_empresa, dry_run: true)
+
+# Webhooks (a gem ajuda a registrar; a entrega é externa à gem).
+client.webhooks.criar(dados: { event: "nfe", url: "https://meu.app/hooks/nfe", cnpj: "12345678000123" })
+```
+
+## Erros tipados
+
+Cada faixa de status HTTP vira uma exceção específica, todas descendentes de
+`FocusNfe::Error`. Cada exceção carrega `status`, `body` (mensagens da API) e a
+`response` original.
+
+| Status | Exceção                          | Significado                              |
+| ------ | -------------------------------- | ---------------------------------------- |
+| 400    | `FocusNfe::Errors::BadRequest`   | Requisição malformada                    |
+| 401    | `FocusNfe::Errors::Unauthorized` | Token ausente ou inválido                |
+| 403    | `FocusNfe::Errors::Forbidden`    | Sem permissão                            |
+| 404    | `FocusNfe::Errors::NotFound`     | Recurso inexistente                      |
+| 409    | `FocusNfe::Errors::Conflict`     | Conflito de estado (ex.: `ref` em uso)   |
+| 422    | `FocusNfe::Errors::ValidationError` | Erro de validação dos campos          |
+| 429    | `FocusNfe::Errors::RateLimited`  | Limite de requisições excedido           |
+| 5xx    | `FocusNfe::Errors::ServerError`  | Falha no servidor da Focus/SEFAZ         |
+
+```ruby
+begin
+  client.nfe.emitir(ref: "pedido-42", dados: payload)
+rescue FocusNfe::Errors::ValidationError => e
+  e.status   # => 422
+  e.body     # => mensagens de erro da API
+rescue FocusNfe::Error => e
+  # captura qualquer falha da gem
+end
+```
+
+Há ainda `ConfigurationError` (token/ambiente inválidos, client-side) e
+`ConnectionError` (timeout, conexão recusada, excesso de redirects).
+
+## Validação opt-in por schemas
+
+Os campos de emissão derivam dos schemas documentados em
+`campos.focusnfe.com.br` (empacotados em `data/schemas/`). A validação
+client-side é **opcional e desligada por padrão** — a Focus é a autoridade final
+e os campos mudam (ex.: Reforma Tributária em transição).
+
+```ruby
+client.nfe.emitir(ref: "pedido-42", dados: payload, validar: true)
+# => levanta FocusNfe::Esquemas::ErroDeValidacao se faltar obrigatório
+#    ou o tipo/tamanho de um campo escalar de topo não bater.
+```
+
+Documentos sem schema próprio são emitidos sem validar (pulam silenciosamente).
+
+## Desenvolvimento
+
+Após clonar o repositório, rode `bin/setup` para instalar as dependências.
+`bin/console` abre um IRB com a gem carregada.
+
+O projeto é desenvolvido **test-first (TDD)** com RSpec + WebMock — nenhuma
+classe/método/branch nasce sem um spec falhando que o exija. O `rake` default
+roda **RSpec + RuboCop** e precisa estar verde antes de cada commit:
+
+```bash
+bundle exec rake          # RSpec + RuboCop
+bin/rspec                 # apenas a suíte
+bin/rubocop -a            # estilo, com auto-correção
+bundle exec rake pull_fields   # regenera data/schemas/ a partir de campos.focusnfe.com.br
+```
+
+Para instalar a gem localmente, rode `bundle exec rake install`. Para publicar
+uma nova versão, atualize o número em `version.rb` e rode `bundle exec rake
+release`, que cria a tag git, sobe os commits + tag e publica o `.gem` no
+[rubygems.org](https://rubygems.org).
+
+## Contribuindo
+
+Bug reports e pull requests são bem-vindos no GitHub em
+https://github.com/wilfison/focus_nfe. Espera-se que os participantes sigam o
+[código de conduta](https://github.com/wilfison/focus_nfe/blob/main/CODE_OF_CONDUCT.md).
+
+## Licença
+
+Disponível como código aberto sob os termos da
+[licença MIT](https://opensource.org/licenses/MIT).
