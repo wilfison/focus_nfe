@@ -69,17 +69,32 @@ RSpec.describe FocusNfe::Client do
     end
   end
 
-  describe "#nfe" do
+  describe "acessores de documentos emitidos" do
     subject(:client) { described_class.new(token: "tok") }
 
-    it "devolve um Recursos::Nfe" do
-      expect(client.nfe).to be_a(FocusNfe::Recursos::Nfe)
-    end
+    {
+      nfe: FocusNfe::Recursos::Nfe,
+      nfce: FocusNfe::Recursos::Nfce,
+      nfse: FocusNfe::Recursos::Nfse,
+      nfse_nacional: FocusNfe::Recursos::NfseNacional,
+      cte: FocusNfe::Recursos::Cte,
+      cte_os: FocusNfe::Recursos::CteOs,
+      mdfe: FocusNfe::Recursos::Mdfe,
+      nfcom: FocusNfe::Recursos::Nfcom,
+      dce: FocusNfe::Recursos::Dce,
+      nfgas: FocusNfe::Recursos::Nfgas
+    }.each do |acessor, classe|
+      describe "##{acessor}" do
+        it "devolve um #{classe}" do
+          expect(client.public_send(acessor)).to be_a(classe)
+        end
 
-    it "memoiza o recurso entre chamadas" do
-      primeiro = client.nfe
+        it "memoiza o recurso entre chamadas" do
+          primeiro = client.public_send(acessor)
 
-      expect(client.nfe).to be(primeiro)
+          expect(client.public_send(acessor)).to be(primeiro)
+        end
+      end
     end
   end
 

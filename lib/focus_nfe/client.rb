@@ -29,5 +29,50 @@ module FocusNfe
     def nfe
       @nfe ||= Recursos::Nfe.new(connection)
     end
+
+    # @return [FocusNfe::Recursos::Nfce] recurso de NFC-e, memoizado
+    def nfce
+      @nfce ||= Recursos::Nfce.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::Nfse] recurso de NFS-e, memoizado
+    def nfse
+      @nfse ||= Recursos::Nfse.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::NfseNacional] recurso de NFS-e nacional, memoizado
+    def nfse_nacional
+      @nfse_nacional ||= Recursos::NfseNacional.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::Cte] recurso de CT-e, memoizado
+    def cte
+      @cte ||= Recursos::Cte.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::CteOs] recurso de CT-e OS, memoizado
+    def cte_os
+      @cte_os ||= Recursos::CteOs.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::Mdfe] recurso de MDF-e, memoizado
+    def mdfe
+      @mdfe ||= Recursos::Mdfe.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::Nfcom] recurso de NFCom, memoizado
+    def nfcom
+      @nfcom ||= Recursos::Nfcom.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::Dce] recurso de DC-e, memoizado
+    def dce
+      @dce ||= Recursos::Dce.new(connection)
+    end
+
+    # @return [FocusNfe::Recursos::Nfgas] recurso de NFGas, memoizado
+    def nfgas
+      @nfgas ||= Recursos::Nfgas.new(connection)
+    end
   end
 end

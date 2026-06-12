@@ -15,6 +15,8 @@ VCR.configure do |config|
   config.default_cassette_options = { record: :none }
 end
 
+Dir[File.join(__dir__, "support", "**", "*.rb")].each { |file| require file }
+
 RSpec.configure do |config|
   # Habilita a sintaxe `expect` apenas.
   config.expect_with :rspec do |expectations|
