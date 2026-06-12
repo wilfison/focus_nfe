@@ -4,9 +4,10 @@ RSpec.describe FocusNfe::Recursos::Concerns::Emitivel do
   let(:client) { FocusNfe::Client.new(token_empresa: "tok", environment: :homologacao) }
   let(:nfe) { FocusNfe::Recursos::Nfe.new(client.connection) }
   let(:nfce) { FocusNfe::Recursos::Nfce.new(client.connection) }
-  let(:json) { { "Content-Type" => "application/json" } }
-  let(:processando) { '{"status":"processando_autorizacao"}' }
+  let(:cte) { FocusNfe::Recursos::Cte.new(client.connection) }
 
+  def json = { "Content-Type" => "application/json" }
+  def processando = '{"status":"processando_autorizacao"}'
   def homologacao = "https://homologacao.focusnfe.com.br"
 
   def stub_emissao(path, status: 202)
@@ -41,6 +42,32 @@ RSpec.describe FocusNfe::Recursos::Concerns::Emitivel do
         nfe.emitir(ref: "pedido-1", dados: {}, validar: true)
 
         expect(a_request(:post, "#{homologacao}/v2/nfe").with(query: { "ref" => "pedido-1" })).to have_been_made
+      end
+    end
+
+    context "quando o documento tem modal condicional (CTe)" do
+      def stub_esquema_base_vazio
+        vazio = FocusNfe::Esquemas::Esquema.new([])
+        allow(FocusNfe::Esquemas::Esquema).to receive(:carregar).and_call_original
+        allow(FocusNfe::Esquemas::Esquema).to receive(:carregar).with("cte").and_return(vazio)
+      end
+
+      it "valida o sub-esquema do modal e bloqueia a emissão" do
+        stub_esquema_base_vazio
+
+        expect do
+          cte.emitir(ref: "cte-1", dados: { "modal" => "01", "modal_rodoviario" => { "rntrc" => "1" } }, validar: true)
+        end.to raise_error(FocusNfe::Esquemas::ErroDeValidacao, /modal_rodoviario/)
+      end
+
+      it "emite quando base e modal são válidos" do
+        stub_esquema_base_vazio
+        stub_emissao("cte?ref=cte-1")
+
+        cte.emitir(ref: "cte-1", dados: { "modal" => "01", "modal_rodoviario" => { "rntrc" => "12345678" } },
+                   validar: true)
+
+        expect(a_request(:post, "#{homologacao}/v2/cte?ref=cte-1")).to have_been_made
       end
     end
 

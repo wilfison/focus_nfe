@@ -34,7 +34,9 @@ module FocusNfe
           esquema = Esquemas::Esquema.carregar(caminho_base)
           return unless esquema
 
-          Esquemas::Validador.new(esquema).validar!(dados)
+          erros = Esquemas::Validador.new(esquema).validar(dados)
+          erros += Esquemas::Modais.validar(caminho_base, dados)
+          raise Esquemas::ErroDeValidacao, erros unless erros.empty?
         end
       end
     end
