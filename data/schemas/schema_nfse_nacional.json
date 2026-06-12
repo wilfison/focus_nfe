@@ -558,7 +558,7 @@
   {
     "name": "codigo_moeda",
     "description": "Identifica a moeda da transação comercial. O usuário deve informar o código da moeda.",
-    "type": "Integer[3]",
+    "type": "String[3]",
     "required": false,
     "tag": "tpMoeda"
   },
