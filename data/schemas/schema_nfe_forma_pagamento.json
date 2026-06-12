@@ -1,0 +1,97 @@
+[
+  {
+    "name": "indicador_pagamento",
+    "description": "Indicador da Forma de Pagamento",
+    "type": null,
+    "required": false,
+    "enum": "* +0+: Pagamento à Vista\\n* +1+: Pagamento a Prazo",
+    "tag": "indPag"
+  },
+  {
+    "name": "forma_pagamento",
+    "description": "Forma de pagamento",
+    "type": null,
+    "required": false,
+    "enum": "* +01+: Dinheiro\\n* +02+: Cheque\\n* +03+: Cartão de Crédito\\n* +04+: Cartão de Débito\\n* +05+: Cartão da Loja (Private Label)\\n* +10+: Vale Alimentação\\n* +11+: Vale Refeição\\n* +12+: Vale Presente\\n* +13+: Vale Combustível\\n* +14+: Duplicata Mercantil\\n* +15+: Boleto Bancário\\n* +16+: Depósito Bancário\\n* +17+: Pagamento Instantâneo (PIX) – Dinâmico\\n* +18+: Transferência bancária, Carteira Digital\\n* +19+: Programa de fidelidade, Cashback, Crédito Virtual\\n* +20+: Pagamento Instantâneo (PIX) – Estático\\n* +21+: Crédito em Loja\\n* +22+: Pagamento Eletrônico não Informado - falha de hardware do sistema emissor\\n* +23+: Pagamento Instantâneo (PIX) - Automático\\n* +24+: TEF - \"Book Transfer\"\\n* +90+: Sem pagamento\\n* +91+: Pagamento Posterior\\n* +99+: Outros",
+    "tag": "tPag"
+  },
+  {
+    "name": "descricao_pagamento",
+    "description": "Descrição do Meio de Pagamento. Apenas quando forma_pagamento = 99 (Outros)",
+    "type": "String[2-60]",
+    "required": false,
+    "tag": "xPag"
+  },
+  {
+    "name": "valor_pagamento",
+    "description": "Valor do pagamento",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vPag"
+  },
+  {
+    "name": "data_pagamento",
+    "description": "Data do Pagamento",
+    "type": null,
+    "required": false,
+    "tag": "dPag"
+  },
+  {
+    "name": "cnpj_transacional",
+    "description": "CNPJ transacional do pagamento",
+    "type": "Integer[14]",
+    "required": false,
+    "tag": "CNPJPag"
+  },
+  {
+    "name": "uf_transacional",
+    "description": "UF do CNPJ do estabelecimento onde o pagamento foi processado/transacionado/recebido",
+    "type": "String[2]",
+    "required": false,
+    "tag": "UFPag"
+  },
+  {
+    "name": "tipo_integracao",
+    "description": "Tipo de Integração para pagamento",
+    "type": null,
+    "required": false,
+    "enum": "* +1+: Pagamento integrado com o sistema de automação da empresa (Ex.: equipamento TEF, Comércio Eletrônico) - Obrigatorio informar cnpj_credenciadora e numero_autorizacao\\n* +2+: Pagamento não integrado com o sistema de automação da empresa (Ex.: equipamento POS)",
+    "tag": "tpIntegra"
+  },
+  {
+    "name": "cnpj_credenciadora",
+    "description": "CNPJ da Credenciadora de cartão de crédito e/ou débito",
+    "type": "Integer[14]",
+    "required": false,
+    "tag": "CNPJ"
+  },
+  {
+    "name": "bandeira_operadora",
+    "description": "Bandeira da operadora de cartão de crédito e/ou débito",
+    "type": null,
+    "required": false,
+    "enum": "* +01+: Visa\\n* +02+: Mastercard\\n* +03+: American Express\\n* +04+: Sorocred\\n* +05+: Diners Club\\n* +06+: Elo\\n* +07+: Hipercard\\n* +08+: Aura\\n* +09+: Cabal\\n* +10+: Alelo\\n* +11+: Banes Card\\n* +12+: CalCard\\n* +13+: Credz\\n* +14+: Discover\\n* +15+: GoodCard\\n* +16+: GreenCard\\n* +17+: Hiper\\n* +18+: JcB\\n* +19+: Mais\\n* +20+: MaxVan\\n* +21+: Policard\\n* +22+: RedeCompras\\n* +23+: Sodexo\\n* +24+: ValeCard\\n* +25+: Verocheque\\n* +26+: VR\\n* +27+: Ticket\\n* +99+: Outros",
+    "tag": "tBand"
+  },
+  {
+    "name": "numero_autorizacao",
+    "description": "Número de autorização da operação com cartões, PIX, boletos e outros pagamentos eletrônicos",
+    "type": "String[1-128]",
+    "required": false,
+    "tag": "cAut"
+  },
+  {
+    "name": "cnpj_beneficiario",
+    "description": "CNPJ do beneficiário do pagamento",
+    "type": "Integer[14]",
+    "required": false,
+    "tag": "CNPJReceb"
+  },
+  {
+    "name": "id_terminal_pagamento",
+    "description": "Identificador do terminal de pagamento",
+    "type": "String[40]",
+    "required": false,
+    "tag": "idTermPag"
+  }
+]

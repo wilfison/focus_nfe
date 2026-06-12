@@ -1,0 +1,549 @@
+[
+  {
+    "name": "codigo_unico",
+    "description": "Código numérico aleatório que compõe a Chave de Acesso (6 dígitos).",
+    "type": "String[6]",
+    "required": true,
+    "tag": "cDC"
+  },
+  {
+    "name": "serie",
+    "description": "Série do documento fiscal.",
+    "type": "String[1-3]",
+    "required": true,
+    "tag": "serie"
+  },
+  {
+    "name": "numero",
+    "description": "Número do documento fiscal. 1 a 999999999.",
+    "type": "String[1-9]",
+    "required": true,
+    "tag": "nDC"
+  },
+  {
+    "name": "data_emissao",
+    "description": "Data e hora de emissão. Formato UTC (AAAA-MM-DDThh:mm:ssTZD).",
+    "type": "DateTime",
+    "required": true,
+    "tag": "dhEmi"
+  },
+  {
+    "name": "forma_emissao",
+    "description": "Forma de emissão.",
+    "type": null,
+    "required": true,
+    "enum": "* +1+: Normal\\n* +2+: Contingência off-line",
+    "tag": "tpEmis"
+  },
+  {
+    "name": "tipo_emitente",
+    "description": "Tipo do Emitente da DCe.",
+    "type": null,
+    "required": true,
+    "enum": "* +1+: Marketplace\\n* +2+: Emissor próprio\\n* +3+: Transportadora\\n* +4+: ECT",
+    "tag": "tpEmit"
+  },
+  {
+    "name": "numero_site_autorizador",
+    "description": "Número do site do autorizador (0 para site único, 1-9 para múltiplos).",
+    "type": "String[1]",
+    "required": true,
+    "tag": "nSiteAutoriz"
+  },
+  {
+    "name": "versao_aplicativo",
+    "description": "Versão do aplicativo emissor.",
+    "type": "String[1-20]",
+    "required": true,
+    "tag": "verProc"
+  },
+  {
+    "name": null,
+    "description": ":cnpj_emitente CNPJ do emitente.",
+    "type": "String[14]",
+    "required": true
+  },
+  {
+    "name": null,
+    "description": ":nome_emitente Razão social ou nome do emitente.",
+    "type": "String[2-60]",
+    "required": true
+  },
+  {
+    "name": null,
+    "description": ":site_emitente Endereço ou site do emitente (disponível apenas para Marketplace).",
+    "type": "String[2-120]",
+    "required": false
+  },
+  {
+    "name": "cnpj_remetente",
+    "description": "CNPJ do remetente.",
+    "type": "String[14]",
+    "required": false,
+    "tag": "CNPJ"
+  },
+  {
+    "name": "cpf_remetente",
+    "description": "CPF do remetente.",
+    "type": "String[11]",
+    "required": false,
+    "tag": "CPF"
+  },
+  {
+    "name": "nome_remetente",
+    "description": "Razão social ou nome do remetente.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xNome"
+  },
+  {
+    "name": "logradouro_remetente",
+    "description": "Logradouro do remetente.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xLgr"
+  },
+  {
+    "name": "numero_remetente",
+    "description": "Número do endereço do remetente.",
+    "type": "String[1-60]",
+    "required": true,
+    "tag": "nro"
+  },
+  {
+    "name": "complemento_remetente",
+    "description": "Complemento do endereço do remetente.",
+    "type": "String[1-60]",
+    "required": false,
+    "tag": "xCpl"
+  },
+  {
+    "name": "bairro_remetente",
+    "description": "Bairro do endereço do remetente.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xBairro"
+  },
+  {
+    "name": "codigo_municipio_remetente",
+    "description": "Código do município do endereço do remetente (tabela IBGE).",
+    "type": "String[7]",
+    "required": true,
+    "tag": "cMun"
+  },
+  {
+    "name": "municipio_remetente",
+    "description": "Nome do município do endereço do remetente.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xMun"
+  },
+  {
+    "name": "uf_remetente",
+    "description": "Sigla da UF do endereço do remetente.",
+    "type": "String[2]",
+    "required": true,
+    "tag": "UF"
+  },
+  {
+    "name": "cep_remetente",
+    "description": "CEP do endereço do remetente.",
+    "type": "String[8]",
+    "required": true,
+    "tag": "CEP"
+  },
+  {
+    "name": "codigo_pais_remetente",
+    "description": "Código do país do endereço do remetente. Fixo 1058 (Brasil).",
+    "type": "String[4]",
+    "required": true,
+    "tag": "cPais"
+  },
+  {
+    "name": "nome_pais_remetente",
+    "description": "Nome do país do endereço do remetente. Brasil ou BRASIL.",
+    "type": "String",
+    "required": true,
+    "tag": "xPais"
+  },
+  {
+    "name": "telefone_remetente",
+    "description": "Telefone do remetente.",
+    "type": "String[7-12]",
+    "required": false,
+    "tag": "fone"
+  },
+  {
+    "name": "cnpj_destinatario",
+    "description": "CNPJ do destinatário.",
+    "type": "String[14]",
+    "required": false,
+    "tag": "CNPJ"
+  },
+  {
+    "name": "cpf_destinatario",
+    "description": "CPF do destinatário.",
+    "type": "String[11]",
+    "required": false,
+    "tag": "CPF"
+  },
+  {
+    "name": "nome_destinatario",
+    "description": "Razão social ou nome do destinatário.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xNome"
+  },
+  {
+    "name": "logradouro_destinatario",
+    "description": "Logradouro.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xLgr"
+  },
+  {
+    "name": "numero_destinatario",
+    "description": "Número.",
+    "type": "String[1-60]",
+    "required": true,
+    "tag": "nro"
+  },
+  {
+    "name": "complemento_destinatario",
+    "description": "Complemento.",
+    "type": "String[1-60]",
+    "required": false,
+    "tag": "xCpl"
+  },
+  {
+    "name": "bairro_destinatario",
+    "description": "Bairro.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xBairro"
+  },
+  {
+    "name": "codigo_municipio_destinatario",
+    "description": "Código do município (tabela IBGE).",
+    "type": "String[7]",
+    "required": true,
+    "tag": "cMun"
+  },
+  {
+    "name": "municipio_destinatario",
+    "description": "Nome do município.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xMun"
+  },
+  {
+    "name": "uf_destinatario",
+    "description": "Sigla da UF.",
+    "type": "String[2]",
+    "required": true,
+    "tag": "UF"
+  },
+  {
+    "name": "cep_destinatario",
+    "description": "CEP.",
+    "type": "String[8]",
+    "required": true,
+    "tag": "CEP"
+  },
+  {
+    "name": "codigo_pais_destinatario",
+    "description": "Código do país (tabela BACEN).",
+    "type": "String[1-4]",
+    "required": false,
+    "tag": "cPais"
+  },
+  {
+    "name": "nome_pais_destinatario",
+    "description": "Nome do país.",
+    "type": "String[2-60]",
+    "required": false,
+    "tag": "xPais"
+  },
+  {
+    "name": "telefone_destinatario",
+    "description": "Telefone.",
+    "type": "String[7-12]",
+    "required": false,
+    "tag": "fone"
+  },
+  {
+    "name": "email_destinatario",
+    "description": "E-mail do destinatário.",
+    "type": "String[1-60]",
+    "required": false,
+    "tag": "email"
+  },
+  {
+    "name": "autorizados_download_xml",
+    "description": "Autorizados para acessar o XML da DCe.",
+    "type": "Coleção[0-10]",
+    "required": false,
+    "collection_type": "AutorizadosDownloadXml",
+    "collection": {
+      "object_type": "AutorizadosDownloadXml",
+      "object_description": "Autorizados para acessar o XML da DCe. Tag XML autXML",
+      "object_attributes": [
+        {
+          "name": "cnpj",
+          "description": "CNPJ do autorizado.",
+          "type": "String[14]",
+          "required": false,
+          "tag": "CNPJ"
+        },
+        {
+          "name": "cpf",
+          "description": "CPF do autorizado.",
+          "type": "String[11]",
+          "required": false,
+          "tag": "CPF"
+        }
+      ]
+    }
+  },
+  {
+    "name": "itens",
+    "description": "Detalhamento de itens da DCe.",
+    "type": "Coleção[1-999]",
+    "required": false,
+    "collection_type": "ItemDceXML",
+    "collection": {
+      "object_type": "ItemDceXML",
+      "object_description": "Detalhamento de itens da DCe. Tag XML det",
+      "object_attributes": [
+        {
+          "name": "numero",
+          "description": "Número do item da DCe, começando por 1.",
+          "type": "String[1-4]",
+          "required": true,
+          "tag": "nItem"
+        },
+        {
+          "name": "descricao_produto",
+          "description": "Descrição do produto, bem ou mercadoria.",
+          "type": "String[1-120]",
+          "required": true,
+          "tag": "xProd"
+        },
+        {
+          "name": "codigo_ncm",
+          "description": "Código NCM (capítulo 2 dígitos ou completo 8 dígitos).",
+          "type": "String[2|8]",
+          "required": true,
+          "tag": "NCM"
+        },
+        {
+          "name": "quantidade",
+          "description": "Quantidade.",
+          "type": "Decimal[11.0-4]",
+          "required": false,
+          "tag": "qCom"
+        },
+        {
+          "name": "valor_unitario",
+          "description": "Valor unitário do item.",
+          "type": "Decimal[13.2-8]",
+          "required": true,
+          "tag": "vUnCom"
+        },
+        {
+          "name": "valor_produto",
+          "description": "Valor total bruto do item.",
+          "type": "Decimal[13.2-8]",
+          "required": true,
+          "tag": "vProd"
+        },
+        {
+          "name": "informacoes_adicionais",
+          "description": "Informações adicionais do item.",
+          "type": "String[1-500]",
+          "required": false,
+          "tag": "infAdProd"
+        }
+      ]
+    }
+  },
+  {
+    "name": "valor_total",
+    "description": "Valor Total da DCe.",
+    "type": "Decimal[13.2]",
+    "required": true,
+    "tag": "vDC"
+  },
+  {
+    "name": "modalidade_transporte",
+    "description": "Modalidade do transporte.",
+    "type": null,
+    "required": true,
+    "enum": "* +0+: Correios\\n* +1+: Conta própria\\n* +2+: Empresa transportadora",
+    "tag": "modTrans"
+  },
+  {
+    "name": "cnpj_transporte",
+    "description": "CNPJ da empresa responsável pelo transporte físico da mercadoria.",
+    "type": "String[14]",
+    "required": false,
+    "tag": "CNPJTransp"
+  },
+  {
+    "name": "informacoes_adicionais_fisco",
+    "description": "Informações adicionais de interesse do Fisco.",
+    "type": "String[1-2000]",
+    "required": false,
+    "tag": "infAdFisco"
+  },
+  {
+    "name": "informacoes_adicionais",
+    "description": "Informações complementares de interesse do emitente.",
+    "type": "String[1-5000]",
+    "required": false,
+    "tag": "infCpl"
+  },
+  {
+    "name": "informacoes_adicionais_marketplace",
+    "description": "Informações adicionais do Marketplace.",
+    "type": "String[1-5000]",
+    "required": false,
+    "tag": "infAdMarketplace"
+  },
+  {
+    "name": "informacoes_adicionais_ect",
+    "description": "Informações adicionais dos Correios.",
+    "type": "String[1-5000]",
+    "required": false,
+    "tag": "infAdECT"
+  },
+  {
+    "name": "observacoes_emitente",
+    "description": "Observações do emitente.",
+    "type": "Coleção[0-10]",
+    "required": false,
+    "collection_type": "ObservacaoEmitenteXML",
+    "collection": {
+      "object_type": "ObservacaoEmitenteXML",
+      "object_description": "Campo de uso livre do Emitente. Tag XML obsEmit",
+      "object_attributes": [
+        {
+          "name": "campo",
+          "description": "Nome do campo.",
+          "type": "String",
+          "required": false,
+          "tag": "xCampo"
+        },
+        {
+          "name": "texto",
+          "description": "Conteúdo do campo.",
+          "type": "String[1-60]",
+          "required": false,
+          "tag": "xTexto"
+        }
+      ]
+    }
+  },
+  {
+    "name": "observacoes_fisco",
+    "description": "Observações do Fisco.",
+    "type": "Coleção[0-10]",
+    "required": false,
+    "collection_type": "ObservacaoFiscoXML",
+    "collection": {
+      "object_type": "ObservacaoFiscoXML",
+      "object_description": "Campo de uso livre do Fisco. Tag XML obsFisco",
+      "object_attributes": [
+        {
+          "name": "campo",
+          "description": "Nome do campo.",
+          "type": "String",
+          "required": false,
+          "tag": "xCampo"
+        },
+        {
+          "name": "texto",
+          "description": "Conteúdo do campo.",
+          "type": "String[1-60]",
+          "required": false,
+          "tag": "xTexto"
+        }
+      ]
+    }
+  },
+  {
+    "name": "observacoes_marketplace",
+    "description": "Observações do Marketplace.",
+    "type": "Coleção[0-10]",
+    "required": false,
+    "collection_type": "ObservacaoMarketplaceXML",
+    "collection": {
+      "object_type": "ObservacaoMarketplaceXML",
+      "object_description": "Campo de uso livre do Marketplace. Tag XML obsMarketplace",
+      "object_attributes": [
+        {
+          "name": "campo",
+          "description": "Nome do campo.",
+          "type": "String",
+          "required": false,
+          "tag": "xCampo"
+        },
+        {
+          "name": "texto",
+          "description": "Conteúdo do campo.",
+          "type": "String[1-60]",
+          "required": false,
+          "tag": "xTexto"
+        }
+      ]
+    }
+  },
+  {
+    "name": "observacoes_ect",
+    "description": "Observações dos Correios.",
+    "type": "Coleção[0-10]",
+    "required": false,
+    "collection_type": "ObservacaoEctXML",
+    "collection": {
+      "object_type": "ObservacaoEctXML",
+      "object_description": "Campo de uso livre dos Correios. Tag XML obsECT",
+      "object_attributes": [
+        {
+          "name": "campo",
+          "description": "Nome do campo.",
+          "type": "String",
+          "required": false,
+          "tag": "xCampo"
+        },
+        {
+          "name": "texto",
+          "description": "Conteúdo do campo.",
+          "type": "String[1-60]",
+          "required": false,
+          "tag": "xTexto"
+        }
+      ]
+    }
+  },
+  {
+    "name": "observacao1",
+    "description": "Observação 1 - Texto fixo sobre contribuinte de ICMS.",
+    "type": "String[1-2000]",
+    "required": true,
+    "tag": "xObs1"
+  },
+  {
+    "name": "observacao2",
+    "description": "Observação 2 - Texto fixo sobre crime contra ordem tributária.",
+    "type": "String[1-5000]",
+    "required": true,
+    "tag": "xObs2"
+  },
+  {
+    "name": "solicitacao",
+    "description": "Solicitação do pedido de emissão da DCe.",
+    "type": "String[0-2000]",
+    "required": false,
+    "tag": "xSolic"
+  }
+]

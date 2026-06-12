@@ -88,7 +88,7 @@ Rules:
   strings are double-quoted, and `rubocop-performance` + `rubocop-rspec` are loaded as plugins (`.rubocop.yml`).
 - `bundle exec rake` — default task; runs **RSpec + RuboCop** (TDD is mandatory — see above). Keep it green
   before any commit.
-- `bundle exec rake pull_fields` — scrape all document-type field schemas into `tmp/shemas/` (see below).
+- `bundle exec rake pull_fields` — scrape all document-type field schemas into `data/schemas/` (see below).
 - `bundle exec rake install` / `rake release` — build/publish the gem (gemspec still has TODO metadata to fill in).
 
 Note: CI (`.github/workflows/main.yml`) pins Ruby `4.0.2`, while `focus_nfe.gemspec` requires `>= 3.2.0`.
@@ -100,9 +100,12 @@ derived from these definitions rather than hand-transcribed.
 
 - `scripts/pull_fields.rb` — fetches each documented page, extracts the embedded `__NEXT_DATA__` JSON
   (`props.pageProps.json.object_attributes`), and writes one file per document type to
-  `tmp/shemas/schema_<name>.json`. The full URL map for every document type lives at the top of this script.
-- Each schema entry is `{ name, description, type, required, tag }`, where `name` is the JSON field the API
+  `data/schemas/schema_<name>.json`. The full URL map for every document type lives at the top of this script.
+- Each schema entry is `{ name, description, type, required, tag }` and may also carry `enum`,
+  `reforma_tributaria` and a nested `collection` (with `collection_type`). `name` is the JSON field the API
   expects, `tag` is the underlying XML tag, and `type` encodes Brazilian fiscal type/length (e.g. `String[1-60]`,
-  `Integer[1-9]`).
+  `Integer[1-9]`, `Decimal[13.2]`, `Coleção[0-500]`).
 
-`tmp/` is gitignored — the schemas are regenerated, not committed.
+`data/schemas/` is git-tracked and packaged with the gem (via `git ls-files` in the gemspec), powering the
+opt-in client-side validation (`FocusNfe::Esquemas::*`, `emitir(..., validar: true)`). Regenerate it with
+`rake pull_fields`.

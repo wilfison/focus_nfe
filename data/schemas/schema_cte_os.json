@@ -1,0 +1,1335 @@
+[
+  {
+    "name": "cfop",
+    "description": "CFOP da CT-e.",
+    "type": "Integer[4]",
+    "required": true,
+    "tag": "CFOP"
+  },
+  {
+    "name": "natureza_operacao",
+    "description": "Descrição da natureza de operação.",
+    "type": "String[1-60]",
+    "required": true,
+    "tag": "natOp"
+  },
+  {
+    "name": "serie",
+    "description": "Série da CT-e. Deixe em branco para que a API se responsabilize pela numeração automática (recomendado)",
+    "type": "Integer[1-3]",
+    "required": false,
+    "tag": "serie"
+  },
+  {
+    "name": "numero",
+    "description": "Número da CT-e. Deixe em branco para que a API se responsabilize pela numeração automática (recomendado)",
+    "type": "Integer[1-9]",
+    "required": false,
+    "tag": "nCT"
+  },
+  {
+    "name": "data_emissao",
+    "description": "Data e hora de emissão.",
+    "type": null,
+    "required": true,
+    "tag": "dhEmi"
+  },
+  {
+    "name": "tipo_documento",
+    "description": "Tipo do CT-e",
+    "type": null,
+    "required": true,
+    "enum": "* +0+: CT-e Normal\\n* +1+: CT-e de Complemento de Valores\\n* +3+: CT-e Substituto",
+    "tag": "tpCTe"
+  },
+  {
+    "name": "codigo_municipio_envio",
+    "description": "Código do Município de envio do CT-e. Caso este campo seja omitido, o código será buscado a partir do nome e estado do município, caso contrário utilizar a tabela do IBGE. Informar 9999999 para operações com o exterior.",
+    "type": "Integer[7]",
+    "required": true,
+    "tag": "cMunEnv"
+  },
+  {
+    "name": "municipio_envio",
+    "description": "Nome do município de envio do CT-e. Informar PAIS/Municipio para as operações com o exterior.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xMunEnv"
+  },
+  {
+    "name": "uf_envio",
+    "description": "Sigla da UF de envio do CT-e. Informar 'EX' para as operações com o exterior.",
+    "type": "String[2]",
+    "required": true,
+    "tag": "UFEnv"
+  },
+  {
+    "name": "modal",
+    "description": "Modal de transporte da CT-e OS",
+    "type": null,
+    "required": true,
+    "enum": "* +01+: Rodoviário\\n* +02+: Aéreo\\n* +03+: Aquaviário\\n* +04+: Ferroviário\\n* +05+: Dutoviário\\n* +06+: Multimodal",
+    "tag": "modal"
+  },
+  {
+    "name": "tipo_servico",
+    "description": "Tipo do serviço prestado.",
+    "type": null,
+    "required": true,
+    "enum": "* +6+: Transporte de Pessoas\\n* +7+: Transporte de Valores\\n* +8+: Excesso de Bagagem",
+    "tag": "tpServ"
+  },
+  {
+    "name": "indicador_inscricao_estadual_tomador",
+    "description": "Indicador do papel do tomador na prestação do serviço.",
+    "type": null,
+    "required": true,
+    "enum": "* +1+: Contribuinte ICMS\\n* +2+: Contribuinte isento de inscrição\\n* +9+: Não Contribuinte",
+    "tag": "indIEToma"
+  },
+  {
+    "name": "codigo_municipio_inicio",
+    "description": "Código do Município de início da prestação. Caso este campo seja omitido, o código será buscado a partir do nome e estado do município, caso contrário utilizar a tabela do IBGE. Informar 9999999 para operações com o exterior.",
+    "type": "Integer[7]",
+    "required": true,
+    "tag": "cMunIni"
+  },
+  {
+    "name": "municipio_inicio",
+    "description": "Nome do município de início da prestação. Informar 'EXTERIOR' para as operações com o exterior.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xMunIni"
+  },
+  {
+    "name": "uf_inicio",
+    "description": "Sigla da UF de início da prestação. Informar 'EX' para as operações com o exterior.",
+    "type": "String[2]",
+    "required": true,
+    "tag": "UFIni"
+  },
+  {
+    "name": "codigo_municipio_fim",
+    "description": "Código do Município de término da prestação. Caso este campo seja omitido, o código será buscado a partir do nome e estado do município, caso contrário utilizar a tabela do IBGE. Informar 9999999 para operações com o exterior.",
+    "type": "Integer[7]",
+    "required": true,
+    "tag": "cMunFim"
+  },
+  {
+    "name": "municipio_fim",
+    "description": "Nome do município de término da prestação. Informar 'EXTERIOR' para as operações com o exterior.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xMunFim"
+  },
+  {
+    "name": "uf_fim",
+    "description": "Sigla da UF de término da prestação. Informar 'EX' para as operações com o exterior.",
+    "type": "String[2]",
+    "required": true,
+    "tag": "UFFim"
+  },
+  {
+    "name": "percursos",
+    "description": "Informações do Percurso do CT-e Outros Serviços",
+    "type": "Coleção[0-25]",
+    "required": false,
+    "collection_type": "InfoPercursoOsXML",
+    "collection": {
+      "object_type": "InfoPercursoOsXML",
+      "object_description": "Informações do Percurso do CT-e Outros Serviços. Tag XML infPercurso.",
+      "object_attributes": [
+        {
+          "name": "uf_percurso_veiculo",
+          "description": "Sigla das Unidades da Federação do percurso do veículo.",
+          "type": "String[2]",
+          "required": false,
+          "tag": "UFPer"
+        }
+      ]
+    }
+  },
+  {
+    "name": "tipo_compra_governamental",
+    "description": "Para administração pública direta e suas autarquias e fundações",
+    "type": null,
+    "required": false,
+    "reforma_tributaria": true,
+    "enum": "* +1+: União\\n* +2+: Estados\\n* +3+: Distrito Federal\\n* +4+: Municípios\\n* +5+: Consórcio Público\\n* +6+: Comitê Gestor do IBS",
+    "tag": "tpEnteGov"
+  },
+  {
+    "name": "perc_reducao_aliquota_compra_governamental",
+    "description": "Percentual de redução de alíquota em compra governamental",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "pRedutor"
+  },
+  {
+    "name": "tipo_operacao_governamental",
+    "description": "Tipo de operação com ente governamental",
+    "type": null,
+    "required": false,
+    "enum": "* +1+: Fornecimento com pagamento posterior\\n* +2+: Recebimento do pagamento com fornecimento já realizado\\n* +3+: Fornecimento com pagamento já realizado\\n* +4+: Recebimento do pagamento com fornecimento posterior",
+    "tag": "tpOperGov"
+  },
+  {
+    "name": "chave_acesso_dfe_anterior",
+    "description": "Chave de acesso do documento fiscal anterior. Deverá ser informado para tpOperGov 2 e 3 e vedado para os tipos 1 e 4.",
+    "type": "String[44]",
+    "required": false,
+    "tag": "refDFeAnt"
+  },
+  {
+    "name": "caracteristica_adicional_transporte",
+    "description": "Característica adicional de transporte. Texto livre: REENTREGA; DEVOLUÇÃO; REFATURAMENTO; etc.",
+    "type": "String[1-15]",
+    "required": false,
+    "tag": "xCaracAd"
+  },
+  {
+    "name": "caracteristica_adicional_servico",
+    "description": "Característica adicional de serviço. Texto livre: ENTREGA EXPRESSA; LOGÍSTICA REVERSA; CONVENCIONAL; EMERGENCIAL; etc",
+    "type": "String[1-40]",
+    "required": false,
+    "tag": "xCaracSer"
+  },
+  {
+    "name": "funcionario_emissor",
+    "description": "Funcionário emissor do CT-e.",
+    "type": "String[1-20]",
+    "required": false,
+    "tag": "xEmi"
+  },
+  {
+    "name": "observacoes",
+    "description": "Observações gerais.",
+    "type": "String[1-2000]",
+    "required": false,
+    "tag": "xObs"
+  },
+  {
+    "name": "observacoes_contribuinte",
+    "description": "Observações gerais.",
+    "type": "Coleçao[0-10]",
+    "required": false,
+    "collection_type": "ObservacoesContribuinteXML",
+    "collection": {
+      "object_type": "ObservacoesContribuinteXML",
+      "object_description": "Observações do Contribuinte. Tag XML ObsCont.",
+      "object_attributes": [
+        {
+          "name": "campo",
+          "description": "Identificação do campo",
+          "type": "String[1-20]",
+          "required": false,
+          "tag": "xCampo"
+        },
+        {
+          "name": "conteudo",
+          "description": "Conteúdo do campo",
+          "type": "String[1-160]",
+          "required": false,
+          "tag": "xTexto"
+        }
+      ]
+    }
+  },
+  {
+    "name": "observacoes_fisco",
+    "description": "Observações gerais.",
+    "type": "Coleçao[0-10]",
+    "required": false,
+    "collection_type": "ObservacoesFiscoXML",
+    "collection": {
+      "object_type": "ObservacoesFiscoXML",
+      "object_description": "Observações do Fisco. Tag XML ObsFisco.",
+      "object_attributes": [
+        {
+          "name": "campo",
+          "description": "Identificação do campo",
+          "type": "String[1-20]",
+          "required": false,
+          "tag": "xCampo"
+        },
+        {
+          "name": "conteudo",
+          "description": "Conteúdo do campo",
+          "type": "String[1-60]",
+          "required": false,
+          "tag": "xTexto"
+        }
+      ]
+    }
+  },
+  {
+    "name": "cnpj_emitente",
+    "description": "CNPJ do emitente. Omitir caso o tomador seja pessoa física e informar a tag 'cpf_emitente'. Em caso de empresa não estabelecida no Brasil, será informado o CNPJ com zeros.",
+    "type": "String[14]",
+    "required": true,
+    "tag": "CNPJ"
+  },
+  {
+    "name": "inscricao_estadual_emitente",
+    "description": "Inscrição Estadual da empresa emitente.",
+    "type": "Integer[14]",
+    "required": true,
+    "tag": "IE"
+  },
+  {
+    "name": "inscricao_estadual_st_emitente",
+    "description": "Inscrição Estadual do Substituto Tributário da empresa emitente.",
+    "type": "Integer[14]",
+    "required": true,
+    "tag": "IEST"
+  },
+  {
+    "name": "nome_emitente",
+    "description": "Razão Social ou nome da empresa emitente.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xNome"
+  },
+  {
+    "name": "nome_fantasia_emitente",
+    "description": "Nome fantasia da empresa emitente.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xFant"
+  },
+  {
+    "name": "logradouro_emitente",
+    "description": "Logradouro (rua, avenida, travessa etc.) da empresa emitente.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xLgr"
+  },
+  {
+    "name": "numero_emitente",
+    "description": "Número do endereço da empresa emitente.",
+    "type": "String[1-60]",
+    "required": true,
+    "tag": "nro"
+  },
+  {
+    "name": "complemento_emitente",
+    "description": "Complemento do endereço da empresa emitente.",
+    "type": "String[1-60]",
+    "required": false,
+    "tag": "xCpl"
+  },
+  {
+    "name": "bairro_emitente",
+    "description": "Bairro da empresa emitente.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xBairro"
+  },
+  {
+    "name": "codigo_municipio_emitente",
+    "description": "Código do Município da empresa emitente. Caso este campo seja omitido, o código será buscado a partir do nome e estado do município, caso contrário utilizar a tabela do IBGE. Informar 9999999 para operações com o exterior.",
+    "type": "Integer[7]",
+    "required": true,
+    "tag": "cMun"
+  },
+  {
+    "name": "municipio_emitente",
+    "description": "Município da empresa emitente.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xMun"
+  },
+  {
+    "name": "cep_emitente",
+    "description": "CEP da empresa emitente.",
+    "type": "Integer[8]",
+    "required": false,
+    "tag": "CEP"
+  },
+  {
+    "name": "uf_emitente",
+    "description": "UF da empresa emitente.",
+    "type": "String[2]",
+    "required": true,
+    "tag": "UF"
+  },
+  {
+    "name": "telefone_emitente",
+    "description": "Telefone da empresa emitente.",
+    "type": "Integer[6-14]",
+    "required": false,
+    "tag": "fone"
+  },
+  {
+    "name": "cnpj_tomador",
+    "description": "CNPJ do tomador. Omitir caso o tomador seja pessoa física e informar a tag 'cpf_tomador'. Em caso de empresa não estabelecida no Brasil, será informado o CNPJ com zeros.",
+    "type": "String[14]",
+    "required": false,
+    "tag": "CNPJ"
+  },
+  {
+    "name": "cpf_tomador",
+    "description": "CPF do tomador. Omitir caso o tomador seja pessoa jurídica e informar a tag 'cnpj_tomador'.",
+    "type": "Integer[11]",
+    "required": false,
+    "tag": "CPF"
+  },
+  {
+    "name": "inscricao_estadual_tomador",
+    "description": "Informar a IE do tomador ou ISENTO se tomador é contribuinte do ICMS isento de inscrição no cadastro de contribuintes do ICMS. Caso o tomador não seja contribuinte do ICMS não informar a tag.",
+    "type": "Integer[14]",
+    "required": false,
+    "tag": "IE"
+  },
+  {
+    "name": "nome_tomador",
+    "description": "Razão Social ou nome do tomador.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xNome"
+  },
+  {
+    "name": "nome_fantasia_tomador",
+    "description": "Nome fantasia do tomador.",
+    "type": "String[2-60]",
+    "required": false,
+    "tag": "xFant"
+  },
+  {
+    "name": "telefone_tomador",
+    "description": "Telefone do tomador.",
+    "type": "Integer[6-14]",
+    "required": true,
+    "tag": "fone"
+  },
+  {
+    "name": "logradouro_tomador",
+    "description": "Logradouro do tomador(rua, avenida, travessa etc.).",
+    "type": "String[2-255]",
+    "required": true,
+    "tag": "xLgr"
+  },
+  {
+    "name": "numero_tomador",
+    "description": "Número do endereço do tomador.",
+    "type": "String[1-60]",
+    "required": true,
+    "tag": "nro"
+  },
+  {
+    "name": "complemento_tomador",
+    "description": "Complemento do tomador.",
+    "type": "String[1-60]",
+    "required": false,
+    "tag": "xCpl"
+  },
+  {
+    "name": "bairro_tomador",
+    "description": "Bairro do tomador.",
+    "type": "Integer[2-60]",
+    "required": true,
+    "tag": "xBairro"
+  },
+  {
+    "name": "codigo_municipio_tomador",
+    "description": "Código do Município do tomador. Caso este campo seja omitido, o código será buscado a partir do nome e estado do município, caso contrário utilizar a tabela do IBGE. Informar 9999999 para operações com o exterior.",
+    "type": "Integer[7]",
+    "required": true,
+    "tag": "cMun"
+  },
+  {
+    "name": "municipio_tomador",
+    "description": "Nome do município do tomador. Informar EXTERIOR para operações com o exterior.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xMun"
+  },
+  {
+    "name": "cep_tomador",
+    "description": "CEP do endereço do tomador.",
+    "type": "Integer[8]",
+    "required": true,
+    "tag": "CEP"
+  },
+  {
+    "name": "uf_tomador",
+    "description": "Sigla da UF do tomador. Informar EX para operações com o exterior.",
+    "type": "String[2]",
+    "required": true,
+    "tag": "UF"
+  },
+  {
+    "name": "codigo_pais_tomador",
+    "description": "Código do país do tomador. Utilizar a tabela BACEN.",
+    "type": "Integer[1-4]",
+    "required": true,
+    "tag": "cPais"
+  },
+  {
+    "name": "pais_tomador",
+    "description": "Nome do país do tomador.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xPais"
+  },
+  {
+    "name": "email_tomador",
+    "description": "Endereço de e-mail do tomador.",
+    "type": "String[1-60]",
+    "required": false,
+    "tag": "email"
+  },
+  {
+    "name": "valor_total",
+    "description": "Valor total da prestação de serviço.",
+    "type": "Decimal[13.2]",
+    "required": true,
+    "tag": "vTPrest"
+  },
+  {
+    "name": "valor_receber",
+    "description": "Valor a receber.",
+    "type": "Decimal[13.2]",
+    "required": true,
+    "tag": "vRec"
+  },
+  {
+    "name": "componentes_valor",
+    "description": "Componentes do Valor da Prestação",
+    "type": "Coleção[0-100]",
+    "required": false,
+    "collection_type": "ComponenteValorPrestacaoXML",
+    "collection": {
+      "object_type": "ComponenteValorPrestacaoXML",
+      "object_description": "Componentes do Valor da Prestação. Tag XML Comp.",
+      "object_attributes": [
+        {
+          "name": "nome",
+          "description": "Nome do componente",
+          "type": "String[1-15]",
+          "required": false,
+          "tag": "xNome"
+        },
+        {
+          "name": "valor",
+          "description": "Valor do componente",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vComp"
+        }
+      ]
+    }
+  },
+  {
+    "name": null,
+    "description": ":icms_situacao_tributaria Situação tributária do ICMS.",
+    "type": null,
+    "required": true,
+    "enum": "* +00+: tributada integralmente\\n* +40+: isenta\\n* +41+: não tributada\\n* +51+: diferimento (a exigência do preenchimento das informações do ICMS diferido fica a critério de cada UF)\\n* +90+: outros  (Regime Normal)\\n* +90_outra_uf+: outros (ICMS devido à UF de origem da prestação, quando diferente da UF do emitente)\\n* +90_simples_nacional+: outros  (regime Simples Nacional)",
+    "tag": "CST"
+  },
+  {
+    "name": null,
+    "description": ":icms_base_calculo Valor da base de cálculo do ICMS.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vBC"
+  },
+  {
+    "name": null,
+    "description": ":icms_aliquota Alíquota do ICMS.",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "tag": "pICMS"
+  },
+  {
+    "name": null,
+    "description": ":icms_valor Valor do ICMS.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vICMS"
+  },
+  {
+    "name": null,
+    "description": ":icms_reducao_base_calculo Percentual de redução da base de cálculo.",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "tag": "pRedBC"
+  },
+  {
+    "name": null,
+    "description": ":icms_valor_credito_presumido Valor crédito outorgado/Presumido.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vCred"
+  },
+  {
+    "name": null,
+    "description": ":icms_indicador_simples_nacional Indicador de contribuinte Simples Nacional.",
+    "type": null,
+    "required": false,
+    "enum": "* +1+: Sim",
+    "tag": "indSN"
+  },
+  {
+    "name": "valor_total_tributos",
+    "description": "Valor total aproximado dos tributos",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vTotTrib"
+  },
+  {
+    "name": "informacoes_adicionais_fisco",
+    "description": "Informações adicionais de interesse do Fisco.",
+    "type": "String[1-2000]",
+    "required": false,
+    "tag": "infAdFisco"
+  },
+  {
+    "name": "icms_base_calculo_uf_fim",
+    "description": "Valor da BC do ICMS na UF de término da prestação do serviço de transporte.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vBCUFFim"
+  },
+  {
+    "name": "icms_percentual_fcp_uf_fim",
+    "description": "Percentual do ICMS relativo ao Fundo de Combate à pobreza (FCP) na UF de término da prestação do serviço de transporte.",
+    "type": "Decimal[3.2]",
+    "required": false,
+    "tag": "pFCPUFFim"
+  },
+  {
+    "name": "icms_aliquota_interna_uf_fim",
+    "description": "Alíquota interna da UF de término da prestação do serviço de transporte.",
+    "type": "Decimal[3.2]",
+    "required": false,
+    "tag": "pICMSUFFim"
+  },
+  {
+    "name": "icms_aliquota_interestadual_uf_fim",
+    "description": "Alíquota interestadual das UF envolvidas",
+    "type": "Decimal[3.2]",
+    "required": false,
+    "tag": "pICMSInter"
+  },
+  {
+    "name": "icms_valor_total_fcp_uf_fim",
+    "description": "Valor do ICMS relativo ao Fundo de Combate á Pobreza (FCP) da UF de término da prestação.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vFCPUFFim"
+  },
+  {
+    "name": "icms_valor_partilha_uf_fim",
+    "description": "Valor do ICMS de partilha para a UF de término da prestação do serviço de transporte.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vICMSUFFim"
+  },
+  {
+    "name": "icms_valor_partilha_uf_inicio",
+    "description": "Valor do ICMS de partilha para a UF de início da prestação do serviço de transporte.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vICMSUFIni"
+  },
+  {
+    "name": "valor_pis",
+    "description": "Valor do PIS.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vPIS"
+  },
+  {
+    "name": "valor_cofins",
+    "description": "Valor do COFINS.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vCOFINS"
+  },
+  {
+    "name": "valor_ir",
+    "description": "Valor do Imposto de Renda.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vIR"
+  },
+  {
+    "name": "valor_inss",
+    "description": "Valor do INSS.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vINSS"
+  },
+  {
+    "name": "valor_csll",
+    "description": "Valor do CSLL.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vCSLL"
+  },
+  {
+    "name": "ibs_cbs_situacao_tributaria",
+    "description": "Código da Situação Tributária do IBS/CBS",
+    "type": "String[3]",
+    "required": true,
+    "reforma_tributaria": true,
+    "tag": "CST"
+  },
+  {
+    "name": "ibs_cbs_classificacao_tributaria",
+    "description": "Código de Classificação Tributária do IBS/CBS",
+    "type": "String[6]",
+    "required": true,
+    "reforma_tributaria": true,
+    "tag": "cClassTrib"
+  },
+  {
+    "name": "ibs_cbs_base_calculo",
+    "description": "Base de cálculo do IBS e CBS",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vBC"
+  },
+  {
+    "name": "ibs_uf_aliquota",
+    "description": "Alíquota do IBS de competência das UF",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "pIBSUF"
+  },
+  {
+    "name": "ibs_uf_percentual_diferimento",
+    "description": "Percentual do diferimento",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "pDif"
+  },
+  {
+    "name": "ibs_uf_valor_diferido",
+    "description": "Valor do Diferimento",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vDif"
+  },
+  {
+    "name": "ibs_uf_valor_tributo_devolvido",
+    "description": "Valor do tributo devolvido. No fornecimento de energia elétrica, água, esgoto e gás natural e em outras hipóteses definidas no regulamento",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vDevTrib"
+  },
+  {
+    "name": "ibs_uf_percentual_reducao_aliquota",
+    "description": "Percentual da redução de alíquota",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "pRedAliq"
+  },
+  {
+    "name": "ibs_uf_aliquota_efetiva",
+    "description": "Alíquota Efetiva do IBS de competência das UF que será aplicada a Base de Cálculo",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "pAliqEfet"
+  },
+  {
+    "name": "ibs_uf_valor",
+    "description": "Valor do IBS de competência da UF",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vIBSUF"
+  },
+  {
+    "name": "ibs_mun_aliquota",
+    "description": "Alíquota do IBS de competência do Município",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "pIBSMun"
+  },
+  {
+    "name": "ibs_mun_percentual_diferimento",
+    "description": "Percentual do diferimento",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "pDif"
+  },
+  {
+    "name": "ibs_mun_valor_diferido",
+    "description": "Valor do Diferimento",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vDif"
+  },
+  {
+    "name": "ibs_mun_valor_tributo_devolvido",
+    "description": "Valor do tributo devolvido. No fornecimento de energia elétrica, água, esgoto e gás natural e em outras hipóteses definidas no regulamento",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vDevTrib"
+  },
+  {
+    "name": "ibs_mun_percentual_reducao_aliquota",
+    "description": "Percentual da redução de alíquota",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "pRedAliq"
+  },
+  {
+    "name": "ibs_mun_aliquota_efetiva",
+    "description": "Alíquota Efetiva do IBS de competência das UF que será aplicada a Base de Cálculo",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "pAliqEfet"
+  },
+  {
+    "name": "ibs_mun_valor",
+    "description": "Valor do IBS de competência do Município",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vIBSMun"
+  },
+  {
+    "name": "ibs_valor_total",
+    "description": "Valor do IBS",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vIBS"
+  },
+  {
+    "name": "cbs_aliquota",
+    "description": "Alíquota da CBS",
+    "type": "Decimal[4]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "pCBS"
+  },
+  {
+    "name": "cbs_percentual_diferimento",
+    "description": "Percentual do diferimento",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "pDif"
+  },
+  {
+    "name": "cbs_valor_diferido",
+    "description": "Valor do Diferimento",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vDif"
+  },
+  {
+    "name": "cbs_valor_tributo_devolvido",
+    "description": "Valor do tributo devolvido. No fornecimento de energia elétrica, água, esgoto e gás natural e em outras hipóteses definidas no regulamento",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vDevTrib"
+  },
+  {
+    "name": "cbs_percentual_reducao_aliquota",
+    "description": "Percentual da redução de alíquota",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "pRedAliq"
+  },
+  {
+    "name": "cbs_aliquota_efetiva",
+    "description": "Alíquota Efetiva do IBS de competência das UF que será aplicada a Base de Cálculo",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "pAliqEfet"
+  },
+  {
+    "name": "cbs_valor",
+    "description": "Valor da CBS",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vCBS"
+  },
+  {
+    "name": "ibs_cbs_situacao_tributaria_regular",
+    "description": "Código da Situação Tributária do IBS e CBS",
+    "type": "String[3]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "CSTReg"
+  },
+  {
+    "name": "ibs_cbs_classificacao_tributaria_regular",
+    "description": "Código de Classificação Tributária do IBS e CBS",
+    "type": "String[6]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "cClassTribReg"
+  },
+  {
+    "name": "ibs_aliquota_efetiva_regular_uf",
+    "description": "Valor da alíquota do IBS da UF",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "pAliqEfetRegIBSUF"
+  },
+  {
+    "name": "ibs_valor_tributo_regular_uf",
+    "description": "Valor do Tributo do IBS da UF",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vTribRegIBSUF"
+  },
+  {
+    "name": "ibs_aliquota_efetiva_regular_municipio",
+    "description": "Valor da alíquota do IBS do Município",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "pAliqEfetRegIBSMun"
+  },
+  {
+    "name": "ibs_valor_tributo_regular_municipio",
+    "description": "Valor do Tributo do IBS do Município",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vTribRegIBSMun"
+  },
+  {
+    "name": "cbs_aliquota_efetiva_regular",
+    "description": "Valor da alíquota da CBS",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "pAliqEfetRegCBS"
+  },
+  {
+    "name": "cbs_valor_tributo_regular",
+    "description": "Valor do Tributo da CBS",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vTribRegCBS"
+  },
+  {
+    "name": "ibs_aliquota_uf",
+    "description": "Alíquota IBS da UF utilizada",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "pAliqIBSUF"
+  },
+  {
+    "name": "ibs_valor_tributo_uf",
+    "description": "Valor do Tributo do IBS da UF",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vTribIBSUF"
+  },
+  {
+    "name": "ibs_aliquota_municipio",
+    "description": "Alíquota IBS do Município utilizada",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "pAliqIBSMun"
+  },
+  {
+    "name": "ibs_valor_tributo_municipio",
+    "description": "Valor do Tributo do Município da UF",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vTribIBSMun"
+  },
+  {
+    "name": "ibs_cbs_aliquota",
+    "description": "Alíquota IBS do CBS utilizada",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "pAliqCBS"
+  },
+  {
+    "name": "cbs_valor_tributo",
+    "description": "Valor do Tributo da CBS",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vTribCBS"
+  },
+  {
+    "name": "ibs_valor_estornado",
+    "description": "Valor do IBS a ser estornado",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vIBSEstCred"
+  },
+  {
+    "name": "cbs_valor_estornado",
+    "description": "Valor do CBS a ser estornado",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vCBSEstCred"
+  },
+  {
+    "name": "valor_total_dfe",
+    "description": "Valor total do documento fiscal",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "vTotDFe"
+  },
+  {
+    "name": "descricao_servico",
+    "description": "Descrição do serviço prestado",
+    "type": "String[1-40]",
+    "required": false,
+    "tag": "xDescServ"
+  },
+  {
+    "name": "quantidade",
+    "description": "Descrição do serviço prestado",
+    "type": "Decimal[11.4]",
+    "required": false,
+    "tag": "qCarga"
+  },
+  {
+    "name": "documentos_referenciados",
+    "description": "Informações dos documentos referenciados",
+    "type": "Coleção[0-100]",
+    "required": false,
+    "collection_type": "InfoDocumentoReferenciaXML",
+    "collection": {
+      "object_type": "InfoDocumentoReferenciaXML",
+      "object_description": "Informações dos documentos referenciados. Tag XML infDocRef.",
+      "object_attributes": [
+        {
+          "name": "numero",
+          "description": "Número",
+          "type": "String[1-20]",
+          "required": false,
+          "tag": "nDoc"
+        },
+        {
+          "name": "serie",
+          "description": "Série",
+          "type": "String[1-3]",
+          "required": false,
+          "tag": "serie"
+        },
+        {
+          "name": "subserie",
+          "description": "Subsérie",
+          "type": "String[1-3]",
+          "required": false,
+          "tag": "subserie"
+        },
+        {
+          "name": "data_emissao",
+          "description": "Data de Emissão",
+          "type": null,
+          "required": false,
+          "tag": "dEmi"
+        },
+        {
+          "name": "valor",
+          "description": "Valor Transportado",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vDoc"
+        }
+      ]
+    }
+  },
+  {
+    "name": "seguros_carga",
+    "description": "Informações de Seguro da Carga",
+    "type": "Coleção[0-100]",
+    "required": false,
+    "collection_type": "InfoSeguroCargaXML",
+    "collection": {
+      "object_type": "InfoSeguroCargaXML",
+      "object_description": "Informações do seguro de carga. Tag XML seg.",
+      "object_attributes": [
+        {
+          "name": "responsavel_seguro",
+          "description": "Responsável pelo seguro",
+          "type": null,
+          "required": false,
+          "enum": "* +4+: Emitente do CT-e\\n* +5+: Tomador de Serviço",
+          "tag": "respSeg"
+        },
+        {
+          "name": "nome_seguradora",
+          "description": "Nome da Seguradora",
+          "type": "String[1-40]",
+          "required": false,
+          "tag": "xSeg"
+        },
+        {
+          "name": "numero_apolice",
+          "description": "Número da Apólice",
+          "type": "String[1-20]",
+          "required": false,
+          "tag": "nApol"
+        }
+      ]
+    }
+  },
+  {
+    "name": "chave_cte_original_sub",
+    "description": "CTe Substituição: Chave de acesso do CT-e a ser substituído (original)",
+    "type": "String[44]",
+    "required": false,
+    "tag": "chCte"
+  },
+  {
+    "name": "chave_cte_anulacao_sub",
+    "description": "CTe Substituição: Chave de acesso do CT-e de Anulação",
+    "type": "String[44]",
+    "required": false,
+    "tag": "refCteAnu"
+  },
+  {
+    "name": "chave_nfe_tomador_sub",
+    "description": "CTe Substituição: Chave de acesso da NF-e emitida pelo Tomador",
+    "type": "String[44]",
+    "required": false,
+    "tag": "refNFe"
+  },
+  {
+    "name": "cnpj_emissor_sub",
+    "description": "CTe Substituição: CNPJ. Se este campo for informado <b>não</b> deve ser informado o CPF.",
+    "type": "String[14]",
+    "required": false,
+    "tag": "CNPJ"
+  },
+  {
+    "name": "cpf_emissor_sub",
+    "description": "CTe Substituição: CPF. Se este campo for informado <b>não</b> deve ser informado o CNPJ.",
+    "type": "Integer[11]",
+    "required": false,
+    "tag": "CPF"
+  },
+  {
+    "name": "modelo_documento_sub",
+    "description": "CTe Substituição: Modelo do Documento Fiscal",
+    "type": "String[2]",
+    "required": false,
+    "tag": "mod"
+  },
+  {
+    "name": "serie_documento_sub",
+    "description": "CTe Substituição: Serie do documento fiscal",
+    "type": "Integer[1-3]",
+    "required": false,
+    "tag": "serie"
+  },
+  {
+    "name": "subserie_documento_sub",
+    "description": "CTe Substituição: Subserie do documento fiscal",
+    "type": "Integer[1-3]",
+    "required": false,
+    "tag": "subserie"
+  },
+  {
+    "name": "numero_documento_sub",
+    "description": "CTe Substituição: Número do documento fiscal",
+    "type": "Integer[1-6]",
+    "required": false,
+    "tag": "nro"
+  },
+  {
+    "name": "valor_documento_sub",
+    "description": "CTe Substituição: Valor do documento fiscal.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "valor"
+  },
+  {
+    "name": "data_emissao_documento_sub",
+    "description": "CTe Substituição: Data de emissão do documento fiscal.",
+    "type": null,
+    "required": false,
+    "tag": "dEmi"
+  },
+  {
+    "name": "chave_cte_sub",
+    "description": "CTe Substituição: Chave de acesso do CT-e emitido pelo Tomador",
+    "type": "Integer[44]",
+    "required": false,
+    "tag": "refCte"
+  },
+  {
+    "name": "chave_cte_cancelado",
+    "description": "Chave do CT-e cancelada",
+    "type": "String[44]",
+    "required": false,
+    "tag": "chCte"
+  },
+  {
+    "name": "numero_fatura",
+    "description": "Número da fatura",
+    "type": "String[1-60]",
+    "required": false,
+    "tag": "nFat"
+  },
+  {
+    "name": "valor_original_fatura",
+    "description": "Valor original da fatura",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vOrig"
+  },
+  {
+    "name": "valor_desconto_fatura",
+    "description": "Valor do desconto da fatura",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vDesc"
+  },
+  {
+    "name": "valor_liquido_fatura",
+    "description": "Valor líquido da fatura",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vLiq"
+  },
+  {
+    "name": "duplicatas",
+    "description": "Dados das duplicatas",
+    "type": "Coleção[1-100]",
+    "required": false,
+    "collection_type": "DadoDuplicataXML",
+    "collection": {
+      "object_type": "DadoDuplicataXML",
+      "object_description": "Dados das duplicatas. Tag XML dup.",
+      "object_attributes": [
+        {
+          "name": "numero",
+          "description": "Número da duplicata",
+          "type": "String[1-60]",
+          "required": false,
+          "tag": "nDup"
+        },
+        {
+          "name": "data_vencimento",
+          "description": "Data de vencimento da duplicata",
+          "type": null,
+          "required": false,
+          "tag": "dVenc"
+        },
+        {
+          "name": "valor",
+          "description": "Valor da duplicata",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vDup"
+        }
+      ]
+    }
+  },
+  {
+    "name": "chave_cte_complementado",
+    "description": "Chave do CT-e complementado",
+    "type": "String[44]",
+    "required": false,
+    "tag": "chCTe"
+  },
+  {
+    "name": "chave_cte_original_anulado",
+    "description": "CTe Anulação: Chave de acesso do CT-e original a ser anulado e substituído",
+    "type": "String[44]",
+    "required": false,
+    "tag": "chCte"
+  },
+  {
+    "name": "data_declaracao_anulacao",
+    "description": "CTe Anulação: Data de emissão da declaração do tomador não contribuinte do ICMS",
+    "type": null,
+    "required": false,
+    "tag": "dEmi"
+  },
+  {
+    "name": "pessoas_autorizadas",
+    "description": "Pessoas autorizadas a acessar o XML da CT-e",
+    "type": "Coleção[0-10]",
+    "required": false,
+    "collection_type": "PessoaAutorizadaXML",
+    "collection": {
+      "object_type": "PessoaAutorizadaXML",
+      "object_description": "Pessoa autorizada a acessar o XML da CT-e. Tag XML autXML",
+      "object_attributes": [
+        {
+          "name": "cnpj",
+          "description": "CNPJ autorizado",
+          "type": "String[14]",
+          "required": false,
+          "tag": "CNPJ"
+        },
+        {
+          "name": "cpf",
+          "description": "CPF autorizado",
+          "type": "Integer[11]",
+          "required": false,
+          "tag": "CPF"
+        }
+      ]
+    }
+  },
+  {
+    "name": "cnpj_responsavel_tecnico",
+    "description": "CNPJ da pessoa a ser contatada na empresa desenvolvedora do sistema utilizado na emissão do documento fiscal eletrônico",
+    "type": "String[14]",
+    "required": false,
+    "tag": "CNPJ"
+  },
+  {
+    "name": "contato_responsavel_tecnico",
+    "description": "Nome da pessoa a ser contatada na empresa desenvolvedora do sistema",
+    "type": "String[2-60]",
+    "required": false,
+    "tag": "xContato"
+  },
+  {
+    "name": "email_responsavel_tecnico",
+    "description": "E-mail da pessoa a ser contatada na empresa desenvolvedora do sistema",
+    "type": "String[6-60]",
+    "required": false,
+    "tag": "email"
+  },
+  {
+    "name": "telefone_responsavel_tecnico",
+    "description": "Telefone da pessoa a ser contatada na empresa desenvolvedora do sistema",
+    "type": "String[6-14]",
+    "required": false,
+    "tag": "fone"
+  }
+]

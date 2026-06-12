@@ -1,0 +1,45 @@
+[
+  {
+    "name": "numero_certificado_operador",
+    "description": "Número do Certificado do Operador de Transporte Multimodal",
+    "type": "String[1-20]",
+    "required": false,
+    "tag": "COTM"
+  },
+  {
+    "name": "indicador_negociavel",
+    "description": "Indicador Negociável",
+    "type": null,
+    "required": false,
+    "enum": "* +0+: Não Negociável\\n* +1+: Negociável",
+    "tag": "indNegociavel"
+  },
+  {
+    "name": "nome_seguradora",
+    "description": "Nome da Seguradora",
+    "type": "String[1-40]",
+    "required": false,
+    "tag": "xSeg"
+  },
+  {
+    "name": "cnpj_seguradora",
+    "description": "Número do CNPJ da seguradora",
+    "type": "String[14]",
+    "required": false,
+    "tag": "CNPJ"
+  },
+  {
+    "name": "numero_apolice_seguro",
+    "description": "Número da Apólice",
+    "type": "String[1-20]",
+    "required": false,
+    "tag": "nApol"
+  },
+  {
+    "name": "numero_averbacao_seguro",
+    "description": "Número da Averbação",
+    "type": "String[1-20]",
+    "required": false,
+    "tag": "nAver"
+  }
+]

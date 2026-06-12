@@ -1,0 +1,109 @@
+[
+  {
+    "name": "taf",
+    "description": "Termo de Autorização de Fretamento. Omitir caso a tag 'numero_registro_estadual' esteja preenchida.",
+    "type": "Integer[12]",
+    "required": false,
+    "tag": "TAF"
+  },
+  {
+    "name": "numero_registro_estadual",
+    "description": "Número de Registro Estadual. Omitir caso a tag 'taf' esteja preenchida.",
+    "type": "Integer[25]",
+    "required": false,
+    "tag": "NroRegEstadual"
+  },
+  {
+    "name": "placa",
+    "description": "Placa do veículo.",
+    "type": "String[4]",
+    "required": false,
+    "tag": "placa"
+  },
+  {
+    "name": "renavam",
+    "description": "RENAVAM do veículo.",
+    "type": "String[9-11]",
+    "required": false,
+    "tag": "RENAVAM"
+  },
+  {
+    "name": "cpf_proprietario",
+    "description": "CPF do proprietário do veículo. Omitir caso alguma das tags 'cnpj_proprietario', 'taf_proprietario' ou 'taf_veiculo' esteja preenchida.",
+    "type": "Integer[11]",
+    "required": false,
+    "tag": "CPF"
+  },
+  {
+    "name": "cnpj_proprietario",
+    "description": "CNPJ do proprietário do veículo. Omitir caso alguma das tags 'cpf_proprietario', 'taf_veiculo' ou 'numero_registro_estadual_veiculo' esteja preenchida.",
+    "type": "String[14]",
+    "required": false,
+    "tag": "CNPJ"
+  },
+  {
+    "name": "taf_proprietario",
+    "description": "Termo de Autorização de Fretamento. Omitir caso alguma das tags 'cpf_proprietario_veiculo', 'cnpj_proprietario_veiculo' ou 'numero_registro_estadual_veiculo' esteja preenchida.",
+    "type": "Integer[12]",
+    "required": false,
+    "tag": "TAF"
+  },
+  {
+    "name": "numero_registro_estadual_proprietario",
+    "description": "Número do Registro Estadual. Omitir caso alguma das tags 'cpf_proprietario_veiculo', 'cnpj_proprietario_veiculo' ou 'taf_veiculo' esteja preenchida.",
+    "type": "Integer[25]",
+    "required": false,
+    "tag": "NroRegEstadual"
+  },
+  {
+    "name": "razao_social_proprietario",
+    "description": "Razão Social do proprietário do veículo.",
+    "type": "String[2-60]",
+    "required": false,
+    "tag": "xNome"
+  },
+  {
+    "name": "inscricao_estadual_proprietario",
+    "description": "Inscrição Estadual.",
+    "type": "String[0-14]",
+    "required": false,
+    "tag": "IE"
+  },
+  {
+    "name": "uf_proprietario",
+    "description": "UF.",
+    "type": "String[2]",
+    "required": false,
+    "tag": "UF"
+  },
+  {
+    "name": "tipo_proprietario",
+    "description": "Tipo do Proprietário",
+    "type": null,
+    "required": false,
+    "enum": "* +0+: TAC - Agregado\\n* +1+: TAC - Independente\\n* +2+: Outros",
+    "tag": "tpProp"
+  },
+  {
+    "name": "uf_licenciamento",
+    "description": "UF em que o veículo está licenciado.",
+    "type": "String[2]",
+    "required": false,
+    "tag": "UF"
+  },
+  {
+    "name": "tipo_fretamento",
+    "description": "Tipo do Fretamento de Pessoas",
+    "type": null,
+    "required": false,
+    "enum": "* +1+: Eventual\\n* +2+: Contínuo",
+    "tag": "tpFretamento"
+  },
+  {
+    "name": "data_viagem_fretamento",
+    "description": "Data e hora da viagem. Informar apenas para fretamento eventual.",
+    "type": "String[2]",
+    "required": false,
+    "tag": "dhViagem"
+  }
+]

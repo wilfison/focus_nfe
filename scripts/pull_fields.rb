@@ -31,6 +31,8 @@ URLS = {
   "nfcom" => "https://campos.focusnfe.com.br/nfcom/NotaFiscalComunicacaoXML.html"
 }.freeze
 
+OUTPUT_DIR = File.expand_path("../data/schemas", __dir__)
+
 def load_schema(url)
   uri = URI(url)
   response = Net::HTTP.get(uri)
@@ -43,13 +45,13 @@ rescue StandardError => e
   []
 end
 
-FileUtils.mkdir_p("./tmp/shemas")
+FileUtils.mkdir_p(OUTPUT_DIR)
 
 URLS.each do |name, url|
   puts "Loading fields from #{name} API..."
   schema = load_schema(url)
 
-  file_name = "./tmp/shemas/schema_#{name}.json"
+  file_name = File.join(OUTPUT_DIR, "schema_#{name}.json")
   FileUtils.rm_f(file_name)
   File.write(file_name, JSON.pretty_generate(schema))
 

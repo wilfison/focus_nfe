@@ -1,0 +1,174 @@
+[
+  {
+    "name": "valor_prestacao",
+    "description": "Valor da Prestação Base de Cálculo do AFRMM",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vPrest"
+  },
+  {
+    "name": "adicional_frete_renovacao_marinha",
+    "description": "AFRMM (Adicional de Frete para Renovação da Marinha Mercante)",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vAFRMM"
+  },
+  {
+    "name": "identificacao_navio",
+    "description": "Identificação do Navio",
+    "type": "String[1-60]",
+    "required": false,
+    "tag": "xNavio"
+  },
+  {
+    "name": "balsas",
+    "description": "Grupo de informações das balsas",
+    "type": "Coleção[0-3]",
+    "required": false,
+    "collection_type": "BalsaXML",
+    "collection": {
+      "object_type": "BalsaXML",
+      "object_description": "Grupo de informações das balsas. Tag XML balsa.",
+      "object_attributes": [
+        {
+          "name": "identificador",
+          "description": "Identificador da Balsa",
+          "type": "String[1-60]",
+          "required": false,
+          "tag": "xBalsa"
+        }
+      ]
+    }
+  },
+  {
+    "name": "numero_viagem",
+    "description": "Número da Viagem",
+    "type": "Integer[1-10]",
+    "required": false,
+    "tag": "nViag"
+  },
+  {
+    "name": "direcao",
+    "description": "Direção",
+    "type": null,
+    "required": false,
+    "enum": "* +N+: Norte\\n* +L+: Leste\\n* +S+: Sul\\n* +O+: Oeste",
+    "tag": "direc"
+  },
+  {
+    "name": "irin_navio",
+    "description": "Irin do navio sempre deverá ser informado",
+    "type": "String[1-10]",
+    "required": false,
+    "tag": "irin"
+  },
+  {
+    "name": "containers",
+    "description": "Grupo de informações de detalhamento dos conteiners (Somente para Redespacho Intermediario e serviço vinculado)",
+    "type": "Coleção[0-N]",
+    "required": false,
+    "collection_type": "ContainerXML",
+    "collection": {
+      "object_type": "ContainerXML",
+      "object_description": "Grupo de informações de detalhamento dos conteiners (Somente para Redespacho Intermediario e serviço vinculado). Tag XML detCont.",
+      "object_attributes": [
+        {
+          "name": "identificacao",
+          "description": "Identificação do Container",
+          "type": "String[1-20]",
+          "required": false,
+          "tag": "nCont"
+        },
+        {
+          "name": "lacres",
+          "description": "Lacres do container",
+          "type": "Coleção[0-3]",
+          "required": false,
+          "collection_type": "LacreContainerXML",
+          "collection": {
+            "object_type": "LacreContainerXML",
+            "object_description": "Grupo de informações dos lacres dos G 0-3 cointainers da qtde da carga. Tag XML lacre.",
+            "object_attributes": [
+              {
+                "name": "lacre",
+                "description": "Lacre",
+                "type": "String[1-20]",
+                "required": false,
+                "tag": "nLacre"
+              }
+            ]
+          }
+        },
+        {
+          "name": "nfs",
+          "description": "Notas fiscais (NF)",
+          "type": "Coleção[0-N]",
+          "required": false,
+          "collection_type": "InfoNfContainerXML",
+          "collection": {
+            "object_type": "InfoNfContainerXML",
+            "object_description": "informações sobre NF de container. Tag XML infNF.",
+            "object_attributes": [
+              {
+                "name": "serie",
+                "description": "Série",
+                "type": "String[1-3]",
+                "required": false,
+                "tag": "serie"
+              },
+              {
+                "name": "numero_documento",
+                "description": "Número",
+                "type": "String[1-20]",
+                "required": false,
+                "tag": "nDoc"
+              },
+              {
+                "name": "unidade_medida_rateada",
+                "description": "Unidade de medida rateada (Peso,Volume)",
+                "type": "Decimal[3.2]",
+                "required": false,
+                "tag": "unidRat"
+              }
+            ]
+          }
+        },
+        {
+          "name": "nfes",
+          "description": "Notas fiscais eletrônicas (NFe)",
+          "type": "Coleção[0-N]",
+          "required": false,
+          "collection_type": "InfoNfeContainerXML",
+          "collection": {
+            "object_type": "InfoNfeContainerXML",
+            "object_description": "informações sobre NFe de container. Tag XML infNFe.",
+            "object_attributes": [
+              {
+                "name": "chave_nfe",
+                "description": "Chave de acesso da NF-e",
+                "type": "String[44]",
+                "required": false,
+                "tag": "chave"
+              },
+              {
+                "name": "unidade_medida_rateada",
+                "description": "Unidade de medida rateada (Peso,Volume)",
+                "type": "Decimal[3.2]",
+                "required": false,
+                "tag": "unidRat"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "tipo_navegacao",
+    "description": "Tipo de navegação",
+    "type": null,
+    "required": false,
+    "enum": "* +0+: Interior\\n* +1+: Cabotagem",
+    "tag": "tpNav"
+  }
+]

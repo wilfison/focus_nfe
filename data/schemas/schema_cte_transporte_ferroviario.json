@@ -1,0 +1,144 @@
+[
+  {
+    "name": "tipo_trafego",
+    "description": "Tipo de Tráfego",
+    "type": null,
+    "required": false,
+    "enum": "* +0+: Próprio\\n* +1+: Mútuo\\n* +2+: Rodoferroviário\\n* +3+: Rodoviário",
+    "tag": "tpTraf"
+  },
+  {
+    "name": "responsavel_faturamento",
+    "description": "Responsável pelo Faturamento",
+    "type": null,
+    "required": false,
+    "enum": "* +1+: Ferrovia de Origem\\n* +2+: Ferrovia de Destino",
+    "tag": "respFat"
+  },
+  {
+    "name": "ferrovia_emitente",
+    "description": "Ferrovia Emitente do CT-e",
+    "type": null,
+    "required": false,
+    "enum": "* +1+: Ferrovia de Origem\\n* +2+: Ferrovia de Destino",
+    "tag": "ferrEmi"
+  },
+  {
+    "name": "valor_frete_trafego_mutuo",
+    "description": "Valor do Frete do Tráfego Mútuo",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vFrete"
+  },
+  {
+    "name": "chave_cte_ferrovia_origem",
+    "description": "Chave de acesso do CT-e emitido pelo ferrovia de origem",
+    "type": "String[0-1]",
+    "required": false,
+    "tag": "chCTeFerroOrigem"
+  },
+  {
+    "name": "ferrovias",
+    "description": "Informações das Ferrovias Envolvidas",
+    "type": "Coleção[0-N]",
+    "required": false,
+    "collection_type": "FerroviaXML",
+    "collection": {
+      "object_type": "FerroviaXML",
+      "object_description": "Informações das Ferrovias Envolvidas. Tag XML ferroEnv.",
+      "object_attributes": [
+        {
+          "name": "cnpj",
+          "description": "Número do CNPJ",
+          "type": "String[14]",
+          "required": false,
+          "tag": "CNPJ"
+        },
+        {
+          "name": "codigo_interno",
+          "description": "Código interno da Ferrovia envolvida",
+          "type": "Integer[1-10]",
+          "required": false,
+          "tag": "cInt"
+        },
+        {
+          "name": "inscricao_estadual",
+          "description": "Inscrição Estadual",
+          "type": "Integer[2-14]",
+          "required": false,
+          "tag": "IE"
+        },
+        {
+          "name": "razao_social",
+          "description": "Razão Social ou Nome",
+          "type": "String[2-60]",
+          "required": false,
+          "tag": "xNome"
+        },
+        {
+          "name": "logradouro",
+          "description": "Logradouro",
+          "type": "String[2-255]",
+          "required": false,
+          "tag": "xLgr"
+        },
+        {
+          "name": "numero",
+          "description": "Número",
+          "type": "String[1-60]",
+          "required": false,
+          "tag": "nro"
+        },
+        {
+          "name": "complemento",
+          "description": "Complemento",
+          "type": "String[1-60]",
+          "required": false,
+          "tag": "xCpl"
+        },
+        {
+          "name": "bairro",
+          "description": "Bairro",
+          "type": "String[2-60]",
+          "required": false,
+          "tag": "xBairro"
+        },
+        {
+          "name": "codigo_municipio",
+          "description": "Código do município. Caso este campo seja omitido, o código será buscado a partir do nome e estado do município, caso contrário utilizar a tabela do IBGE. Informar 9999999 para operações com o exterior.",
+          "type": "Integer[7]",
+          "required": false,
+          "tag": "cMun"
+        },
+        {
+          "name": "municipio",
+          "description": "Nome do município. Informar EXTERIOR para operações com o exterior.",
+          "type": "String[2-60]",
+          "required": false,
+          "tag": "xMun"
+        },
+        {
+          "name": "cep",
+          "description": "CEP",
+          "type": "Integer[8]",
+          "required": false,
+          "tag": "CEP"
+        },
+        {
+          "name": "uf",
+          "description": "Sigla da UF. Informar EX para operações com o exterior.",
+          "type": "String[2]",
+          "required": false,
+          "tag": "UF"
+        }
+      ]
+    }
+  },
+  {
+    "name": "fluxo_ferroviario",
+    "description": "Fluxo Ferroviário. Trata-se de um número identificador do contrato firmado com o cliente",
+    "type": "String[1-10]",
+    "required": false,
+    "tag": "fluxo"
+  }
+]

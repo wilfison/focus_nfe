@@ -1,0 +1,115 @@
+[
+  {
+    "name": "numero_minuta",
+    "description": "Número da Minuta",
+    "type": "Integer[9]",
+    "required": false,
+    "tag": "nMinu"
+  },
+  {
+    "name": "numero_operacional",
+    "description": "Número Operacional do Conhecimento Aéreo",
+    "type": "Integer[11]",
+    "required": false,
+    "tag": "nOCA"
+  },
+  {
+    "name": "data_prevista_entrega",
+    "description": "Data prevista da entrega. Formato ISO AAAA-MM-DD",
+    "type": null,
+    "required": false,
+    "tag": "dPrevAereo"
+  },
+  {
+    "name": "dimensao_carga",
+    "description": "Dimensão da carga. Formato:1234X1234X1234 (cm). Esse campo deve sempre que possível ser preenchido. Entretanto, quando for impossível o preenchimento das dimensões, fica obrigatório o preenchimento da cubagem em metro cúbico do leiaute do CT-e da estrutura genérica",
+    "type": "String[5-14]",
+    "required": false,
+    "tag": "xDime"
+  },
+  {
+    "name": "informacoes_manuseio",
+    "description": "Informações de manuseio",
+    "type": "Coleção[0-N]",
+    "required": false,
+    "collection_type": "InfoManuseioXML",
+    "collection": {
+      "object_type": "InfoManuseioXML",
+      "object_description": "Informações de manuseio. Tag XML cInfManu.",
+      "object_attributes": [
+        {
+          "name": "codigo",
+          "description": "Código de manuseio",
+          "type": null,
+          "required": false,
+          "enum": "* +01+: Certificado do expedidor para embarque de animal vivo\\n* +02+: Artigo perigoso conforme Declaração do Expedidor anexa\\n* +03+: Somente em aeronave cargueira\\n* +04+: Artigo perigoso - declaração do expedidor não requerida\\n* +05+: Artigo perigoso em quantidade isenta\\n* +06+: Gelo seco para refrigeração (especificar no campo observações a quantidade)\\n* +07+: Não restrito (especificar a Disposição Especial no campo observações)\\n* +08+: Artigo perigoso em carga consolidada (especificar a quantidade no campo observações)\\n* +09+: Autorização da autoridade governamental anexa (especificar no campo observações)\\n* +10+: Baterias de íons de lítio em conformidade com a Seção II da PI965 – CAO\\n* +11+: Baterias de íons de lítio em conformidade com a Seção II da PI966\\n* +12+: Baterias de íons de lítio em conformidade com a Seção II da PI967\\n* +13+: Baterias de metal lítio em conformidade com a Seção II da PI968 — CAO\\n* +14+: Baterias de metal lítio em conformidade com a Seção II da PI969\\n* +15+: Baterias de metal lítio em conformidade com a Seção II da PI970\\n* +99+: Outro (especificar no campo observações)",
+          "tag": "cInfManu"
+        }
+      ]
+    }
+  },
+  {
+    "name": "classe_tarifa",
+    "description": "Classe",
+    "type": null,
+    "required": false,
+    "enum": "* +M+: Tarifa Mínima\\n* +G+: Tarifa Geral\\n* +E+: Tarifa Específica",
+    "tag": "CL"
+  },
+  {
+    "name": "codigo_tarifa",
+    "description": "Código da Tarifa",
+    "type": "String[1-4]",
+    "required": false,
+    "tag": "cTar"
+  },
+  {
+    "name": "valor_tarifa",
+    "description": "Valor da Tarifa",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vTar"
+  },
+  {
+    "name": "artigos_perigosos",
+    "description": "Informações sobre artigos perigosos segundo a ONU",
+    "type": "Coleção[0-N]",
+    "required": false,
+    "collection_type": "PericulosidadeXML",
+    "collection": {
+      "object_type": "PericulosidadeXML",
+      "object_description": "Preenchido quando for transporte de G 0-n produtos classificados pela ONU como perigosos. Tag XML peri.",
+      "object_attributes": [
+        {
+          "name": "numero_onu",
+          "description": "Número de classificação da ONU/UN de artigo perigoso",
+          "type": "String[4]",
+          "required": false,
+          "tag": "nONU"
+        },
+        {
+          "name": "quantidade_total_volumes",
+          "description": "Quantidade total de volumes contendo artigos perigosos",
+          "type": "String[1-20]",
+          "required": false,
+          "tag": "qTotEmb"
+        },
+        {
+          "name": "quantidade_total_artigos",
+          "description": "Quantidade total de artigos perigosos",
+          "type": "Decimal[11.4]",
+          "required": false,
+          "tag": "qTotProd"
+        },
+        {
+          "name": "unidade_medida",
+          "description": "Unidade de medida",
+          "type": null,
+          "required": false,
+          "enum": "* +1+: KG\\n* +2+: KG G (quilograma bruto)\\n* +3+: LITROS\\n* +4+: TI (índice de transporte para radioativos)\\n* +5+: Unidades (apenas para artigos perigosos medidos em unidades que não se enquadram nos itens acima. Exemplo: baterias, celulares, equipamentos, veículos, dentre outros)",
+          "tag": "uniAP"
+        }
+      ]
+    }
+  }
+]

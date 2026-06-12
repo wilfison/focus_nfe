@@ -1,0 +1,628 @@
+[
+  {
+    "name": "registro_nacional_transporte",
+    "description": "Registro Nacional de Transportadores Rodoviários de Carga",
+    "type": "String[8]",
+    "required": false,
+    "tag": "RNTRC"
+  },
+  {
+    "name": "ciot",
+    "description": "Dados do CIOT",
+    "type": "Coleção[0-1000]",
+    "required": false,
+    "collection_type": "InfoCiotXML",
+    "collection": {
+      "object_type": "InfoCiotXML",
+      "object_description": "Dados do CIOT",
+      "object_attributes": [
+        {
+          "name": "ciot",
+          "description": "Código Identificador da Operação de Transporte",
+          "type": "Integer[12]",
+          "required": false,
+          "tag": "CIOT"
+        },
+        {
+          "name": "cpf_responsavel",
+          "description": "Número do CPF responsável pela geração do CIOT. Caso o responsável seja Pessoa Jurídica preencher a tag 'cnpj_responsavel_ciot' e omitir esta tag.",
+          "type": "Integer[11]",
+          "required": true,
+          "tag": "CPF"
+        },
+        {
+          "name": "cnpj_responsavel",
+          "description": "Número do CNPJ responsável pela geração do CIOT. Caso o responsável seja Pessoa Física preencher a tag 'cpf_responsavel_ciot' e omitir esta tag.",
+          "type": "String[14]",
+          "required": true,
+          "tag": "CNPJ"
+        }
+      ]
+    }
+  },
+  {
+    "name": "dispositivos_vale_pedagio",
+    "description": "Informações dos dispositivos do Vale Pedágio",
+    "type": "Coleção[1-1000]",
+    "required": false,
+    "collection_type": "InfoDispositivoValePedagioXML",
+    "collection": {
+      "object_type": "InfoDispositivoValePedagioXML",
+      "object_description": "Informações do dispositivo do Vale do Pedágio.",
+      "object_attributes": [
+        {
+          "name": "cnpj_empresa_fornecedora",
+          "description": "CNPJ da empresa fornecedora do Vale-Pedágio.",
+          "type": "String[14]",
+          "required": true,
+          "tag": "CNPJForn"
+        },
+        {
+          "name": "cnpj_responsavel_pagamento",
+          "description": "CNPJ do responsável pelo pagamento do Vale-Pedágio. Caso o responsável pelo pagamento seja Pessoa Física, informar a tag 'cpf_responsavel_pagamento' e omitir esta tag.",
+          "type": "String[14]",
+          "required": true,
+          "tag": "CNPJPg"
+        },
+        {
+          "name": "cpf_responsavel_pagamento",
+          "description": "CPF do responsável pelo pagamento do Vale-Pedágio. Caso o responsável pelo pagamento seja Pessoa Jurídica, informar a tag 'cnpj_responsavel_pagamento' e omitir esta tag.",
+          "type": "Integer[11]",
+          "required": true,
+          "tag": "CPFPg"
+        },
+        {
+          "name": "numero_comprovante_compra",
+          "description": "Identificador do vale pedagio obrigatório – IDVPO.",
+          "type": "Integer[1-20]",
+          "required": true,
+          "tag": "nCompra"
+        },
+        {
+          "name": "valor_vale_pedagio",
+          "description": "Valor do Vale Pedágio.",
+          "type": "Decimal[13.2]",
+          "required": true,
+          "tag": "vValePed"
+        },
+        {
+          "name": "tipo_vale_pedagio",
+          "description": "Tipo do Vale Pedágio",
+          "type": null,
+          "required": false,
+          "enum": "* +01+: TAG\\n* +04+: Leitura de placa (pela placa de identificação veicular)",
+          "tag": "tpValePed"
+        }
+      ]
+    }
+  },
+  {
+    "name": "categoria_combinacao_veicular",
+    "description": "Categoria de Combinação Veicular",
+    "type": null,
+    "required": false,
+    "enum": "* +02+: Veículo Comercial 2 eixos\\n* +04+: Veículo Comercial 3 eixos\\n* +06+: Veículo Comercial 4 eixos\\n* +07+: Veículo Comercial 5 eixos\\n* +08+: Veículo Comercial 6 eixos\\n* +10+: Veículo Comercial 7 eixos\\n* +11+: Veículo Comercial 8 eixos",
+    "tag": "categCombVeic"
+  },
+  {
+    "name": "contratantes",
+    "description": "Grupo de informações dos contratantes do serviço de transporte",
+    "type": "Coleção[0-1000]",
+    "required": false,
+    "collection_type": "InfoContratanteXML",
+    "collection": {
+      "object_type": "InfoContratanteXML",
+      "object_description": "Informações do contratante do serviço de transporte",
+      "object_attributes": [
+        {
+          "name": "nome",
+          "description": "Razão social ou nome do contratante",
+          "type": "String[2-60]",
+          "required": false,
+          "tag": "xNome"
+        },
+        {
+          "name": "cpf",
+          "description": "Número do CPF do contratante do serviço. Caso o contratante seja Pessoa Jurídica preencher a tag 'cnpj' e omitir esta tag.",
+          "type": "Integer[11]",
+          "required": true,
+          "tag": "CPF"
+        },
+        {
+          "name": "cnpj",
+          "description": "Número do CNPJ do contratante do serviço. Caso o contratante seja Pessoa Física preencher a tag 'cpf' e omitir esta tag.",
+          "type": "String[14]",
+          "required": true,
+          "tag": "CNPJ"
+        },
+        {
+          "name": "id_estrangeiro",
+          "description": "Identificador do contratante em caso de contratante estrangeiro",
+          "type": "String[2-20]",
+          "required": false,
+          "tag": "idEstrangeiro"
+        },
+        {
+          "name": "numero_contrato",
+          "description": "Número do contrato do transportador com o contratante quando este existir para prestações continuadas",
+          "type": "Integer[20]",
+          "required": false,
+          "tag": "NroContrato"
+        },
+        {
+          "name": "valor_global_contrato",
+          "description": "Valor Global do Contrato",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vContratoGlobal"
+        }
+      ]
+    }
+  },
+  {
+    "name": "pagamentos",
+    "description": "Grupo de informações do pagamento do frete",
+    "type": "Coleção[0-1000]",
+    "required": false,
+    "collection_type": "InfoPagamentoXML",
+    "collection": {
+      "object_type": "InfoPagamentoXML",
+      "object_description": "Informações do pagamento do contrato",
+      "object_attributes": [
+        {
+          "name": "nome",
+          "description": "Nome do responsável pelo pgto",
+          "type": "String[2-60]",
+          "required": false,
+          "tag": "xNome"
+        },
+        {
+          "name": "cpf",
+          "description": "Número do CPF do responsável pelo pgto",
+          "type": "Integer[11]",
+          "required": true,
+          "tag": "CPF"
+        },
+        {
+          "name": "cnpj",
+          "description": "Número do CNPJ do contratante do serviço. Caso o contratante seja Pessoa Física preencher a tag 'cpf_contratante' e omitir esta tag.",
+          "type": "String[14]",
+          "required": true,
+          "tag": "CNPJ"
+        },
+        {
+          "name": "id_estrangeiro",
+          "description": "Identificador do responsável pelo pgto em caso de ser estrangeiro",
+          "type": "String[2-20]",
+          "required": false,
+          "tag": "idEstrangeiro"
+        },
+        {
+          "name": "componentes",
+          "description": "Grupo de informações dos componentes de pagamento do frete",
+          "type": "Coleção[0-1000]",
+          "required": false,
+          "collection_type": "ComponentePagamentoXML",
+          "collection": {
+            "object_type": "ComponentePagamentoXML",
+            "object_description": "Componentes do pagamento do contrato",
+            "object_attributes": [
+              {
+                "name": "tipo",
+                "description": "Tipo do Componente",
+                "type": null,
+                "required": true,
+                "enum": "* +01+: Vale Pedágio\\n* +02+: Impostos, taxas e contribuições\\n* +03+: Despesas (bancárias, meios de pagamento, outras)\\n* +04+: Frete\\n* +99+: Outros",
+                "tag": "tpComp"
+              },
+              {
+                "name": "valor",
+                "description": "Valor do Componente",
+                "type": "Decimal[13.2]",
+                "required": true,
+                "tag": "vComp"
+              },
+              {
+                "name": "descricao",
+                "description": "Descrição do componente, quando do tipo Outros",
+                "type": "String[2-60]",
+                "required": false,
+                "tag": "xComp"
+              }
+            ]
+          }
+        },
+        {
+          "name": "valor_total_contrato",
+          "description": "Valor total do contrato",
+          "type": "Decimal[13.2]",
+          "required": true,
+          "tag": "vContrato"
+        },
+        {
+          "name": "alto_desempenho",
+          "description": "Indicador de operação de transporte de alto desempenho. Omitir o campo se não aplicável",
+          "type": null,
+          "required": false,
+          "enum": "* +1+: Operação de alto desempenho",
+          "tag": "indAltoDesemp"
+        },
+        {
+          "name": "forma_pagamento",
+          "description": "Indicador da Forma de Pagamento",
+          "type": null,
+          "required": true,
+          "enum": "* +0+: Pagamento à Vista\\n* +1+: Pagamento à Prazo",
+          "tag": "indPag"
+        },
+        {
+          "name": "valor_adiantamento",
+          "description": "Valor do Adiantamento. Informar apenas se pagamento à prazo.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vAdiant"
+        },
+        {
+          "name": "indicador_adiantamento",
+          "description": "Indicador de declaração de concordância em antecipar o adiantamento.",
+          "type": null,
+          "required": false,
+          "enum": "* +0+: Sem adiantamento (valor default)\\n* +1+: Com adiantamento",
+          "tag": "indAntecipaAdiant"
+        },
+        {
+          "name": "parcelas",
+          "description": "Grupo de informações do pagamento a prazo. Informar apenas se pagamento à prazo.",
+          "type": "Coleção[0-1000]",
+          "required": false,
+          "collection_type": "ParcelaPagamentoXML",
+          "collection": {
+            "object_type": "ParcelaPagamentoXML",
+            "object_description": "Informações do pagamento a prazo",
+            "object_attributes": [
+              {
+                "name": "numero",
+                "description": "Número da parcela",
+                "type": "Integer[3]",
+                "required": true,
+                "tag": "nParcela"
+              },
+              {
+                "name": "data_vencimento",
+                "description": "Data de vencimento da Parcela",
+                "type": "Integer[3]",
+                "required": true,
+                "tag": "dVenc"
+              },
+              {
+                "name": "valor",
+                "description": "Valor da parcela",
+                "type": "Decimal[13.2]",
+                "required": true,
+                "tag": "vParcela"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tipo_permissao_antecipacao",
+          "description": "Tipo de Permissão em relação a antecipação das parcelas",
+          "type": null,
+          "required": false,
+          "enum": "* +0+: Não permite antecipar\\n* +1+: Permite antecipar as parcelas\\n* +2+: Permite antecipar as parcelas mediante confirmação",
+          "tag": "tpAntecip"
+        },
+        {
+          "name": "numero_banco",
+          "description": "Número do banco",
+          "type": "String[3-5]",
+          "required": true,
+          "tag": "codBanco"
+        },
+        {
+          "name": "numero_agencia",
+          "description": "Número da Agência",
+          "type": "String[1-10]",
+          "required": true,
+          "tag": "codAgencia"
+        },
+        {
+          "name": "cnpj_instituicao_pagamento",
+          "description": "Número do CNPJ da Instituição de pagamento Eletrônico do Frete",
+          "type": "String[14]",
+          "required": true,
+          "tag": "CNPJIPEF"
+        },
+        {
+          "name": "pix",
+          "description": "Chave PIX",
+          "type": "String[2-60]",
+          "required": false,
+          "tag": "PIX"
+        }
+      ]
+    }
+  },
+  {
+    "name": "codigo_veiculo",
+    "description": "Código interno do veículo",
+    "type": "String[1-10]",
+    "required": false,
+    "tag": "cInt"
+  },
+  {
+    "name": "placa_veiculo",
+    "description": "Placa do veículo.",
+    "type": "String[7]",
+    "required": true,
+    "tag": "placa"
+  },
+  {
+    "name": "renavam_veiculo",
+    "description": "RENAVAM do veículo.",
+    "type": "String[9-11]",
+    "required": false,
+    "tag": "RENAVAM"
+  },
+  {
+    "name": "tara_veiculo",
+    "description": "Tara em KG.",
+    "type": "Integer[1-6]",
+    "required": true,
+    "tag": "tara"
+  },
+  {
+    "name": "capacidade_kg_veiculo",
+    "description": "Capacidade em KG.",
+    "type": "Integer[1-6]",
+    "required": false,
+    "tag": "capKG"
+  },
+  {
+    "name": "capacidade_m3_veiculo",
+    "description": "Capacidade em M3.",
+    "type": "Integer[1-3]",
+    "required": false,
+    "tag": "capM3"
+  },
+  {
+    "name": "cpf_proprietario_veiculo",
+    "description": "CPF do proprietário do veículo. Omitir caso a tag 'cnpj_proprietario' esteja preenchida. Se informado um dos campos do proprietário, este campo se torna obrigatório.",
+    "type": "Integer[11]",
+    "required": true,
+    "tag": "CPF"
+  },
+  {
+    "name": "cnpj_proprietario_veiculo",
+    "description": "CNPJ do proprietário do veículo. Omitir caso a tag 'cpf_proprietario' esteja preenchida. Se informado um dos campos do proprietário, este campo se torna obrigatório.",
+    "type": "String[14]",
+    "required": true,
+    "tag": "CNPJ"
+  },
+  {
+    "name": "rntrc_proprietario_veiculo",
+    "description": "Registro Nacional de Transportadores Rodoviários de Carga. Se informado um dos campos do proprietário, este campo se torna obrigatório.",
+    "type": "String[8]",
+    "required": true,
+    "tag": "RNTRC"
+  },
+  {
+    "name": "razao_social_proprietario_veiculo",
+    "description": "Razão Social ou Nome do proprietário. Se informado um dos campos do proprietário, este campo se torna obrigatório.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xNome"
+  },
+  {
+    "name": "inscricao_estadual_proprietario_veiculo",
+    "description": "Inscrição Estadual. Se informado um dos campos do proprietário, este campo se torna obrigatório.",
+    "type": "String[2-14]",
+    "required": true,
+    "tag": "IE"
+  },
+  {
+    "name": "uf_proprietario_veiculo",
+    "description": "Sigla da UF. Se informado um dos campos do proprietário, este campo se torna obrigatório.",
+    "type": "String[2]",
+    "required": true,
+    "tag": "UF"
+  },
+  {
+    "name": "tipo_proprietario_veiculo",
+    "description": "Tipo do Proprietário. Se informado um dos campos do proprietário, este campo se torna obrigatório.",
+    "type": null,
+    "required": true,
+    "enum": "* +0+: TAC - Agregado\\n* +1+: TAC - Independente\\n* +2+: Outros",
+    "tag": "tpProp"
+  },
+  {
+    "name": "condutores",
+    "description": "Informações do(s) Condutor(s) do veículo",
+    "type": "Coleção[1-10]",
+    "required": false,
+    "collection_type": "InfoCondutorXML",
+    "collection": {
+      "object_type": "InfoCondutorXML",
+      "object_description": "Informação do Condutor do Veículo",
+      "object_attributes": [
+        {
+          "name": "nome",
+          "description": "Nome do condutor",
+          "type": "String[2-60]",
+          "required": true,
+          "tag": "xNome"
+        },
+        {
+          "name": "cpf",
+          "description": "CPF do condutor",
+          "type": "Integer[11]",
+          "required": true,
+          "tag": "CPF"
+        }
+      ]
+    }
+  },
+  {
+    "name": "tipo_rodado_veiculo",
+    "description": "Tipo de Rodado",
+    "type": null,
+    "required": false,
+    "enum": "* +01+: Truck\\n* +02+: Toco\\n* +03+: Cavalo Mecânico\\n* +04+: VAN\\n* +05+: Utilitário\\n* +06+: Outros",
+    "tag": "tpRod"
+  },
+  {
+    "name": "tipo_carroceria_veiculo",
+    "description": "Tipo de Carroceria",
+    "type": null,
+    "required": true,
+    "enum": "* +00+: Não Aplicável\\n* +01+: Aberta\\n* +02+: Fechada/Baú\\n* +03+: Granelera\\n* +04+: Porta Container\\n* +05+: Sider",
+    "tag": "tpCar"
+  },
+  {
+    "name": "uf_licenciamento_veiculo",
+    "description": "UF em que o veículo está licenciado.",
+    "type": "String[2]",
+    "required": true,
+    "tag": "UF"
+  },
+  {
+    "name": "veiculos_reboque",
+    "description": "Dados dos reboques",
+    "type": "Coleção[0-3]",
+    "required": false,
+    "collection_type": "VeiculoReboqueXML",
+    "collection": {
+      "object_type": "VeiculoReboqueXML",
+      "object_description": "Dados do Reboque",
+      "object_attributes": [
+        {
+          "name": "codigo",
+          "description": "Código interno do veículo",
+          "type": "String[1-10]",
+          "required": false,
+          "tag": "cInt"
+        },
+        {
+          "name": "placa",
+          "description": "Placa do veículo.",
+          "type": "String[7]",
+          "required": true,
+          "tag": "placa"
+        },
+        {
+          "name": "renavam",
+          "description": "RENAVAM do veículo.",
+          "type": "String[9-11]",
+          "required": false,
+          "tag": "RENAVAM"
+        },
+        {
+          "name": "tara",
+          "description": "Tara em KG.",
+          "type": "Integer[1-6]",
+          "required": true,
+          "tag": "tara"
+        },
+        {
+          "name": "capacidade_kg",
+          "description": "Capacidade em KG.",
+          "type": "Integer[1-6]",
+          "required": true,
+          "tag": "capKG"
+        },
+        {
+          "name": "capacidade_m3",
+          "description": "Capacidade em M3.",
+          "type": "Integer[1-3]",
+          "required": false,
+          "tag": "capM3"
+        },
+        {
+          "name": "cpf_proprietario",
+          "description": "CPF do proprietário do veículo. Omitir caso a tag 'cnpj_proprietario' esteja preenchida. Se informado um dos campos do proprietário, este campo se torna obrigatório.",
+          "type": "Integer[11]",
+          "required": true,
+          "tag": "CPF"
+        },
+        {
+          "name": "cnpj_proprietario",
+          "description": "CNPJ do proprietário do veículo. Omitir caso a tag 'cpf_proprietario' esteja preenchida. Se informado um dos campos do proprietário, este campo se torna obrigatório.",
+          "type": "String[14]",
+          "required": true,
+          "tag": "CNPJ"
+        },
+        {
+          "name": "rntrc",
+          "description": "Registro Nacional de Transportadores Rodoviários de Carga. Se informado um dos campos do proprietário, este campo se torna obrigatório.",
+          "type": "String[8]",
+          "required": true,
+          "tag": "RNTRC"
+        },
+        {
+          "name": "razao_social_proprietario",
+          "description": "Razão Social ou Nome do proprietário. Se informado um dos campos do proprietário, este campo se torna obrigatório.",
+          "type": "String[2-60]",
+          "required": true,
+          "tag": "xNome"
+        },
+        {
+          "name": "inscricao_estadual_proprietario",
+          "description": "Inscrição Estadual. Se informado um dos campos do proprietário, este campo se torna obrigatório.",
+          "type": "String[2-14]",
+          "required": true,
+          "tag": "IE"
+        },
+        {
+          "name": "uf_proprietario",
+          "description": "Sigla da UF. Se informado um dos campos do proprietário, este campo se torna obrigatório.",
+          "type": "String[2]",
+          "required": true,
+          "tag": "UF"
+        },
+        {
+          "name": "tipo_proprietario",
+          "description": "Tipo do Proprietário. Se informado um dos campos do proprietário, este campo se torna obrigatório.",
+          "type": null,
+          "required": true,
+          "enum": "* +0+: TAC - Agregado\\n* +1+: TAC - Independente\\n* +2+: Outros",
+          "tag": "tpProp"
+        },
+        {
+          "name": "tipo_carroceria",
+          "description": "Tipo de Carroceria",
+          "type": null,
+          "required": true,
+          "enum": "* +00+: Não Aplicável\\n* +01+: Aberta\\n* +02+: Fechada/Baú\\n* +03+: Granelera\\n* +04+: Porta Container\\n* +05+: Sider",
+          "tag": "tpCar"
+        },
+        {
+          "name": "uf_licenciamento",
+          "description": "UF em que o veículo está licenciado.",
+          "type": "String[2]",
+          "required": true,
+          "tag": "UF"
+        }
+      ]
+    }
+  },
+  {
+    "name": "lacres",
+    "description": "Dados dos reboques",
+    "type": "Coleção[0-3]",
+    "required": false,
+    "collection_type": "LacreRodoviarioXML",
+    "collection": {
+      "object_type": "LacreRodoviarioXML",
+      "object_description": "Lacres",
+      "object_attributes": [
+        {
+          "name": "numero_lacre",
+          "description": "Lacre",
+          "type": "String[1-20]",
+          "required": true,
+          "tag": "nLacre"
+        }
+      ]
+    }
+  }
+]

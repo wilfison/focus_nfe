@@ -1,0 +1,1102 @@
+[
+  {
+    "name": "emitente",
+    "description": "Tipo de Emitente",
+    "type": null,
+    "required": true,
+    "enum": "* +1+: Prestador de serviço de transporte\\n* +2+: Transportador de Carga Própria\\n* +3+: Prestador de serviço de transporte que emitirá CT-e Globalizado.",
+    "tag": "tpEmit"
+  },
+  {
+    "name": "tipo_transporte",
+    "description": "Tipo do Transportador",
+    "type": null,
+    "required": false,
+    "enum": "* +1+: ETC\\n* +2+: TAC\\n* +3+: CTC",
+    "tag": "tpTransp"
+  },
+  {
+    "name": "serie",
+    "description": "Série da CT-e. Deixe em branco para que a API se responsabilize pela numeração automática (recomendado)",
+    "type": "Integer[1-3]",
+    "required": true,
+    "tag": "serie"
+  },
+  {
+    "name": "numero",
+    "description": "Número do Manifesto. Deixe em branco para que a API se responsabilize pela numeração automática (recomendado)",
+    "type": "Integer[1-9]",
+    "required": true,
+    "tag": "nMDF"
+  },
+  {
+    "name": "uf_inicio",
+    "description": "Sigla da UF de carregamento. Informar 'EX' para as operações com o exterior.",
+    "type": "String[2]",
+    "required": true,
+    "tag": "UFIni"
+  },
+  {
+    "name": "uf_fim",
+    "description": "Sigla da UF de descarregamento. Informar 'EX' para as operações com o exterior.",
+    "type": "String[2]",
+    "required": true,
+    "tag": "UFFim"
+  },
+  {
+    "name": "municipios_carregamento",
+    "description": "Informações dos Municípios de Carregamento.",
+    "type": "Coleção[1-50]",
+    "required": false,
+    "collection_type": "InfoMunicipioCarregamentoXML",
+    "collection": {
+      "object_type": "InfoMunicipioCarregamentoXML",
+      "object_description": "Informações dos Município de Carregamento",
+      "object_attributes": [
+        {
+          "name": "codigo",
+          "description": "Código do Município de Carregamento",
+          "type": "Integer[7]",
+          "required": true,
+          "tag": "cMunCarrega"
+        },
+        {
+          "name": "nome",
+          "description": "Nome do Município de Carregamento",
+          "type": "String[2-60]",
+          "required": true,
+          "tag": "xMunCarrega"
+        }
+      ]
+    }
+  },
+  {
+    "name": "percursos",
+    "description": "Informações dos Percursos do MDF-e.",
+    "type": "Coleção[0-25]",
+    "required": false,
+    "collection_type": "InfoPercursoXML",
+    "collection": {
+      "object_type": "InfoPercursoXML",
+      "object_description": "Informações do Percurso do MDF-e.",
+      "object_attributes": [
+        {
+          "name": "uf_percurso",
+          "description": "Sigla das Unidades da Federação do percurso do veículo.",
+          "type": "String[2]",
+          "required": true,
+          "tag": "UFPer"
+        }
+      ]
+    }
+  },
+  {
+    "name": "data_hora_previsto_inicio_viagem",
+    "description": "Data e hora previstos para o início da viagem",
+    "type": null,
+    "required": false,
+    "tag": "dhIniViagem"
+  },
+  {
+    "name": "participa_canal_verde",
+    "description": "Indicador de participação do projeto Canal Verde. Preencher com 1 para indicar a participação, caso contrário omitir esta tag.",
+    "type": null,
+    "required": false,
+    "tag": "indCanalVerde"
+  },
+  {
+    "name": "carregamento_posterior",
+    "description": "Indicador de carregamento posterior. Preencher com 1 para indicar o carregamento, caso contrário omitir esta tag.",
+    "type": null,
+    "required": false,
+    "tag": "indCarregaPosterior"
+  },
+  {
+    "name": "cnpj_emitente",
+    "description": "CNPJ do emitente.",
+    "type": "String[14]",
+    "required": true,
+    "tag": "CNPJ"
+  },
+  {
+    "name": "cpf_emitente",
+    "description": "CPF do emitente.",
+    "type": "Integer[11]",
+    "required": true,
+    "tag": "CPF"
+  },
+  {
+    "name": "inscricao_estadual_emitente",
+    "description": "Inscrição Estadual da empresa emitente.",
+    "type": "Integer[14]",
+    "required": true,
+    "tag": "IE"
+  },
+  {
+    "name": "nome_emitente",
+    "description": "Razão Social ou nome da empresa emitente.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xNome"
+  },
+  {
+    "name": "nome_fantasia_emitente",
+    "description": "Nome fantasia da empresa emitente.",
+    "type": "String[2-60]",
+    "required": false,
+    "tag": "xFant"
+  },
+  {
+    "name": "logradouro_emitente",
+    "description": "Logradouro (rua, avenida, travessa etc.) da empresa emitente.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xLgr"
+  },
+  {
+    "name": "numero_emitente",
+    "description": "Número do endereço da empresa emitente.",
+    "type": "String[1-60]",
+    "required": true,
+    "tag": "nro"
+  },
+  {
+    "name": "complemento_emitente",
+    "description": "Complemento do endereço da empresa emitente.",
+    "type": "String[1-60]",
+    "required": false,
+    "tag": "xCpl"
+  },
+  {
+    "name": "bairro_emitente",
+    "description": "Bairro da empresa emitente.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xBairro"
+  },
+  {
+    "name": "codigo_municipio_emitente",
+    "description": "Código do Município da empresa emitente (7 dígitos), de acordo com a tabela do IBGE. Informar 9999999 para operações com o exterior.",
+    "type": "Integer[7]",
+    "required": true,
+    "tag": "cMun"
+  },
+  {
+    "name": "municipio_emitente",
+    "description": "Município da empresa emitente.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xMun"
+  },
+  {
+    "name": "cep_emitente",
+    "description": "CEP da empresa emitente.",
+    "type": "Integer[8]",
+    "required": false,
+    "tag": "CEP"
+  },
+  {
+    "name": "uf_emitente",
+    "description": "UF da empresa emitente.",
+    "type": "String[2]",
+    "required": true,
+    "tag": "UF"
+  },
+  {
+    "name": "telefone_emitente",
+    "description": "Telefone da empresa emitente.",
+    "type": "Integer[6-14]",
+    "required": false,
+    "tag": "fone"
+  },
+  {
+    "name": "email_emitente",
+    "description": "E-Mail da empresa emitente.",
+    "type": null,
+    "required": false,
+    "tag": "email"
+  },
+  {
+    "name": "municipios_descarregamento",
+    "description": "Informações dos Municípios de Descarregamento.",
+    "type": "Coleção[1-100]",
+    "required": false,
+    "collection_type": "InfoMunicipioDescarregamentoXML",
+    "collection": {
+      "object_type": "InfoMunicipioDescarregamentoXML",
+      "object_description": "Informações dos Município de Descarregamento",
+      "object_attributes": [
+        {
+          "name": "codigo",
+          "description": "Código do Município de descarregamento",
+          "type": "Integer[7]",
+          "required": true,
+          "tag": "cMunDescarga"
+        },
+        {
+          "name": "nome",
+          "description": "Nome do Município de descarregamento",
+          "type": "String[2-60]",
+          "required": true,
+          "tag": "xMunDescarga"
+        },
+        {
+          "name": "conhecimentos_transporte",
+          "description": "Conhecimentos de Tranporte - usar este grupo quando for prestador de serviço de transporte",
+          "type": "Coleção[0-20000]",
+          "required": false,
+          "collection_type": "ConhecimentoTransporteXML",
+          "collection": {
+            "object_type": "ConhecimentoTransporteXML",
+            "object_description": "Informações do Conhecimento de Transporte",
+            "object_attributes": [
+              {
+                "name": "chave_cte",
+                "description": "Chave da CT-e",
+                "type": "Integer[44]",
+                "required": true,
+                "tag": "chCTe"
+              },
+              {
+                "name": "segundo_codigo_barras",
+                "description": "Segundo código de barras",
+                "type": "Integer[36]",
+                "required": false,
+                "tag": "SegCodBarra"
+              },
+              {
+                "name": "indicador_reentrega",
+                "description": "Indicador de Reentrega",
+                "type": "Integer[0-1]",
+                "required": false,
+                "tag": "indReentrega"
+              },
+              {
+                "name": "unidades_transporte",
+                "description": "Informações das Unidades de Transporte (Carreta/Reboque/Vagão).",
+                "type": "Coleção[0-1000]",
+                "required": false,
+                "collection_type": "InfoUnidadeTransporteXML",
+                "collection": {
+                  "object_type": "InfoUnidadeTransporteXML",
+                  "object_description": "Informações das Unidades de Transporte (Carreta/Reboque/Vagão)",
+                  "object_attributes": [
+                    {
+                      "name": "tipo",
+                      "description": "Tipo da Unidade de Transporte",
+                      "type": null,
+                      "required": true,
+                      "enum": "* +1+: Rodoviário Tração\\n* +2+: Rodoviário Reboque\\n* +3+: Navio\\n* +4+: Balsa\\n* +5+: Aeronave\\n* +6+: Vagão\\n* +7+: Outros",
+                      "tag": "tpUnidTransp"
+                    },
+                    {
+                      "name": "identificacao",
+                      "description": "Identificação da Unidade de Transporte",
+                      "type": "String[1-20]",
+                      "required": false,
+                      "tag": "idUnidTransp"
+                    },
+                    {
+                      "name": "lacres",
+                      "description": "Lacres das Unidades de Transporte",
+                      "type": "Coleção[0  -100]",
+                      "required": false,
+                      "collection_type": "LacreUnidadeTransporteXML",
+                      "collection": {
+                        "object_type": "LacreUnidadeTransporteXML",
+                        "object_description": "Lacres das Unidades de carga",
+                        "object_attributes": [
+                          {
+                            "name": "numero_lacre",
+                            "description": "Número do lacre",
+                            "type": "String[1-20]",
+                            "required": false,
+                            "tag": "nLacre"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "unidades_carga",
+                      "description": "Informações das Unidades de Carga (Containeres/ULD/Outros)",
+                      "type": "Coleção[0-1000]",
+                      "required": false,
+                      "collection_type": "InfoUnidadeCargaXML",
+                      "collection": {
+                        "object_type": "InfoUnidadeCargaXML",
+                        "object_description": "Informações das Unidades de Carga (Containeres/ULD/Outros)",
+                        "object_attributes": [
+                          {
+                            "name": "tipo",
+                            "description": "Tipo da Unidade de carga",
+                            "type": null,
+                            "required": true,
+                            "enum": "* +1+: Container\\n* +2+: ULD\\n* +3+: Pallet\\n* +4+: Outros",
+                            "tag": "tpUnidCarga"
+                          },
+                          {
+                            "name": "identificacao",
+                            "description": "Identificação da Unidade de carga",
+                            "type": "String[1-20]",
+                            "required": false,
+                            "tag": "idUnidCarga"
+                          },
+                          {
+                            "name": "lacres",
+                            "description": "Informações das Unidades de Carga (Containeres/ULD/Outros).",
+                            "type": "Coleção[0-1000]",
+                            "required": false,
+                            "collection_type": "LacreUnidadeCargaXML",
+                            "collection": {
+                              "object_type": "LacreUnidadeCargaXML",
+                              "object_description": "Lacres das Unidades de Carga",
+                              "object_attributes": [
+                                {
+                                  "name": "numero_lacre",
+                                  "description": "Número do Lacre",
+                                  "type": "String[1-20]",
+                                  "required": false,
+                                  "tag": "nLacre"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "name": "quantidade_rateada",
+                            "description": "Quantidade rateada (Peso,Volume)",
+                            "type": "Decimal[3.2]",
+                            "required": false,
+                            "tag": "qtdRat"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "quantidade_rateada",
+                      "description": "Quantidade rateada (Peso,Volume)",
+                      "type": "Decimal[3.2]",
+                      "required": false,
+                      "tag": "qtdRat"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "produtos_perigosos",
+                "description": "Produtos Perigosos. Preenchido quando for transporte de produtos classificados pela ONU como perigosos.",
+                "type": "Coleção[0-1000]",
+                "required": false,
+                "collection_type": "InfoProdutoPerigosoXML",
+                "collection": {
+                  "object_type": "InfoProdutoPerigosoXML",
+                  "object_description": "Produtos Perigosos. Preenchido quando for transporte de produtos classificados pela ONU como perigosos.",
+                  "object_attributes": [
+                    {
+                      "name": "numero_onu",
+                      "description": "Número ONU/UN",
+                      "type": "String[4]",
+                      "required": false,
+                      "tag": "nONU"
+                    },
+                    {
+                      "name": "nome_embarque_produto",
+                      "description": "Nome apropriado para embarque do produto",
+                      "type": "String[1-150]",
+                      "required": false,
+                      "tag": "xNomeAE"
+                    },
+                    {
+                      "name": "classe_risco",
+                      "description": "Classe ou subclasse/divisão, e risco subsidiário/risco secundário",
+                      "type": "String[1-40]",
+                      "required": false,
+                      "tag": "xClaRisco"
+                    },
+                    {
+                      "name": "grupo_embalagem",
+                      "description": "Grupo de Embalagem",
+                      "type": "String[1-6]",
+                      "required": false,
+                      "tag": "grEmb"
+                    },
+                    {
+                      "name": "quantidade_total_produtos",
+                      "description": "Quantidade total por produto",
+                      "type": "String[1-20]",
+                      "required": false,
+                      "tag": "qTotProd"
+                    },
+                    {
+                      "name": "quantidade_tipo_volume",
+                      "description": "Quantidade e Tipo de volumes",
+                      "type": "String[1-60]",
+                      "required": false,
+                      "tag": "qVolTipo"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "notas_fiscais",
+          "description": "Notas Fiscais Eletrônicas",
+          "type": "Coleção[0-20000]",
+          "required": false,
+          "collection_type": "NotaFiscalXML",
+          "collection": {
+            "object_type": "NotaFiscalXML",
+            "object_description": "Informações da Nota Fiscal Eletrônica",
+            "object_attributes": [
+              {
+                "name": "chave_nfe",
+                "description": "Chave da NF-e",
+                "type": "String[44]",
+                "required": true,
+                "tag": "chNFe"
+              },
+              {
+                "name": "segundo_codigo_barras",
+                "description": "Segundo código de barras",
+                "type": "Integer[36]",
+                "required": false,
+                "tag": "SegCodBarra"
+              },
+              {
+                "name": "indicador_reentrega",
+                "description": "Indicador de Reentrega",
+                "type": "Integer[0-1]",
+                "required": false,
+                "tag": "indReentrega"
+              },
+              {
+                "name": "unidades_transporte",
+                "description": "Informações das Unidades de Transporte (Carreta/Reboque/Vagão).",
+                "type": "Coleção[0-1000]",
+                "required": false,
+                "collection_type": "InfoUnidadeTransporteXML",
+                "collection": {
+                  "object_type": "InfoUnidadeTransporteXML",
+                  "object_description": "Informações das Unidades de Transporte (Carreta/Reboque/Vagão)",
+                  "object_attributes": [
+                    {
+                      "name": "tipo",
+                      "description": "Tipo da Unidade de Transporte",
+                      "type": null,
+                      "required": true,
+                      "enum": "* +1+: Rodoviário Tração\\n* +2+: Rodoviário Reboque\\n* +3+: Navio\\n* +4+: Balsa\\n* +5+: Aeronave\\n* +6+: Vagão\\n* +7+: Outros",
+                      "tag": "tpUnidTransp"
+                    },
+                    {
+                      "name": "identificacao",
+                      "description": "Identificação da Unidade de Transporte",
+                      "type": "String[1-20]",
+                      "required": false,
+                      "tag": "idUnidTransp"
+                    },
+                    {
+                      "name": "lacres",
+                      "description": "Lacres das Unidades de Transporte",
+                      "type": "Coleção[0  -100]",
+                      "required": false,
+                      "collection_type": "LacreUnidadeTransporteXML",
+                      "collection": {
+                        "object_type": "LacreUnidadeTransporteXML",
+                        "object_description": "Lacres das Unidades de carga",
+                        "object_attributes": [
+                          {
+                            "name": "numero_lacre",
+                            "description": "Número do lacre",
+                            "type": "String[1-20]",
+                            "required": false,
+                            "tag": "nLacre"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "unidades_carga",
+                      "description": "Informações das Unidades de Carga (Containeres/ULD/Outros)",
+                      "type": "Coleção[0-1000]",
+                      "required": false,
+                      "collection_type": "InfoUnidadeCargaXML",
+                      "collection": {
+                        "object_type": "InfoUnidadeCargaXML",
+                        "object_description": "Informações das Unidades de Carga (Containeres/ULD/Outros)",
+                        "object_attributes": [
+                          {
+                            "name": "tipo",
+                            "description": "Tipo da Unidade de carga",
+                            "type": null,
+                            "required": true,
+                            "enum": "* +1+: Container\\n* +2+: ULD\\n* +3+: Pallet\\n* +4+: Outros",
+                            "tag": "tpUnidCarga"
+                          },
+                          {
+                            "name": "identificacao",
+                            "description": "Identificação da Unidade de carga",
+                            "type": "String[1-20]",
+                            "required": false,
+                            "tag": "idUnidCarga"
+                          },
+                          {
+                            "name": "lacres",
+                            "description": "Informações das Unidades de Carga (Containeres/ULD/Outros).",
+                            "type": "Coleção[0-1000]",
+                            "required": false,
+                            "collection_type": "LacreUnidadeCargaXML",
+                            "collection": {
+                              "object_type": "LacreUnidadeCargaXML",
+                              "object_description": "Lacres das Unidades de Carga",
+                              "object_attributes": [
+                                {
+                                  "name": "numero_lacre",
+                                  "description": "Número do Lacre",
+                                  "type": "String[1-20]",
+                                  "required": false,
+                                  "tag": "nLacre"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "name": "quantidade_rateada",
+                            "description": "Quantidade rateada (Peso,Volume)",
+                            "type": "Decimal[3.2]",
+                            "required": false,
+                            "tag": "qtdRat"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "quantidade_rateada",
+                      "description": "Quantidade rateada (Peso,Volume)",
+                      "type": "Decimal[3.2]",
+                      "required": false,
+                      "tag": "qtdRat"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "produtos_perigosos",
+                "description": "Produtos Perigosos. Preenchido quando for transporte de produtos classificados pela ONU como perigosos.",
+                "type": "Coleção[0-1000]",
+                "required": false,
+                "collection_type": "InfoProdutoPerigosoXML",
+                "collection": {
+                  "object_type": "InfoProdutoPerigosoXML",
+                  "object_description": "Produtos Perigosos. Preenchido quando for transporte de produtos classificados pela ONU como perigosos.",
+                  "object_attributes": [
+                    {
+                      "name": "numero_onu",
+                      "description": "Número ONU/UN",
+                      "type": "String[4]",
+                      "required": false,
+                      "tag": "nONU"
+                    },
+                    {
+                      "name": "nome_embarque_produto",
+                      "description": "Nome apropriado para embarque do produto",
+                      "type": "String[1-150]",
+                      "required": false,
+                      "tag": "xNomeAE"
+                    },
+                    {
+                      "name": "classe_risco",
+                      "description": "Classe ou subclasse/divisão, e risco subsidiário/risco secundário",
+                      "type": "String[1-40]",
+                      "required": false,
+                      "tag": "xClaRisco"
+                    },
+                    {
+                      "name": "grupo_embalagem",
+                      "description": "Grupo de Embalagem",
+                      "type": "String[1-6]",
+                      "required": false,
+                      "tag": "grEmb"
+                    },
+                    {
+                      "name": "quantidade_total_produtos",
+                      "description": "Quantidade total por produto",
+                      "type": "String[1-20]",
+                      "required": false,
+                      "tag": "qTotProd"
+                    },
+                    {
+                      "name": "quantidade_tipo_volume",
+                      "description": "Quantidade e Tipo de volumes",
+                      "type": "String[1-60]",
+                      "required": false,
+                      "tag": "qVolTipo"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "mdfes_aquaviario",
+          "description": "Manifesto Eletrônico de Documentos Fiscais. Somente para modal Aquaviário (vide regras MOC)",
+          "type": "Coleção[0-20000]",
+          "required": false,
+          "collection_type": "MDFeAquaviarioXML",
+          "collection": {
+            "object_type": "MDFeAquaviarioXML",
+            "object_description": "Manifesto Eletrônico de Documentos Fiscais. Somente para modal Aquaviário (vide regras MOC)",
+            "object_attributes": [
+              {
+                "name": "chave_mdfe",
+                "description": "Chave do MDF-e",
+                "type": "Integer[44]",
+                "required": false,
+                "tag": "chMDFe"
+              },
+              {
+                "name": "indicador_reentrega",
+                "description": "Indicador de Reentrega",
+                "type": "Integer[0-1]",
+                "required": false,
+                "tag": "indReentrega"
+              },
+              {
+                "name": "unidades_transporte",
+                "description": "Informações das Unidades de Transporte (Carreta/Reboque/Vagão)",
+                "type": "Coleção[0-4000]",
+                "required": false,
+                "collection_type": "InfoUnidadeTransporteXML",
+                "collection": {
+                  "object_type": "InfoUnidadeTransporteXML",
+                  "object_description": "Informações das Unidades de Transporte (Carreta/Reboque/Vagão)",
+                  "object_attributes": [
+                    {
+                      "name": "tipo",
+                      "description": "Tipo da Unidade de Transporte",
+                      "type": null,
+                      "required": true,
+                      "enum": "* +1+: Rodoviário Tração\\n* +2+: Rodoviário Reboque\\n* +3+: Navio\\n* +4+: Balsa\\n* +5+: Aeronave\\n* +6+: Vagão\\n* +7+: Outros",
+                      "tag": "tpUnidTransp"
+                    },
+                    {
+                      "name": "identificacao",
+                      "description": "Identificação da Unidade de Transporte",
+                      "type": "String[1-20]",
+                      "required": false,
+                      "tag": "idUnidTransp"
+                    },
+                    {
+                      "name": "lacres",
+                      "description": "Lacres das Unidades de Transporte",
+                      "type": "Coleção[0  -100]",
+                      "required": false,
+                      "collection_type": "LacreUnidadeTransporteXML",
+                      "collection": {
+                        "object_type": "LacreUnidadeTransporteXML",
+                        "object_description": "Lacres das Unidades de carga",
+                        "object_attributes": [
+                          {
+                            "name": "numero_lacre",
+                            "description": "Número do lacre",
+                            "type": "String[1-20]",
+                            "required": false,
+                            "tag": "nLacre"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "unidades_carga",
+                      "description": "Informações das Unidades de Carga (Containeres/ULD/Outros)",
+                      "type": "Coleção[0-1000]",
+                      "required": false,
+                      "collection_type": "InfoUnidadeCargaXML",
+                      "collection": {
+                        "object_type": "InfoUnidadeCargaXML",
+                        "object_description": "Informações das Unidades de Carga (Containeres/ULD/Outros)",
+                        "object_attributes": [
+                          {
+                            "name": "tipo",
+                            "description": "Tipo da Unidade de carga",
+                            "type": null,
+                            "required": true,
+                            "enum": "* +1+: Container\\n* +2+: ULD\\n* +3+: Pallet\\n* +4+: Outros",
+                            "tag": "tpUnidCarga"
+                          },
+                          {
+                            "name": "identificacao",
+                            "description": "Identificação da Unidade de carga",
+                            "type": "String[1-20]",
+                            "required": false,
+                            "tag": "idUnidCarga"
+                          },
+                          {
+                            "name": "lacres",
+                            "description": "Informações das Unidades de Carga (Containeres/ULD/Outros).",
+                            "type": "Coleção[0-1000]",
+                            "required": false,
+                            "collection_type": "LacreUnidadeCargaXML",
+                            "collection": {
+                              "object_type": "LacreUnidadeCargaXML",
+                              "object_description": "Lacres das Unidades de Carga",
+                              "object_attributes": [
+                                {
+                                  "name": "numero_lacre",
+                                  "description": "Número do Lacre",
+                                  "type": "String[1-20]",
+                                  "required": false,
+                                  "tag": "nLacre"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "name": "quantidade_rateada",
+                            "description": "Quantidade rateada (Peso,Volume)",
+                            "type": "Decimal[3.2]",
+                            "required": false,
+                            "tag": "qtdRat"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "quantidade_rateada",
+                      "description": "Quantidade rateada (Peso,Volume)",
+                      "type": "Decimal[3.2]",
+                      "required": false,
+                      "tag": "qtdRat"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "produtos_perigosos",
+                "description": "Produtos Perigosos. Preenchido quando for transporte de produtos classificados pela ONU como perigosos.",
+                "type": "Coleção[0-1000]",
+                "required": false,
+                "collection_type": "InfoProdutoPerigosoXML",
+                "collection": {
+                  "object_type": "InfoProdutoPerigosoXML",
+                  "object_description": "Produtos Perigosos. Preenchido quando for transporte de produtos classificados pela ONU como perigosos.",
+                  "object_attributes": [
+                    {
+                      "name": "numero_onu",
+                      "description": "Número ONU/UN",
+                      "type": "String[4]",
+                      "required": false,
+                      "tag": "nONU"
+                    },
+                    {
+                      "name": "nome_embarque_produto",
+                      "description": "Nome apropriado para embarque do produto",
+                      "type": "String[1-150]",
+                      "required": false,
+                      "tag": "xNomeAE"
+                    },
+                    {
+                      "name": "classe_risco",
+                      "description": "Classe ou subclasse/divisão, e risco subsidiário/risco secundário",
+                      "type": "String[1-40]",
+                      "required": false,
+                      "tag": "xClaRisco"
+                    },
+                    {
+                      "name": "grupo_embalagem",
+                      "description": "Grupo de Embalagem",
+                      "type": "String[1-6]",
+                      "required": false,
+                      "tag": "grEmb"
+                    },
+                    {
+                      "name": "quantidade_total_produtos",
+                      "description": "Quantidade total por produto",
+                      "type": "String[1-20]",
+                      "required": false,
+                      "tag": "qTotProd"
+                    },
+                    {
+                      "name": "quantidade_tipo_volume",
+                      "description": "Quantidade e Tipo de volumes",
+                      "type": "String[1-60]",
+                      "required": false,
+                      "tag": "qVolTipo"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "seguros_carga",
+    "description": "Informações de Seguro da Carga.",
+    "type": "Coleção[1-1000]",
+    "required": false,
+    "collection_type": "InfoSeguroCargaXML",
+    "collection": {
+      "object_type": "InfoSeguroCargaXML",
+      "object_description": "Informações do seguro de carga",
+      "object_attributes": [
+        {
+          "name": "responsavel_seguro",
+          "description": "Responsável pelo seguro. Dados obrigatórios apenas no modal Rodoviário, depois da lei 11.442/07. Para os demais modais esta informação é opcional.",
+          "type": null,
+          "required": false,
+          "enum": "* +1+: Emitente do MDF-e;\\n* +2+: Responsável pela contratação do serviço de transporte (contratante)",
+          "tag": "respSeg"
+        },
+        {
+          "name": "cnpj_responsavel",
+          "description": "Número do CNPJ do responsável pelo seguro. Obrigatório apenas se responsável pelo seguro for (2) responsável pela contratação do transporte - Pessoa Jurídica. Caso o responsável seja Pessoa Física informar a tag 'cpf_responsavel' e omitir esta tag.",
+          "type": "String[14]",
+          "required": false,
+          "tag": "CNPJ"
+        },
+        {
+          "name": "cpf_responsavel",
+          "description": "Número do CPF do responsável pelo seguro. Obrigatório apenas se responsável pelo seguro for (2) responsável pela contratação do transporte - Pessoa Física. Caso o responsável seja Pessoa Jurídica informar a tag 'cnpj_responsavel' e omitir esta tag.",
+          "type": "Integer[11]",
+          "required": false,
+          "tag": "CPF"
+        },
+        {
+          "name": "nome_seguradora",
+          "description": "Nome da Seguradora",
+          "type": "String[1-30]",
+          "required": false,
+          "tag": "xSeg"
+        },
+        {
+          "name": "cnpj_seguradora",
+          "description": "Número do CNPJ da seguradora",
+          "type": "String[14]",
+          "required": false,
+          "tag": "CNPJ"
+        },
+        {
+          "name": "numero_apolice",
+          "description": "Número da Apólice",
+          "type": "String[1-20]",
+          "required": false,
+          "tag": "nApol"
+        },
+        {
+          "name": null,
+          "description": ":numero_averbacao Número da Averbação",
+          "type": "String[1-40] ou Array de String[1-40]",
+          "required": false,
+          "tag": "nAver"
+        }
+      ]
+    }
+  },
+  {
+    "name": "tipo_carga",
+    "description": "Tipo da Carga. Conforme Resolução ANTT no. 5.849/2019",
+    "type": null,
+    "required": false,
+    "enum": "* +01+: Granel sólido\\n* +02+: Granel líquido\\n* +03+: Frigorificada\\n* +04+: Conteinerizada\\n* +05+: Carga Geral\\n* +06+: Neogranel\\n* +07+: Perigosa (granel sólido)\\n* +08+: Perigosa (granel líquido)\\n* +09+: Perigosa (carga frigorificada)\\n* +10+: Perigosa (conteinerizada)\\n* +11+: Perigosa (carga geral)\\n* +12+: Granel pressurizada",
+    "tag": "tpCarga"
+  },
+  {
+    "name": "descricao_produto",
+    "description": "Descrição do produto predominante",
+    "type": "String[2-120]",
+    "required": false,
+    "tag": "xProd"
+  },
+  {
+    "name": "codigo_barras_produto",
+    "description": "GTIN (Global Trade Item Number) do produto, antigo código EAN ou código de barras",
+    "type": "String[14]",
+    "required": false,
+    "tag": "cEAN"
+  },
+  {
+    "name": "codigo_ncm_produto",
+    "description": "Código NCM do produto predominante",
+    "type": "String[8]",
+    "required": false,
+    "tag": "NCM"
+  },
+  {
+    "name": "cep_carregamento",
+    "description": "CEP onde foi carregado o MDF-e. Informar somente quando MDF-e for de carga lotação",
+    "type": "Integer[8]",
+    "required": false,
+    "tag": "CEP"
+  },
+  {
+    "name": "latitude_carregamento",
+    "description": "Latitude do ponto geográfico onde foi carregado o MDF-e. Informar somente quando MDF-e for de carga lotação",
+    "type": "Decimal[2.6]",
+    "required": false,
+    "tag": "latitude"
+  },
+  {
+    "name": "longitude_carregamento",
+    "description": "Longitude do ponto geográfico onde foi carregado o MDF-e. Informar somente quando MDF-e for de carga lotação",
+    "type": "Decimal[2.6]",
+    "required": false,
+    "tag": "longitude"
+  },
+  {
+    "name": "cep_descarregamento",
+    "description": "CEP onde foi descarregado o MDF-e. Informar somente quando MDF-e for de carga lotação",
+    "type": "Integer[8]",
+    "required": false,
+    "tag": "CEP"
+  },
+  {
+    "name": "latitude_descarregamento",
+    "description": "Latitude do ponto geográfico onde foi descarregado o MDF-e. Informar somente quando MDF-e for de carga lotação",
+    "type": "Decimal[2.6]",
+    "required": false,
+    "tag": "latitude"
+  },
+  {
+    "name": "longitude_descarregamento",
+    "description": "Longitude do ponto geográfico onde foi descarregado o MDF-e. Informar somente quando MDF-e for de carga lotação",
+    "type": "Decimal[2.6]",
+    "required": false,
+    "tag": "longitude"
+  },
+  {
+    "name": "quantidade_total_cte",
+    "description": "Quantidade total de CT-e relacionados no Manifesto",
+    "type": "Integer[1-6]",
+    "required": false,
+    "tag": "qCTe"
+  },
+  {
+    "name": "quantidade_total_nfe",
+    "description": "Quantidade total de NF-e relacionados no Manifesto",
+    "type": "Integer[1-6]",
+    "required": false,
+    "tag": "qNFe"
+  },
+  {
+    "name": "quantidade_total_mdfe_aquaviario",
+    "description": "Quantidade total de MDF-e relacionados no Manifesto Aquaviário",
+    "type": "Integer[1-6]",
+    "required": false,
+    "tag": "qMDFe"
+  },
+  {
+    "name": "valor_total_carga",
+    "description": "Valor total da carga / mercadorias transportadas",
+    "type": "Decimal[13.2]",
+    "required": true,
+    "tag": "vCarga"
+  },
+  {
+    "name": "codigo_unidade_medida_peso_bruto",
+    "description": "Código da Unidade de Medida",
+    "type": null,
+    "required": true,
+    "enum": "* +01+: KG\\n* +02+: TON",
+    "tag": "cUnid"
+  },
+  {
+    "name": "peso_bruto",
+    "description": "Peso Bruto Total da Carga / Mercadorias transportadas",
+    "type": "String[11.4]",
+    "required": false,
+    "tag": "qCarga"
+  },
+  {
+    "name": "lacres",
+    "description": "Lacres do MDF-e.",
+    "type": "Coleção[0-1000]",
+    "required": false,
+    "collection_type": "LacreXML",
+    "collection": {
+      "object_type": "LacreXML",
+      "object_description": "Lacres do MDF-e",
+      "object_attributes": [
+        {
+          "name": "numero_lacre",
+          "description": "Número do Lacre",
+          "type": "String[1-60]",
+          "required": false,
+          "tag": "nLacre"
+        }
+      ]
+    }
+  },
+  {
+    "name": "pessoas_autorizadas",
+    "description": "Pessoas autorizadas a acessar o XML da MDF-e",
+    "type": "Coleção[0-10]",
+    "required": false,
+    "collection_type": "PessoaAutorizadaXML",
+    "collection": {
+      "object_type": "PessoaAutorizadaXML",
+      "object_description": "Pessoa autorizada a acessar o XML da MDF-e. Tag XML autXML",
+      "object_attributes": [
+        {
+          "name": "cnpj",
+          "description": "CNPJ autorizado",
+          "type": "String[14]",
+          "required": false,
+          "tag": "CNPJ"
+        },
+        {
+          "name": "cpf",
+          "description": "CPF autorizado",
+          "type": "Integer[11]",
+          "required": false,
+          "tag": "CPF"
+        }
+      ]
+    }
+  },
+  {
+    "name": "informacao_adicional_fisco",
+    "description": "Informações adicionais de interesse do Fisco",
+    "type": "String[1-2000]",
+    "required": false,
+    "tag": "infAdFisco"
+  },
+  {
+    "name": "informacao_complementar",
+    "description": "Informações complementares de interesse do Contribuinte",
+    "type": "String[1-5000]",
+    "required": false,
+    "tag": "infCpl"
+  },
+  {
+    "name": "cnpj_responsavel_tecnico",
+    "description": "CNPJ da pessoa a ser contatada na empresa desenvolvedora do sistema utilizado na emissão do documento fiscal eletrônico",
+    "type": "String[14]",
+    "required": false,
+    "tag": "CNPJ"
+  },
+  {
+    "name": "contato_responsavel_tecnico",
+    "description": "Nome da pessoa a ser contatada na empresa desenvolvedora do sistema",
+    "type": "String[2-60]",
+    "required": false,
+    "tag": "xContato"
+  },
+  {
+    "name": "email_responsavel_tecnico",
+    "description": "E-mail da pessoa a ser contatada na empresa desenvolvedora do sistema",
+    "type": "String[6-60]",
+    "required": false,
+    "tag": "email"
+  },
+  {
+    "name": "telefone_responsavel_tecnico",
+    "description": "Telefone da pessoa a ser contatada na empresa desenvolvedora do sistema",
+    "type": "String[6-14]",
+    "required": false,
+    "tag": "fone"
+  }
+]

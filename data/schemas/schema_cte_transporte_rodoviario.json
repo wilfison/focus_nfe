@@ -1,0 +1,78 @@
+[
+  {
+    "name": "rntrc",
+    "description": "Registro Nacional de Transportadores Rodoviários de Carga",
+    "type": "String[8]",
+    "required": true,
+    "tag": "RNTRC"
+  },
+  {
+    "name": "ordens_coleta_associados",
+    "description": "Ordens de Coleta associados",
+    "type": "Coleção[0-10]",
+    "required": false,
+    "collection_type": "OrdemColetaXML",
+    "collection": {
+      "object_type": "OrdemColetaXML",
+      "object_description": "Ordem de Coleta associada. Tag XML occ.",
+      "object_attributes": [
+        {
+          "name": "serie",
+          "description": "Série da OCC",
+          "type": "String[1-3]",
+          "required": false,
+          "tag": "serie"
+        },
+        {
+          "name": "numero_ordem_coleta",
+          "description": "Número da Ordem de Coleta",
+          "type": "Integer[1-6]",
+          "required": true,
+          "tag": "nOcc"
+        },
+        {
+          "name": "data_emissao",
+          "description": "Data de emissão da Ordem de Coleta",
+          "type": null,
+          "required": true,
+          "tag": "dEmi"
+        },
+        {
+          "name": "cnpj",
+          "description": "Número do CNPJ",
+          "type": "String[14]",
+          "required": true,
+          "tag": "CNPJ"
+        },
+        {
+          "name": "codigo_interno",
+          "description": "Código interno de uso da transportadora",
+          "type": "String[1-10]",
+          "required": false,
+          "tag": "cInt"
+        },
+        {
+          "name": "inscricao_estadual",
+          "description": "Inscrição Estadual",
+          "type": "String[2-14]",
+          "required": true,
+          "tag": "IE"
+        },
+        {
+          "name": "uf",
+          "description": "Sigla da UF Informar EX para operações com o exterior.",
+          "type": "String[2]",
+          "required": true,
+          "tag": "UF"
+        },
+        {
+          "name": "telefone",
+          "description": "Telefone.",
+          "type": "Integer[6-14]",
+          "required": false,
+          "tag": "fone"
+        }
+      ]
+    }
+  }
+]

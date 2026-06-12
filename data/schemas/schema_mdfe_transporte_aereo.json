@@ -1,0 +1,44 @@
+[
+  {
+    "name": "marca_nacionalidade_aeronave",
+    "description": "Marca da Nacionalidade da aeronave",
+    "type": "String[1-4]",
+    "required": true,
+    "tag": "nac"
+  },
+  {
+    "name": "marca_matricula_aeronave",
+    "description": "Marca da Nacionalidade da aeronave",
+    "type": "String[1-4]",
+    "required": true,
+    "tag": "matr"
+  },
+  {
+    "name": "numero_voo",
+    "description": "Número do Voo. Formato = AB1234, sendo AB a designação da empresa e 1234 o número do voo. Quando não for possível incluir as marcas de nacionalidade e matrícula sem hífen.",
+    "type": "String[5-9]",
+    "required": true,
+    "tag": "nVoo"
+  },
+  {
+    "name": "aerodromo_embarque",
+    "description": "Aeródromo de Embarque",
+    "type": "String[3-4]",
+    "required": true,
+    "tag": "cAerEmb"
+  },
+  {
+    "name": "aerodromo_destino",
+    "description": "Aeródromo de Destino",
+    "type": "String[3-4]",
+    "required": true,
+    "tag": "cAerDes"
+  },
+  {
+    "name": "data_voo",
+    "description": "Data do Voo",
+    "type": null,
+    "required": true,
+    "tag": "dVoo"
+  }
+]

@@ -10,15 +10,31 @@ module FocusNfe
         #
         # @param ref [String] referência única do documento na sua aplicação
         # @param dados [Hash] payload de emissão (campos do schema, validados server-side)
+        # @param validar [Boolean] se +true+, valida +dados+ contra o schema empacotado
+        #   antes do envio (documentos sem schema próprio são emitidos sem validar)
         # @param opcoes [Hash] parâmetros de query adicionais (ex.: emissão síncrona)
         # @return [FocusNfe::Modelos::Documento]
         # @raise [ArgumentError] se a +ref+ for inválida
+        # @raise [FocusNfe::Esquemas::ErroDeValidacao] se +validar+ e +dados+ violarem o schema
         # @raise [FocusNfe::Errors::HttpError] em respostas não-2xx
-        def emitir(ref:, dados:, **opcoes)
+        def emitir(ref:, dados:, validar: false, **opcoes)
           validar_referencia!(ref)
+          validar_dados!(dados) if validar
 
           response = connection.post(caminho_base, params: { ref: ref, **opcoes }, body: dados)
           Modelos::Documento.from_response(response, ref: ref)
+        end
+
+        private
+
+        # @param dados [Hash] payload de emissão a validar contra o schema
+        # @return [void]
+        # @raise [FocusNfe::Esquemas::ErroDeValidacao] se houver campo inválido/ausente
+        def validar_dados!(dados)
+          esquema = Esquemas::Esquema.carregar(caminho_base)
+          return unless esquema
+
+          Esquemas::Validador.new(esquema).validar!(dados)
         end
       end
     end

@@ -1,0 +1,548 @@
+[
+  {
+    "name": "chave",
+    "description": "Chave do documento fiscal recebido, identificador único em nossa API",
+    "type": "String",
+    "required": false
+  },
+  {
+    "name": "versao",
+    "description": "Versão do documento fiscal recebido, numero sequencial único em nossa API",
+    "type": "Integer",
+    "required": false
+  },
+  {
+    "name": "status",
+    "description": "Status do documento fiscal",
+    "type": null,
+    "required": false,
+    "enum": "* +1+: autorizado\\n* +2+: cancelado\\n* +3+: substituido"
+  },
+  {
+    "name": "numero",
+    "description": "Número da NFSe",
+    "type": "String",
+    "required": false
+  },
+  {
+    "name": "serie",
+    "description": "Série da NFSe",
+    "type": "String",
+    "required": false
+  },
+  {
+    "name": "codigo_verificacao",
+    "description": "Codigo de verificação da NFSe",
+    "type": "String",
+    "required": false
+  },
+  {
+    "name": "data_emissao",
+    "description": "Data e Hora de emissão da NFSe",
+    "type": "String[25] Padrão ISO",
+    "required": false
+  },
+  {
+    "name": "numero_rps",
+    "description": "Número do RPS",
+    "type": "String",
+    "required": false
+  },
+  {
+    "name": "serie_rps",
+    "description": "Série do RPS",
+    "type": "String",
+    "required": false
+  },
+  {
+    "name": "tipo_rps",
+    "description": "Tipo do RPS",
+    "type": "String",
+    "required": false
+  },
+  {
+    "name": "data_emissao_rps",
+    "description": "Data e Hora de emissão do RPS",
+    "type": "String[25] Padrão ISO",
+    "required": false
+  },
+  {
+    "name": "natureza_operacao",
+    "description": "Natureza da operação (conforme definição da prefeitura)",
+    "type": "String",
+    "required": false
+  },
+  {
+    "name": "regime_especial_tributacao",
+    "description": "Código de identificação do regime especial de tributação (conforme definição da prefeitura)",
+    "type": "String",
+    "required": false
+  },
+  {
+    "name": "optante_simples_nacional",
+    "description": "Empresa prestadora é optante pelo Simples Nacional",
+    "type": "Boolean",
+    "required": false
+  },
+  {
+    "name": "incentivador_cultural",
+    "description": "Empresa prestadora possui incentivo fiscal (ex: incentivador cultural)",
+    "type": "Boolean",
+    "required": false
+  },
+  {
+    "name": "competencia",
+    "description": "Data da prestação de serviço",
+    "type": "String[10] Padrão ISO (YYYY-MM-DD)",
+    "required": false
+  },
+  {
+    "name": "numero_nfse_substituida",
+    "description": "Número da NFSe substituída",
+    "type": "String",
+    "required": false
+  },
+  {
+    "name": "outras_informacoes",
+    "description": "Outras informações fornecidas pela prefeitura",
+    "type": "String",
+    "required": false
+  },
+  {
+    "name": "informacoes_adicionais_contribuinte",
+    "description": "Informações adicionais fornecidas pelo prestador",
+    "type": "String",
+    "required": false
+  },
+  {
+    "name": "prestador",
+    "description": "Dados do prestador (emitente) do documento fiscal",
+    "type": null,
+    "required": false,
+    "collection_type": "PessoaEmpresa",
+    "collection": {
+      "object_type": "PessoaEmpresa",
+      "object_description": "Dados da Pessoa Física ou Empresa",
+      "object_attributes": [
+        {
+          "name": "cpf",
+          "description": "Número do CPF, se Pessoa Física (apenas dígitos)",
+          "type": "String[11]",
+          "required": false
+        },
+        {
+          "name": "cnpj",
+          "description": "Número do CNPJ, se Empresa (apenas dígitos)",
+          "type": "String[14]",
+          "required": false
+        },
+        {
+          "name": "inscricao_municipal",
+          "description": "Número de Inscrição Municipal",
+          "type": "String",
+          "required": false
+        },
+        {
+          "name": "razao_social",
+          "description": "Razão Social da Empresa ou Nome da Pessoa Física",
+          "type": "String",
+          "required": false
+        },
+        {
+          "name": "nome_fantasia",
+          "description": "Nome fantasia da Empresa (apenas para Prestador)",
+          "type": "String",
+          "required": false
+        },
+        {
+          "name": "telefone",
+          "description": "Número de telefone de contato",
+          "type": "String",
+          "required": false
+        },
+        {
+          "name": "email",
+          "description": "Endereço eletrônico (e-mail) de contato",
+          "type": "String",
+          "required": false
+        },
+        {
+          "name": "endereco",
+          "description": "Endereço",
+          "type": null,
+          "required": false,
+          "collection_type": "Endereco",
+          "collection": {
+            "object_type": "Endereco",
+            "object_description": "Dados de endereço",
+            "object_attributes": [
+              {
+                "name": "logradouro",
+                "description": "Tipo e nome do logradouro",
+                "type": "String",
+                "required": false
+              },
+              {
+                "name": "numero",
+                "description": "Número do imóvel",
+                "type": "String",
+                "required": false
+              },
+              {
+                "name": "complemento",
+                "description": "Complemento do endereço",
+                "type": "String",
+                "required": false
+              },
+              {
+                "name": "bairro",
+                "description": "Bairro",
+                "type": "String",
+                "required": false
+              },
+              {
+                "name": "codigo_municipio",
+                "description": "Código do município (conforme tabela do IBGE)",
+                "type": "String[7]",
+                "required": false
+              },
+              {
+                "name": "nome_municipio",
+                "description": "Nome do município",
+                "type": "String",
+                "required": false
+              },
+              {
+                "name": "uf",
+                "description": "Sigla da Unidade de Federação",
+                "type": "String[2]",
+                "required": false
+              },
+              {
+                "name": "codigo_pais",
+                "description": "Código do país (conforme tabela do IBGE)",
+                "type": "String[4]",
+                "required": false
+              },
+              {
+                "name": "cep",
+                "description": "Número do CEP (apenas dígitos)",
+                "type": "String[8]",
+                "required": false
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "tomador",
+    "description": "Dados do tomador (remetente) do documento fiscal",
+    "type": null,
+    "required": false,
+    "collection_type": "PessoaEmpresa",
+    "collection": {
+      "object_type": "PessoaEmpresa",
+      "object_description": "Dados da Pessoa Física ou Empresa",
+      "object_attributes": [
+        {
+          "name": "cpf",
+          "description": "Número do CPF, se Pessoa Física (apenas dígitos)",
+          "type": "String[11]",
+          "required": false
+        },
+        {
+          "name": "cnpj",
+          "description": "Número do CNPJ, se Empresa (apenas dígitos)",
+          "type": "String[14]",
+          "required": false
+        },
+        {
+          "name": "inscricao_municipal",
+          "description": "Número de Inscrição Municipal",
+          "type": "String",
+          "required": false
+        },
+        {
+          "name": "razao_social",
+          "description": "Razão Social da Empresa ou Nome da Pessoa Física",
+          "type": "String",
+          "required": false
+        },
+        {
+          "name": "nome_fantasia",
+          "description": "Nome fantasia da Empresa (apenas para Prestador)",
+          "type": "String",
+          "required": false
+        },
+        {
+          "name": "telefone",
+          "description": "Número de telefone de contato",
+          "type": "String",
+          "required": false
+        },
+        {
+          "name": "email",
+          "description": "Endereço eletrônico (e-mail) de contato",
+          "type": "String",
+          "required": false
+        },
+        {
+          "name": "endereco",
+          "description": "Endereço",
+          "type": null,
+          "required": false,
+          "collection_type": "Endereco",
+          "collection": {
+            "object_type": "Endereco",
+            "object_description": "Dados de endereço",
+            "object_attributes": [
+              {
+                "name": "logradouro",
+                "description": "Tipo e nome do logradouro",
+                "type": "String",
+                "required": false
+              },
+              {
+                "name": "numero",
+                "description": "Número do imóvel",
+                "type": "String",
+                "required": false
+              },
+              {
+                "name": "complemento",
+                "description": "Complemento do endereço",
+                "type": "String",
+                "required": false
+              },
+              {
+                "name": "bairro",
+                "description": "Bairro",
+                "type": "String",
+                "required": false
+              },
+              {
+                "name": "codigo_municipio",
+                "description": "Código do município (conforme tabela do IBGE)",
+                "type": "String[7]",
+                "required": false
+              },
+              {
+                "name": "nome_municipio",
+                "description": "Nome do município",
+                "type": "String",
+                "required": false
+              },
+              {
+                "name": "uf",
+                "description": "Sigla da Unidade de Federação",
+                "type": "String[2]",
+                "required": false
+              },
+              {
+                "name": "codigo_pais",
+                "description": "Código do país (conforme tabela do IBGE)",
+                "type": "String[4]",
+                "required": false
+              },
+              {
+                "name": "cep",
+                "description": "Número do CEP (apenas dígitos)",
+                "type": "String[8]",
+                "required": false
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "servicos",
+    "description": "Dados dos serviços prestados",
+    "type": "Array de Servico",
+    "required": false,
+    "collection_type": "Servico",
+    "collection": {
+      "object_type": "Servico",
+      "object_description": "Dados de um item de serviço prestado",
+      "object_attributes": [
+        {
+          "name": "valor_servicos",
+          "description": "Valor do serviço",
+          "type": "Decimal[13.2]",
+          "required": false
+        },
+        {
+          "name": "valor_deducoes",
+          "description": "Valor total das deduções",
+          "type": "Decimal[13.2]",
+          "required": false
+        },
+        {
+          "name": "valor_pis",
+          "description": "Valor do PIS",
+          "type": "Decimal[13.2]",
+          "required": false
+        },
+        {
+          "name": "valor_cofins",
+          "description": "Valor do COFINS",
+          "type": "Decimal[13.2]",
+          "required": false
+        },
+        {
+          "name": "valor_inss",
+          "description": "Valor do INSS",
+          "type": "Decimal[13.2]",
+          "required": false
+        },
+        {
+          "name": "valor_ir",
+          "description": "Valor do imposto de renda",
+          "type": "Decimal[13.2]",
+          "required": false
+        },
+        {
+          "name": "valor_csll",
+          "description": "Valor do CSLL",
+          "type": "Decimal[13.2]",
+          "required": false
+        },
+        {
+          "name": "iss_retido",
+          "description": "O ISS foi retido na fonte",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "name": "valor_iss",
+          "description": "Valor do ISS devido, informado pelo prestador ou município",
+          "type": "Decimal[13.2]",
+          "required": false
+        },
+        {
+          "name": "valor_iss_retido",
+          "description": "Valor do ISS quando retido",
+          "type": "Decimal[13.2]",
+          "required": false
+        },
+        {
+          "name": "outras_retencoes",
+          "description": "Valor total de outras retenções na Fonte",
+          "type": "Decimal[13.2]",
+          "required": false
+        },
+        {
+          "name": "base_calculo",
+          "description": "Base de cálculo da NFSe",
+          "type": "Decimal[13.2]",
+          "required": false
+        },
+        {
+          "name": "aliquota",
+          "description": "Alíquota do serviço prestado (valor percentual, entre 0% e 100%)",
+          "type": "Decimal[3.4]",
+          "required": false
+        },
+        {
+          "name": "valor_liquido",
+          "description": "Valor líquido da NFSe",
+          "type": "Decimal[13.2]",
+          "required": false
+        },
+        {
+          "name": "valor_credito",
+          "description": "Valor do crédito gerado pela NFSe",
+          "type": "Decimal[13.2]",
+          "required": false
+        },
+        {
+          "name": "desconto_incondicionado",
+          "description": "Valor desconto incondicionado (deduzido no cômputo da base de cálculo)",
+          "type": "Decimal[13.2]",
+          "required": false
+        },
+        {
+          "name": "desconto_condicionado",
+          "description": "Valor desconto condicionado (não deduzido no cômputo da base de cálculo)",
+          "type": "Decimal[13.2]",
+          "required": false
+        },
+        {
+          "name": "item_lista_servico",
+          "description": "Código do subitem do serviço prestado (conforme Lei Complementar 116/2003)",
+          "type": "String[5] Padrão NF-e (0#.0#)",
+          "required": false
+        },
+        {
+          "name": "codigo_cnae",
+          "description": "Código CNAE do serviço prestado",
+          "type": "String[7]",
+          "required": false
+        },
+        {
+          "name": "codigo_tributario_municipio",
+          "description": "Código do serviço prestado próprio do município",
+          "type": "String",
+          "required": false
+        },
+        {
+          "name": "discriminacao",
+          "description": "Discriminação dos serviços",
+          "type": "String",
+          "required": false
+        },
+        {
+          "name": "codigo_municipio",
+          "description": "Código do município (conforme tabela do IBGE) da prestação do serviço",
+          "type": "String[7]",
+          "required": false
+        },
+        {
+          "name": "codigo_pais",
+          "description": "Código do país (conforme tabela do IBGE) da prestação do serviço",
+          "type": "String[4]",
+          "required": false
+        },
+        {
+          "name": "codigo_municipio_incidencia",
+          "description": "Código do município (conforme tabela do IBGE) da incidência do ISS",
+          "type": "String[7]",
+          "required": false
+        },
+        {
+          "name": "quantidade",
+          "description": "Quantidade do item de serviço prestado",
+          "type": "Decimal[13.2]",
+          "required": false
+        },
+        {
+          "name": "valor_unitario",
+          "description": "Valor de cada unidade do item de serviço prestado",
+          "type": "Decimal[13.2]",
+          "required": false
+        }
+      ]
+    }
+  },
+  {
+    "name": "url",
+    "description": "URL para acesso ao espelho da NFSe",
+    "type": "String",
+    "required": false
+  },
+  {
+    "name": "url_xml",
+    "description": "URL para acesso ao XML da NFSe",
+    "type": "String",
+    "required": false
+  },
+  {
+    "name": "erros",
+    "description": "Eventuais erros e mensagens adicionais de processamento da API Focus NFe",
+    "type": "Array de Mensagem",
+    "required": false
+  }
+]

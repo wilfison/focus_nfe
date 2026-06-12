@@ -1,0 +1,2316 @@
+[
+  {
+    "name": "versao",
+    "description": "Versao do leiaute da NFGas.",
+    "type": "String[4]",
+    "required": true,
+    "tag": "versao"
+  },
+  {
+    "name": "chave_nfgas",
+    "description": "Identificador da NFGas para assinatura digital.",
+    "type": "String[49]",
+    "required": true,
+    "tag": "Id"
+  },
+  {
+    "name": "uf",
+    "description": "Codigo da UF do emitente da NFGas.",
+    "type": "String[2]",
+    "required": true,
+    "tag": "cUF"
+  },
+  {
+    "name": "ambiente",
+    "description": "Identificacao do ambiente.",
+    "type": null,
+    "required": true,
+    "enum": "* +1+: Producao\\n* +2+: Homologacao",
+    "tag": "tpAmb"
+  },
+  {
+    "name": "modelo",
+    "description": "Modelo do documento fiscal.",
+    "type": "String[2]",
+    "required": true,
+    "tag": "mod"
+  },
+  {
+    "name": "serie",
+    "description": "Serie do documento fiscal.",
+    "type": "String[1-3]",
+    "required": true,
+    "tag": "serie"
+  },
+  {
+    "name": "numero",
+    "description": "Numero do documento fiscal.",
+    "type": "String[1-9]",
+    "required": true,
+    "tag": "nNF"
+  },
+  {
+    "name": "codigo_unico",
+    "description": "Codigo numerico que compoe a chave de acesso.",
+    "type": "String[7]",
+    "required": true,
+    "tag": "cNF"
+  },
+  {
+    "name": "digito_verificador",
+    "description": "Digito verificador da chave de acesso.",
+    "type": "String[1]",
+    "required": true,
+    "tag": "cDV"
+  },
+  {
+    "name": "data_emissao",
+    "description": "Data e hora de emissao do documento fiscal.",
+    "type": "DateTime",
+    "required": true,
+    "tag": "dhEmi"
+  },
+  {
+    "name": "forma_emissao",
+    "description": "Forma de emissao do documento fiscal.",
+    "type": null,
+    "required": true,
+    "enum": "* +1+: Normal\\n* +2+: Contingencia off-line",
+    "tag": "tpEmis"
+  },
+  {
+    "name": "numero_site",
+    "description": "Identificacao do numero do site do autorizador.",
+    "type": "String[1]",
+    "required": true,
+    "tag": "nSiteAutoriz"
+  },
+  {
+    "name": "codigo_municipio_fato_gerador",
+    "description": "Codigo do municipio de ocorrencia do fato gerador do IBS/CBS.",
+    "type": "String[7]",
+    "required": true,
+    "tag": "cMunFG"
+  },
+  {
+    "name": "finalidade_emissao",
+    "description": "Finalidade de emissao da NFGas.",
+    "type": null,
+    "required": true,
+    "enum": "* +0+: NFGas normal\\n* +3+: NFGas substituicao",
+    "tag": "finNFGas"
+  },
+  {
+    "name": "tipo_faturamento",
+    "description": "Tipo de faturamento da NFGas.",
+    "type": null,
+    "required": true,
+    "enum": "* +1+: Faturamento Normal\\n* +2+: Faturamento Agregado\\n* +3+: Faturamento Agregador",
+    "tag": "tpFat"
+  },
+  {
+    "name": "versao_aplicativo",
+    "description": "Versao do processo de emissao.",
+    "type": "String[1-20]",
+    "required": true,
+    "tag": "verProc"
+  },
+  {
+    "name": "data_entrada_contingencia",
+    "description": "Data e hora da entrada em contingencia.",
+    "type": "DateTime",
+    "required": false,
+    "tag": "dhCont"
+  },
+  {
+    "name": "motivo_entrada_contingencia",
+    "description": "Justificativa da entrada em contingencia.",
+    "type": "String[15-256]",
+    "required": false,
+    "tag": "xJust"
+  },
+  {
+    "name": "tipo_ente_governamental",
+    "description": "Tipo de ente governamental.",
+    "type": null,
+    "required": false,
+    "enum": "* +1+: Uniao\\n* +2+: Estados\\n* +3+: Distrito Federal\\n* +4+: Municipios\\n* +5+: Consorcio Publico\\n* +6+: Comite Gestor do IBS",
+    "tag": "tpEnteGov"
+  },
+  {
+    "name": "percentual_redutor_compra_governamental",
+    "description": "Percentual de reducao em compra governamental.",
+    "type": "Decimal[3.2-4]",
+    "required": false,
+    "tag": "pRedutor"
+  },
+  {
+    "name": "tipo_operacao_governamental",
+    "description": "Tipo da operacao com ente governamental.",
+    "type": null,
+    "required": false,
+    "enum": "* +1+: Fornecimento com pagamento posterior\\n* +2+: Recebimento do pagamento com fornecimento ja realizado\\n* +3+: Fornecimento com pagamento ja realizado\\n* +4+: Recebimento do pagamento com fornecimento posterior",
+    "tag": "tpOperGov"
+  },
+  {
+    "name": "referencia_dfe_anterior",
+    "description": "Chave de acesso do documento fiscal anterior referenciado.",
+    "type": "String[44]",
+    "required": false,
+    "tag": "refDFeAnt"
+  },
+  {
+    "name": "cnpj_emitente",
+    "description": "CNPJ do emitente.",
+    "type": "String[14]",
+    "required": true,
+    "tag": "CNPJ"
+  },
+  {
+    "name": "inscricao_estadual_emitente",
+    "description": "Inscricao Estadual do emitente.",
+    "type": "String[2-14]",
+    "required": true,
+    "tag": "IE"
+  },
+  {
+    "name": "nome_emitente",
+    "description": "Razao social ou nome do emitente.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xNome"
+  },
+  {
+    "name": "nome_fantasia_emitente",
+    "description": "Nome fantasia do emitente.",
+    "type": "String[1-60]",
+    "required": false,
+    "tag": "xFant"
+  },
+  {
+    "name": "logradouro_emitente",
+    "description": "Logradouro do endereco do emitente.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xLgr"
+  },
+  {
+    "name": "numero_emitente",
+    "description": "Numero do endereco do emitente.",
+    "type": "String[1-60]",
+    "required": true,
+    "tag": "nro"
+  },
+  {
+    "name": "complemento_emitente",
+    "description": "Complemento do endereco do emitente.",
+    "type": "String[1-60]",
+    "required": false,
+    "tag": "xCpl"
+  },
+  {
+    "name": "bairro_emitente",
+    "description": "Bairro do endereco do emitente.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xBairro"
+  },
+  {
+    "name": "codigo_municipio_emitente",
+    "description": "Codigo do municipio do emitente conforme tabela do IBGE.",
+    "type": "String[7]",
+    "required": true,
+    "tag": "cMun"
+  },
+  {
+    "name": "municipio_emitente",
+    "description": "Nome do municipio do emitente.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xMun"
+  },
+  {
+    "name": "cep_emitente",
+    "description": "CEP do emitente.",
+    "type": "String[8]",
+    "required": false,
+    "tag": "CEP"
+  },
+  {
+    "name": "uf_emitente",
+    "description": "Sigla da UF do emitente.",
+    "type": "String[2]",
+    "required": true,
+    "tag": "UF"
+  },
+  {
+    "name": "telefone_emitente",
+    "description": "Telefone do emitente.",
+    "type": "String[7-12]",
+    "required": false,
+    "tag": "fone"
+  },
+  {
+    "name": "email_emitente",
+    "description": "E-mail do emitente.",
+    "type": "String[1-60]",
+    "required": false,
+    "tag": "email"
+  },
+  {
+    "name": "nome_destinatario",
+    "description": "Razao social ou nome do destinatario.",
+    "type": "String[2-60]",
+    "required": false,
+    "tag": "xNome"
+  },
+  {
+    "name": "cnpj_destinatario",
+    "description": "CNPJ do destinatario. Informar CNPJ ou CPF ou idOutros.",
+    "type": "String[14]",
+    "required": true,
+    "tag": "CNPJ"
+  },
+  {
+    "name": "cpf_destinatario",
+    "description": "CPF do destinatario. Informar CNPJ ou CPF ou idOutros.",
+    "type": "String[11]",
+    "required": false,
+    "tag": "CPF"
+  },
+  {
+    "name": "id_outros_destinatario",
+    "description": "Outra identificacao do destinatario. Informar CNPJ ou CPF ou idOutros.",
+    "type": "String[2-20]",
+    "required": false,
+    "tag": "idOutros"
+  },
+  {
+    "name": "inscricao_estadual_destinatario",
+    "description": "Inscricao Estadual do destinatario.",
+    "type": "String",
+    "required": false,
+    "tag": "IE"
+  },
+  {
+    "name": "inscricao_municipal_destinatario",
+    "description": "Inscricao Municipal do destinatario.",
+    "type": "String[1-15]",
+    "required": false,
+    "tag": "IM"
+  },
+  {
+    "name": "nis_destinatario",
+    "description": "Numero da Identificacao Social - NIS.",
+    "type": "String[15]",
+    "required": false,
+    "tag": "cNIS"
+  },
+  {
+    "name": "beneficio_destinatario",
+    "description": "Numero do beneficio.",
+    "type": "String[10]",
+    "required": false,
+    "tag": "NB"
+  },
+  {
+    "name": "nome_adicional_destinatario",
+    "description": "Nome adicional do destinatario.",
+    "type": "String[2-60]",
+    "required": false,
+    "tag": "xNomeAdicional"
+  },
+  {
+    "name": "logradouro_destinatario",
+    "description": "Logradouro do endereco do destinatario.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xLgr"
+  },
+  {
+    "name": "numero_destinatario",
+    "description": "Numero do endereco do destinatario.",
+    "type": "String[1-60]",
+    "required": true,
+    "tag": "nro"
+  },
+  {
+    "name": "complemento_destinatario",
+    "description": "Complemento do endereco do destinatario.",
+    "type": "String[1-60]",
+    "required": false,
+    "tag": "xCpl"
+  },
+  {
+    "name": "bairro_destinatario",
+    "description": "Bairro do endereco do destinatario.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xBairro"
+  },
+  {
+    "name": "codigo_municipio_destinatario",
+    "description": "Codigo do municipio do destinatario conforme tabela do IBGE.",
+    "type": "String[7]",
+    "required": true,
+    "tag": "cMun"
+  },
+  {
+    "name": "municipio_destinatario",
+    "description": "Nome do municipio do destinatario.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xMun"
+  },
+  {
+    "name": "cep_destinatario",
+    "description": "CEP do destinatario.",
+    "type": "String[8]",
+    "required": false,
+    "tag": "CEP"
+  },
+  {
+    "name": "uf_destinatario",
+    "description": "Sigla da UF do destinatario.",
+    "type": "String[2]",
+    "required": true,
+    "tag": "UF"
+  },
+  {
+    "name": "telefone_destinatario",
+    "description": "Telefone do destinatario.",
+    "type": "String[7-12]",
+    "required": false,
+    "tag": "fone"
+  },
+  {
+    "name": "email_destinatario",
+    "description": "E-mail do destinatario.",
+    "type": "String[1-60]",
+    "required": false,
+    "tag": "email"
+  },
+  {
+    "name": null,
+    "description": "Dados da instalação vinculada a NFGas.",
+    "type": null,
+    "required": false
+  },
+  {
+    "name": "identificacao_instalacao",
+    "description": "Codigo unico de identificacao da instalação.",
+    "type": "String[1-15]",
+    "required": true,
+    "tag": "idInstalacao"
+  },
+  {
+    "name": "identificacao_cliente_emitente_instalacao",
+    "description": "Codigo de identificacao do cliente para a empresa emitente da instalação.",
+    "type": "String[2-20]",
+    "required": false,
+    "tag": "idCodCliente"
+  },
+  {
+    "name": "tipo_instalacao",
+    "description": "Tipo da instalação.",
+    "type": null,
+    "required": true,
+    "enum": "* +1+: Cativo\\n* +2+: Livre\\n* +3+: Parcialmente Livre",
+    "tag": "tpInstalacao"
+  },
+  {
+    "name": "numero_contrato_instalacao",
+    "description": "Numero do contrato da instalação.",
+    "type": "String[1-20]",
+    "required": false,
+    "tag": "nContrato"
+  },
+  {
+    "name": "tipo_classe_instalacao",
+    "description": "Classe de consumo da instalação.",
+    "type": null,
+    "required": true,
+    "enum": "* +01+: Comercial\\n* +02+: Industrial\\n* +03+: Residencial\\n* +04+: Termico\\n* +05+: Veicular Posto\\n* +06+: Veicular Frota\\n* +07+: GNC\\n* +08+: GNL\\n* +09+: Cogeracao\\n* +10+: Refinaria\\n* +99+: Outros",
+    "tag": "tpClasse"
+  },
+  {
+    "name": "descricao_classe_instalacao",
+    "description": "Detalhamento da classe da instalação quando informado Outros .",
+    "type": "String[1-200]",
+    "required": false,
+    "tag": "xClasse"
+  },
+  {
+    "name": "latitude_gps_instalacao",
+    "description": "Latitude do ponto geografico da instalação.",
+    "type": "String[8-10]",
+    "required": false,
+    "tag": "latGPS"
+  },
+  {
+    "name": "longitude_gps_instalacao",
+    "description": "Longitude do ponto geografico da instalação.",
+    "type": "String[8-11]",
+    "required": false,
+    "tag": "longGPS"
+  },
+  {
+    "name": "codigo_roteiro_leitura_instalacao",
+    "description": "Roteiro de leitura para uso operacional da instalação.",
+    "type": "String[2-100]",
+    "required": false,
+    "tag": "codRoteiroLeitura"
+  },
+  {
+    "name": null,
+    "description": "Informacoes de substituição da NFGas.",
+    "type": null,
+    "required": false
+  },
+  {
+    "name": "chave_nfgas_substituicao",
+    "description": "Chave de acesso da NFGas referenciada.",
+    "type": "String[44]",
+    "required": false,
+    "tag": "chNFGas"
+  },
+  {
+    "name": null,
+    "description": "Documento fiscal em papel referenciado na substituição.",
+    "type": null,
+    "required": false
+  },
+  {
+    "name": "cnpj_emitente_substituicao",
+    "description": "CNPJ do Emitente.",
+    "type": "String[14]",
+    "required": false,
+    "tag": "CNPJ"
+  },
+  {
+    "name": "serie_substituicao",
+    "description": "Serie do documento fiscal.",
+    "type": "String[1-3]",
+    "required": false,
+    "tag": "serie"
+  },
+  {
+    "name": "numero_substituicao",
+    "description": "Número do documento fiscal.",
+    "type": "String[1-9]",
+    "required": false,
+    "tag": "nNF"
+  },
+  {
+    "name": "competencia_emissao_substituicao",
+    "description": "Ano e mês da emissão da NF (AAAAMM).",
+    "type": "String[6]",
+    "required": false,
+    "tag": "CompetEmis"
+  },
+  {
+    "name": "competencia_apuracao_substituicao",
+    "description": "Ano e mês de apuração da NF em papel (AAAAMM).",
+    "type": "String[6]",
+    "required": false,
+    "tag": "CompetApur"
+  },
+  {
+    "name": "hash_registro_substituicao",
+    "description": "Hash do registro no arquivo do convênio 115.",
+    "type": "String[32]",
+    "required": false,
+    "tag": "hash115"
+  },
+  {
+    "name": "motivo_substituicao",
+    "description": "Motivo da substituição.",
+    "type": null,
+    "required": true,
+    "enum": "* +01+: Erro de Leitura\\n* +02+: Erro de Preco ou Erro de Tarifa\\n* +03+: Decisao Judicial\\n* +04+: Erro Cadastral\\n* +05+: Erro de Tributacao\\n* +06+: Decisao da Reguladora",
+    "tag": "motSub"
+  },
+  {
+    "name": "volumes_contratados",
+    "description": "Volumes contratados vinculados a NFGas.",
+    "type": "Colecao[0-20]",
+    "required": false,
+    "collection_type": "VolumeContratadoNfgasXML",
+    "collection": {
+      "object_type": "VolumeContratadoNfgasXML",
+      "object_description": "Grupo de informacoes de volume contratado. Tag XML gVolContrat",
+      "object_attributes": [
+        {
+          "name": "numero_contratado",
+          "description": "Numero de referencia do volume contratado para uso nos itens.",
+          "type": "String[2]",
+          "required": true,
+          "tag": "nContrat"
+        },
+        {
+          "name": "tipo_volume_contratado",
+          "description": "Tipo de volume contratado.",
+          "type": null,
+          "required": true,
+          "enum": "* +1+: Demanda minima\\n* +2+: Montante de Uso do Sistema de Distribuicao\\n* +3+: Encargo de Capacidade\\n* +4+: Volume Contratado",
+          "tag": "tpVolContrat"
+        },
+        {
+          "name": "quantidade_unidade_contratada",
+          "description": "Quantidade contratada em m3.",
+          "type": "Decimal[13.2-6]",
+          "required": true,
+          "tag": "qUnidContrat"
+        }
+      ]
+    }
+  },
+  {
+    "name": "equipamentos_medicao",
+    "description": "Equipamentos de medicao vinculados a NFGas.",
+    "type": "Colecao[0-99]",
+    "required": false,
+    "collection_type": "EquipamentoMedicaoNfgasXML",
+    "collection": {
+      "object_type": "EquipamentoMedicaoNfgasXML",
+      "object_description": "Grupo de informacoes do equipamento de medicao. Tag XML gMed",
+      "object_attributes": [
+        {
+          "name": "numero_medicao",
+          "description": "Numero de referencia da medicao para uso nos itens.",
+          "type": "String[2]",
+          "required": true,
+          "tag": "nMed"
+        },
+        {
+          "name": "identificacao_equipamento",
+          "description": "Identificacao do equipamento de medicao.",
+          "type": "String[2-20]",
+          "required": true,
+          "tag": "idEqp"
+        },
+        {
+          "name": "data_medicao_anterior",
+          "description": "Data da leitura anterior.",
+          "type": "Date",
+          "required": true,
+          "tag": "dMedAnt"
+        },
+        {
+          "name": "valor_medicao_anterior",
+          "description": "Valor da medicao anterior.",
+          "type": "Decimal[13.2-4]",
+          "required": true,
+          "tag": "vMedAnt"
+        },
+        {
+          "name": "data_medicao_atual",
+          "description": "Data da leitura atual.",
+          "type": "Date",
+          "required": true,
+          "tag": "dMedAtu"
+        },
+        {
+          "name": "valor_medicao_atual",
+          "description": "Valor da medicao atual.",
+          "type": "Decimal[13.2-4]",
+          "required": true,
+          "tag": "vMedAtu"
+        },
+        {
+          "name": "tipo_equipamento",
+          "description": "Tipo do equipamento.",
+          "type": null,
+          "required": true,
+          "enum": "* +1+: Medidor\\n* +2+: Conversor",
+          "tag": "tpEqp"
+        },
+        {
+          "name": "tipo_medidor",
+          "description": "Tipo do medidor.",
+          "type": null,
+          "required": false,
+          "enum": "* +1+: Turbina\\n* +2+: Rotativo\\n* +3+: Diafragma\\n* +4+: Ultrasonico",
+          "tag": "tpMedidor"
+        }
+      ]
+    }
+  },
+  {
+    "name": "itens",
+    "description": "Itens da NFGas.",
+    "type": "Colecao[1-99]",
+    "required": false,
+    "collection_type": "ItemNfgasXML",
+    "collection": {
+      "object_type": "ItemNfgasXML",
+      "object_description": "Detalhamento do item da NFGas. Tag XML det",
+      "object_attributes": [
+        {
+          "name": "numero_item",
+          "description": "Numero sequencial do item da NFGas, iniciando em 1.",
+          "type": "String[1-4]",
+          "required": true,
+          "tag": "nItem"
+        },
+        {
+          "name": "chave_nfgas_anterior",
+          "description": "Chave da NFGas anterior relacionada ao item.",
+          "type": "String[44]",
+          "required": false,
+          "tag": "chNFGasAnt"
+        },
+        {
+          "name": "numero_item_anterior",
+          "description": "Numero do item anterior relacionado.",
+          "type": "String[1-4]",
+          "required": false,
+          "tag": "nItemAnt"
+        },
+        {
+          "name": "tarifas",
+          "description": "Grupo de Tarifas por Período.",
+          "type": "Colecao[1-6]",
+          "required": false,
+          "collection_type": "TarifaNfgasXML",
+          "collection": {
+            "object_type": "TarifaNfgasXML",
+            "object_description": "Grupo de tarifas por periodo do item. Tag XML gTarif",
+            "object_attributes": [
+              {
+                "name": "data_inicio_tarifa",
+                "description": "Data de inicio da aplicacao da tarifa.",
+                "type": "Date",
+                "required": true,
+                "tag": "dIniTarif"
+              },
+              {
+                "name": "data_fim_tarifa",
+                "description": "Data de fim da aplicacao da tarifa.",
+                "type": "Date",
+                "required": false,
+                "tag": "dFimTarif"
+              },
+              {
+                "name": "numero_ato",
+                "description": "Numero do ato tarifario.",
+                "type": "String[4]",
+                "required": true,
+                "tag": "nAto"
+              },
+              {
+                "name": "ano_ato",
+                "description": "Ano do ato tarifario.",
+                "type": "String[4]",
+                "required": true,
+                "tag": "anoAto"
+              },
+              {
+                "name": "tipo_faixa_consumo",
+                "description": "Faixa prevista de consumo.",
+                "type": null,
+                "required": true,
+                "enum": "* +1+: Fixa\\n* +2+: Media",
+                "tag": "tpFaixaCons"
+              },
+              {
+                "name": "valor_tarifa_aplicada",
+                "description": "Valor da tarifa aplicada.",
+                "type": "Decimal[13.2-8]",
+                "required": true,
+                "tag": "vTarifAplic"
+              }
+            ]
+          }
+        },
+        {
+          "name": "indicador_origem_quantidade",
+          "description": "Indicador da origem da quantidade faturada.",
+          "type": null,
+          "required": true,
+          "enum": "* +1+: Media\\n* +2+: Medido\\n* +3+: Contratada\\n* +4+: Residual estimado\\n* +5+: Residual medido\\n* +6+: Sem quantidade\\n* +7+: Por faixa",
+          "tag": "indOrigemQtd"
+        },
+        {
+          "name": "numero_medicao",
+          "description": "Referencia para a medicao ao qual o item se refere.",
+          "type": "String[2]",
+          "required": true,
+          "tag": "nMed"
+        },
+        {
+          "name": "numero_contrato_medicao",
+          "description": "Referencia para o volume contratado ao qual o item se refere.",
+          "type": "String[2]",
+          "required": false,
+          "tag": "nContrat"
+        },
+        {
+          "name": null,
+          "description": "Grupo de medida",
+          "type": null,
+          "required": false
+        },
+        {
+          "name": "unidade_medida",
+          "description": "Unidade basica de medida.",
+          "type": null,
+          "required": true,
+          "enum": "* +1+: m3",
+          "tag": "uMed"
+        },
+        {
+          "name": "valor_medida",
+          "description": "Valor da medição",
+          "type": "Decimal[11.0-4]",
+          "required": true,
+          "tag": "vMed"
+        },
+        {
+          "name": "tipo_motivo_nao_leitura",
+          "description": "Tipo do motivo da nao leitura.",
+          "type": null,
+          "required": false,
+          "enum": "* +1+: Consumidor\\n* +2+: Distribuidora\\n* +3+: Independente do consumidor e distribuidora",
+          "tag": "tpMotNaoLeitura"
+        },
+        {
+          "name": "motivo_nao_leitura",
+          "description": "Detalhamento do motivo da nao leitura.",
+          "type": "String[1-200]",
+          "required": false,
+          "tag": "xMotNaoLeitura"
+        },
+        {
+          "name": "codigo_produto",
+          "description": "Codigo do produto ou servico.",
+          "type": "String[1-60]",
+          "required": true,
+          "tag": "cProd"
+        },
+        {
+          "name": "descricao_produto",
+          "description": "Descricao do produto ou servico.",
+          "type": "String[1-120]",
+          "required": true,
+          "tag": "xProd"
+        },
+        {
+          "name": "classificacao",
+          "description": "Codigo de classificacao do item.",
+          "type": "String[7]",
+          "required": true,
+          "tag": "cClass"
+        },
+        {
+          "name": "cfop",
+          "description": "CFOP do item.",
+          "type": "String[4]",
+          "required": false,
+          "tag": "CFOP"
+        },
+        {
+          "name": "unidade_medida",
+          "description": "Unidade basica de medida do item.",
+          "type": null,
+          "required": true,
+          "enum": "* +1+: m3\\n* +2+: Unidade",
+          "tag": "uMed"
+        },
+        {
+          "name": "quantidade_faturada",
+          "description": "Quantidade faturada.",
+          "type": "Decimal[11.0-4]",
+          "required": true,
+          "tag": "qFaturada"
+        },
+        {
+          "name": "valor_item",
+          "description": "Valor unitario do item.",
+          "type": "Decimal[13.2-10]",
+          "required": true,
+          "tag": "vItem"
+        },
+        {
+          "name": "fator_pcs",
+          "description": "Fator de poder calorifico superior.",
+          "type": "Decimal[11.0-4]",
+          "required": false,
+          "tag": "fatorPCS"
+        },
+        {
+          "name": "fator_ptz",
+          "description": "Fator de correcao PTZ.",
+          "type": "Decimal[11.0-4]",
+          "required": false,
+          "tag": "fatorPTZ"
+        },
+        {
+          "name": "fator_p",
+          "description": "Fator de correcao de pressao.",
+          "type": "Decimal[11.0-4]",
+          "required": false,
+          "tag": "fatorP"
+        },
+        {
+          "name": "fator_t",
+          "description": "Fator de correcao de temperatura.",
+          "type": "Decimal[11.0-4]",
+          "required": false,
+          "tag": "fatorT"
+        },
+        {
+          "name": "valor_produto",
+          "description": "Valor total do item.",
+          "type": "Decimal[13.2-10]",
+          "required": true,
+          "tag": "vProd"
+        },
+        {
+          "name": "indicador_devolucao",
+          "description": "Indicador de devolucao do valor do item.",
+          "type": null,
+          "required": false,
+          "enum": "* +1+: Devolucao do valor do item",
+          "tag": "indDevolucao"
+        },
+        {
+          "name": "origem_mercadoria",
+          "description": "Origem da mercadoria.",
+          "type": null,
+          "required": true,
+          "enum": "* +0+: Nacional, exceto as indicadas nos codigos 3, 4, 5 e 8\\n* +1+: Estrangeira - Importacao direta, exceto a indicada no codigo 6\\n* +2+: Estrangeira - Adquirida no mercado interno, exceto a indicada no codigo 7\\n* +3+: Nacional, com conteudo de importacao superior a 40% e inferior ou igual a 70%\\n* +4+: Nacional, produzida em conformidade com processos produtivos basicos\\n* +5+: Nacional, com conteudo de importacao inferior ou igual a 40%\\n* +6+: Estrangeira - Importacao direta, sem similar nacional, constante em lista da CAMEX e gas natural\\n* +7+: Estrangeira - Adquirida no mercado interno, sem similar nacional, constante em lista da CAMEX e gas natural\\n* +8+: Nacional, com conteudo de importacao superior a 70%",
+          "tag": "orig"
+        },
+        {
+          "name": null,
+          "description": ":icms_situacao_tributaria Situacao tributaria do ICMS.",
+          "type": null,
+          "required": true,
+          "enum": "* +00+: Tributacao normal ICMS\\n* +10+: Tributada e com cobranca do ICMS por substituicao tributaria\\n* +20+: Tributacao com BC reduzida do ICMS\\n* +40+: Isenta\\n* +41+: Nao tributada\\n* +51+: Diferimento\\n* +60+: ICMS cobrado anteriormente por substituicao tributaria\\n* +70+: Com reducao de base de calculo e cobranca do ICMS por substituicao tributaria\\n* +90+: Outros",
+          "tag": "CST"
+        },
+        {
+          "name": null,
+          "description": ":icms_base_calculo Valor da base de calculo do ICMS.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vBC"
+        },
+        {
+          "name": null,
+          "description": ":icms_aliquota Aliquota do ICMS.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pICMS"
+        },
+        {
+          "name": null,
+          "description": ":icms_valor Valor do ICMS.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vICMS"
+        },
+        {
+          "name": null,
+          "description": ":icms_fcp_percentual Percentual de ICMS relativo ao Fundo de Combate a Pobreza.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pFCP"
+        },
+        {
+          "name": null,
+          "description": ":icms_fcp_valor Valor do ICMS relativo ao Fundo de Combate a Pobreza.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vFCP"
+        },
+        {
+          "name": null,
+          "description": ":icms_reducao_base_calculo Percentual de reducao da base de calculo.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pRedBC"
+        },
+        {
+          "name": null,
+          "description": ":icms_valor_desonerado Valor do ICMS de desoneracao.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vICMSDeson"
+        },
+        {
+          "name": null,
+          "description": ":icms_codigo_beneficio_fiscal Codigo de Beneficio Fiscal na UF aplicado ao item.",
+          "type": "String[10]",
+          "required": false,
+          "tag": "cBenef"
+        },
+        {
+          "name": null,
+          "description": ":icms_base_calculo_st Valor da base de calculo do ICMS ST.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vBCST"
+        },
+        {
+          "name": null,
+          "description": ":icms_aliquota_st Aliquota do ICMS ST.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pICMSST"
+        },
+        {
+          "name": null,
+          "description": ":icms_valor_st Valor do ICMS ST.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vICMSST"
+        },
+        {
+          "name": null,
+          "description": ":icms_fcp_percentual_st Percentual do FCP ST.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pFCPST"
+        },
+        {
+          "name": null,
+          "description": ":icms_fcp_valor_st Valor do FCP ST.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vFCPST"
+        },
+        {
+          "name": null,
+          "description": ":icms_base_calculo_st_retido Valor da base de calculo do ICMS ST retido anteriormente.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vBCSTRet"
+        },
+        {
+          "name": null,
+          "description": ":icms_aliquota_st_retido Aliquota do ICMS ST retido anteriormente.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pICMSSTRet"
+        },
+        {
+          "name": null,
+          "description": ":icms_valor_substituto Valor do ICMS proprio do substituto.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vICMSSubstituto"
+        },
+        {
+          "name": null,
+          "description": ":icms_base_calculo_fcp_st_retido Valor da base de calculo do FCP ST retido anteriormente.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vBCFCPSTRet"
+        },
+        {
+          "name": null,
+          "description": ":icms_fcp_percentual_st_retido Percentual do FCP ST retido anteriormente.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pFCPSTRet"
+        },
+        {
+          "name": null,
+          "description": ":icms_fcp_valor_st_retido Valor do FCP ST retido anteriormente.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vFCPSTRet"
+        },
+        {
+          "name": null,
+          "description": ":icms_reducao_base_calculo_efetiva Percentual de reducao da base de calculo efetiva.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pRedBCEfet"
+        },
+        {
+          "name": null,
+          "description": ":icms_base_calculo_efetiva Valor da base de calculo efetiva.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vBCEfet"
+        },
+        {
+          "name": null,
+          "description": ":icms_aliquota_efetiva Aliquota do ICMS efetiva.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pICMSEfet"
+        },
+        {
+          "name": null,
+          "description": ":icms_valor_efetivo Valor do ICMS efetivo.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vICMSEfet"
+        },
+        {
+          "name": "sem_situacao_tributaria",
+          "description": "Item sem situacao tributaria de ICMS.",
+          "type": null,
+          "required": false,
+          "enum": "* +1+: Item sem situacao tributaria de ICMS",
+          "tag": "indSemCST"
+        },
+        {
+          "name": "ibs_cbs_situacao_tributaria",
+          "description": "Codigo da situacao tributaria do IBS/CBS.",
+          "type": "String[3]",
+          "required": true,
+          "tag": "CST"
+        },
+        {
+          "name": "ibs_cbs_classificacao_tributaria",
+          "description": "Codigo da classificacao tributaria do IBS/CBS.",
+          "type": "String[6]",
+          "required": true,
+          "tag": "cClassTrib"
+        },
+        {
+          "name": "ibs_cbs_indicador_doacao",
+          "description": "Indicador de operacao de doacao.",
+          "type": null,
+          "required": false,
+          "enum": "* +1+: Operacao de doacao",
+          "tag": "indDoacao"
+        },
+        {
+          "name": "ibs_cbs_base_calculo",
+          "description": "Valor da base de calculo comum ao IBS/CBS.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vBC"
+        },
+        {
+          "name": "ibs_uf_aliquota",
+          "description": "Aliquota do IBS de competencia da UF.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pIBSUF"
+        },
+        {
+          "name": "ibs_uf_percentual_diferimento",
+          "description": "Percentual do diferimento do IBS da UF.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pDif"
+        },
+        {
+          "name": "ibs_uf_valor_diferido",
+          "description": "Valor do diferimento do IBS da UF.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vDif"
+        },
+        {
+          "name": "ibs_uf_valor_tributo_devolvido",
+          "description": "Valor do tributo devolvido do IBS da UF.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vDevTrib"
+        },
+        {
+          "name": "ibs_uf_percentual_reducao_aliquota",
+          "description": "Percentual de reducao de aliquota do IBS da UF.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pRedAliq"
+        },
+        {
+          "name": "ibs_uf_aliquota_efetiva",
+          "description": "Aliquota efetiva do IBS da UF.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pAliqEfet"
+        },
+        {
+          "name": "ibs_uf_valor",
+          "description": "Valor do IBS de competencia da UF.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vIBSUF"
+        },
+        {
+          "name": "ibs_mun_aliquota",
+          "description": "Aliquota do IBS de competencia municipal.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pIBSMun"
+        },
+        {
+          "name": "ibs_mun_percentual_diferimento",
+          "description": "Percentual do diferimento do IBS municipal.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pDif"
+        },
+        {
+          "name": "ibs_mun_valor_diferido",
+          "description": "Valor do diferimento do IBS municipal.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vDif"
+        },
+        {
+          "name": "ibs_mun_valor_tributo_devolvido",
+          "description": "Valor do tributo devolvido do IBS municipal.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vDevTrib"
+        },
+        {
+          "name": "ibs_mun_percentual_reducao_aliquota",
+          "description": "Percentual de reducao de aliquota do IBS municipal.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pRedAliq"
+        },
+        {
+          "name": "ibs_mun_aliquota_efetiva",
+          "description": "Aliquota efetiva do IBS municipal.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pAliqEfet"
+        },
+        {
+          "name": "ibs_mun_valor",
+          "description": "Valor do IBS de competencia municipal.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vIBSMun"
+        },
+        {
+          "name": "ibs_valor",
+          "description": "Valor total do IBS do item.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vIBS"
+        },
+        {
+          "name": "cbs_aliquota",
+          "description": "Aliquota da CBS.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pCBS"
+        },
+        {
+          "name": "cbs_percentual_diferimento",
+          "description": "Percentual do diferimento da CBS.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pDif"
+        },
+        {
+          "name": "cbs_valor_diferido",
+          "description": "Valor do diferimento da CBS.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vDif"
+        },
+        {
+          "name": "cbs_valor_tributo_devolvido",
+          "description": "Valor do tributo devolvido da CBS.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vDevTrib"
+        },
+        {
+          "name": "cbs_percentual_reducao_aliquota",
+          "description": "Percentual de reducao de aliquota da CBS.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pRedAliq"
+        },
+        {
+          "name": "cbs_aliquota_efetiva",
+          "description": "Aliquota efetiva da CBS.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pAliqEfet"
+        },
+        {
+          "name": "cbs_valor",
+          "description": "Valor da CBS do item.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vCBS"
+        },
+        {
+          "name": "ibs_cbs_situacao_tributaria_regular",
+          "description": "Situacao tributaria do IBS/CBS em tributacao regular.",
+          "type": "String[3]",
+          "required": false,
+          "tag": "CSTReg"
+        },
+        {
+          "name": "ibs_cbs_classificacao_tributaria_regular",
+          "description": "Classificacao tributaria do IBS/CBS em tributacao regular.",
+          "type": "String[6]",
+          "required": false,
+          "tag": "cClassTribReg"
+        },
+        {
+          "name": "ibs_aliquota_efetiva_regular_uf",
+          "description": "Aliquota efetiva regular do IBS da UF.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pAliqEfetRegIBSUF"
+        },
+        {
+          "name": "ibs_valor_tributo_regular_uf",
+          "description": "Valor regular do IBS da UF.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vTribRegIBSUF"
+        },
+        {
+          "name": "ibs_aliquota_efetiva_regular_municipio",
+          "description": "Aliquota efetiva regular do IBS do municipio.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pAliqEfetRegIBSMun"
+        },
+        {
+          "name": "ibs_valor_tributo_regular_municipio",
+          "description": "Valor regular do IBS do municipio.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vTribRegIBSMun"
+        },
+        {
+          "name": "cbs_aliquota_efetiva_regular",
+          "description": "Aliquota efetiva regular da CBS.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pAliqEfetRegCBS"
+        },
+        {
+          "name": "cbs_valor_tributo_regular",
+          "description": "Valor regular da CBS.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vTribRegCBS"
+        },
+        {
+          "name": "ibs_aliquota_competencia_uf",
+          "description": "Aliquota do IBS da UF considerada na compra governamental.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pAliqIBSUF"
+        },
+        {
+          "name": "ibs_valor_tributo_calculado_uf",
+          "description": "Valor do IBS da UF considerado na compra governamental.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vTribIBSUF"
+        },
+        {
+          "name": "ibs_aliquota_competencia_municipio",
+          "description": "Aliquota do IBS do municipio considerada na compra governamental.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pAliqIBSMun"
+        },
+        {
+          "name": "ibs_valor_tributo_calculado_municipio",
+          "description": "Valor do IBS do municipio considerado na compra governamental.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vTribIBSMun"
+        },
+        {
+          "name": "cbs_aliquota_compra_governamental",
+          "description": "Aliquota da CBS considerada na compra governamental.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pAliqCBS"
+        },
+        {
+          "name": "cbs_valor_tributo_calculado",
+          "description": "Valor da CBS considerado na compra governamental.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vTribCBS"
+        },
+        {
+          "name": "mono_padrao_quantidade_base_calculo",
+          "description": "Quantidade tributada na monofasia.",
+          "type": "Decimal[11.0-4]",
+          "required": false,
+          "tag": "qBCMono"
+        },
+        {
+          "name": "mono_padrao_aliquota_ad_rem_ibs",
+          "description": "Aliquota ad rem do IBS na monofasia.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "adRemIBS"
+        },
+        {
+          "name": "mono_padrao_aliquota_ad_rem_cbs",
+          "description": "Aliquota ad rem da CBS na monofasia.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "adRemCBS"
+        },
+        {
+          "name": "mono_padrao_valor_ibs",
+          "description": "Valor do IBS monofasico.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vIBSMono"
+        },
+        {
+          "name": "mono_padrao_valor_cbs",
+          "description": "Valor da CBS monofasica.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vCBSMono"
+        },
+        {
+          "name": "mono_retencao_quantidade_base_calculo",
+          "description": "Quantidade tributada sujeita a retencao na monofasia.",
+          "type": "Decimal[11.0-4]",
+          "required": false,
+          "tag": "qBCMonoReten"
+        },
+        {
+          "name": "mono_retencao_aliquota_ad_rem_ibs",
+          "description": "Aliquota ad rem do IBS sujeita a retencao.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "adRemIBSReten"
+        },
+        {
+          "name": "mono_retencao_valor_ibs",
+          "description": "Valor do IBS monofasico sujeito a retencao.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vIBSMonoReten"
+        },
+        {
+          "name": "mono_retencao_aliquota_ad_rem_cbs",
+          "description": "Aliquota ad rem da CBS sujeita a retencao.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "adRemCBSReten"
+        },
+        {
+          "name": "mono_retencao_valor_cbs",
+          "description": "Valor da CBS monofasica sujeita a retencao.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vCBSMonoReten"
+        },
+        {
+          "name": "mono_retido_quantidade_base_calculo",
+          "description": "Quantidade tributada retida anteriormente na monofasia.",
+          "type": "Decimal[11.0-4]",
+          "required": false,
+          "tag": "qBCMonoRet"
+        },
+        {
+          "name": "mono_retido_aliquota_ad_rem_ibs",
+          "description": "Aliquota ad rem do IBS retido anteriormente.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "adRemIBSRet"
+        },
+        {
+          "name": "mono_retido_valor_ibs",
+          "description": "Valor do IBS retido anteriormente.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vIBSMonoRet"
+        },
+        {
+          "name": "mono_retido_aliquota_ad_rem_cbs",
+          "description": "Aliquota ad rem da CBS retida anteriormente.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "adRemCBSRet"
+        },
+        {
+          "name": "mono_retido_valor_cbs",
+          "description": "Valor da CBS retida anteriormente.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vCBSMonoRet"
+        },
+        {
+          "name": "mono_diferimento_percentual_ibs",
+          "description": "Percentual do diferimento do IBS monofasico.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pDifIBS"
+        },
+        {
+          "name": "mono_diferimento_valor_ibs",
+          "description": "Valor do IBS monofasico diferido.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vIBSMonoDif"
+        },
+        {
+          "name": "mono_diferimento_percentual_cbs",
+          "description": "Percentual do diferimento da CBS monofasica.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pDifCBS"
+        },
+        {
+          "name": "mono_diferimento_valor_cbs",
+          "description": "Valor da CBS monofasica diferida.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vCBSMonoDif"
+        },
+        {
+          "name": "mono_valor_total_ibs_item",
+          "description": "Valor total do IBS monofasico do item.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vTotIBSMonoItem"
+        },
+        {
+          "name": "mono_valor_total_cbs_item",
+          "description": "Valor total da CBS monofasica do item.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vTotCBSMonoItem"
+        },
+        {
+          "name": "ibs_valor_estornado",
+          "description": "Valor do IBS a ser estornado.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vIBSEstCred"
+        },
+        {
+          "name": "cbs_valor_estornado",
+          "description": "Valor da CBS a ser estornada.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vCBSEstCred"
+        },
+        {
+          "name": null,
+          "description": ":pis_situacao_tributaria Classificacao Tributaria do PIS.",
+          "type": null,
+          "required": false,
+          "enum": "* +01+: Tributavel com aliquota basica\\n* +02+: Tributavel com aliquota diferenciada\\n* +06+: Tributavel com aliquota zero\\n* +07+: Operacao isenta de contribuicao\\n* +08+: Operacao sem incidencia da contribuicao\\n* +09+: Operacao com suspensao da contribuicao\\n* +49+: Outras operacoes de saida",
+          "tag": "CST"
+        },
+        {
+          "name": null,
+          "description": ":pis_base_calculo Valor da base de calculo do PIS.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vBC"
+        },
+        {
+          "name": null,
+          "description": ":pis_aliquota_porcentual Aliquota do PIS em porcentual.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pPIS"
+        },
+        {
+          "name": null,
+          "description": ":pis_valor Valor do PIS.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vPIS"
+        },
+        {
+          "name": null,
+          "description": ":cofins_situacao_tributaria Classificacao Tributaria do COFINS.",
+          "type": null,
+          "required": false,
+          "enum": "* +01+: Tributavel com aliquota basica\\n* +02+: Tributavel com aliquota diferenciada\\n* +06+: Tributavel com aliquota zero\\n* +07+: Operacao isenta de contribuicao\\n* +08+: Operacao sem incidencia da contribuicao\\n* +09+: Operacao com suspensao da contribuicao\\n* +49+: Outras operacoes de saida",
+          "tag": "CST"
+        },
+        {
+          "name": null,
+          "description": ":cofins_base_calculo Valor da base de calculo do COFINS.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vBC"
+        },
+        {
+          "name": null,
+          "description": ":cofins_aliquota_porcentual Aliquota do COFINS em porcentual.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pCOFINS"
+        },
+        {
+          "name": null,
+          "description": ":cofins_valor Valor do COFINS.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vCOFINS"
+        },
+        {
+          "name": "pis_valor_retido",
+          "description": "Valor Retido de PIS.",
+          "type": "Decimal[13.2-8]",
+          "required": false,
+          "tag": "vRetPIS"
+        },
+        {
+          "name": "cofins_valor_retido",
+          "description": "Valor Retido de COFINS.",
+          "type": "Decimal[13.2-8]",
+          "required": false,
+          "tag": "vRetCofins"
+        },
+        {
+          "name": "csll_valor_retido",
+          "description": "Valor Retido de CSLL.",
+          "type": "Decimal[13.2-8]",
+          "required": false,
+          "tag": "vRetCSLL"
+        },
+        {
+          "name": "irrf_valor_retido",
+          "description": "Valor Retido de IRRF.",
+          "type": "Decimal[13.2-8]",
+          "required": false,
+          "tag": "vIRRF"
+        },
+        {
+          "name": "taxa_regulatoria_base_calculo",
+          "description": "Valor da base de calculo da taxa regulatoria.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vBC"
+        },
+        {
+          "name": "taxa_regulatoria_aliquota_porcentual",
+          "description": "Aliquota da taxa regulatoria.",
+          "type": "Decimal[3.2-4]",
+          "required": false,
+          "tag": "pTaxa"
+        },
+        {
+          "name": "taxa_regulatoria_valor",
+          "description": "Valor da taxa regulatoria.",
+          "type": "Decimal[13.2]",
+          "required": false,
+          "tag": "vTaxa"
+        },
+        {
+          "name": "valor_item_referenciado",
+          "description": "Valor unitario do item referenciado em processo.",
+          "type": "Decimal[13.2-8]",
+          "required": false,
+          "tag": "vItem"
+        },
+        {
+          "name": "quantidade_faturada_referenciada",
+          "description": "Quantidade faturada referenciada.",
+          "type": "Decimal[11.0-4]",
+          "required": false,
+          "tag": "qFaturada"
+        },
+        {
+          "name": "valor_produto_referenciado",
+          "description": "Valor total do produto referenciado.",
+          "type": "Decimal[13.2-8]",
+          "required": false,
+          "tag": "vProd"
+        },
+        {
+          "name": "indicador_devolucao_referenciada",
+          "description": "Indicador de devolucao do valor do item referenciado.",
+          "type": null,
+          "required": false,
+          "enum": "* +1+: Devolucao do valor do item",
+          "tag": "indDevolucao"
+        },
+        {
+          "name": "processos_referenciados",
+          "description": "Processos referenciados no item.",
+          "type": "Colecao[1-10]",
+          "required": false,
+          "collection_type": "IdentificadorProcessoNfgasXML",
+          "collection": {
+            "object_type": "IdentificadorProcessoNfgasXML",
+            "object_description": "Grupo identificador do processo referenciado. Tag XML gProc",
+            "object_attributes": [
+              {
+                "name": "tipo_processo",
+                "description": "Tipo do processo.",
+                "type": null,
+                "required": true,
+                "enum": "* +0+: SEFAZ\\n* +1+: Justica Federal\\n* +2+: Justica Estadual\\n* +3+: Processo Administrativo Municipal\\n* +4+: Processo Administrativo Federal\\n* +5+: Procon",
+                "tag": "tpProc"
+              },
+              {
+                "name": "numero_processo",
+                "description": "Numero do processo.",
+                "type": "String[1-60]",
+                "required": true,
+                "tag": "nProcesso"
+              }
+            ]
+          }
+        },
+        {
+          "name": "informacoes_adicionais_produto",
+          "description": "Informacoes adicionais do produto.",
+          "type": "String[1-500]",
+          "required": false,
+          "tag": "infAdProd"
+        },
+        {
+          "name": null,
+          "description": "Informacoes do faturamento agregador do item.",
+          "type": null,
+          "required": false
+        },
+        {
+          "name": "codigo_classificacao_agregadora",
+          "description": "Codigo de classificacao do item agregador.",
+          "type": "String[7]",
+          "required": true,
+          "tag": "cClass"
+        },
+        {
+          "name": "valor_total_agregado",
+          "description": "Valor total do documento fiscal agregado.",
+          "type": "Decimal[13.2]",
+          "required": true,
+          "tag": "vTotDFe"
+        }
+      ]
+    }
+  },
+  {
+    "name": "valor_produtos",
+    "description": "Valor total dos produtos e servicos.",
+    "type": "Decimal[13.2]",
+    "required": true,
+    "tag": "vProd"
+  },
+  {
+    "name": "icms_base_calculo",
+    "description": "Valor total da base de calculo do ICMS.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vBC"
+  },
+  {
+    "name": "icms_valor_total",
+    "description": "Valor total do ICMS.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vICMS"
+  },
+  {
+    "name": "icms_valor_total_desonerado",
+    "description": "Valor total do ICMS desonerado.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vICMSDeson"
+  },
+  {
+    "name": "icms_fcp_valor_total",
+    "description": "Valor total do FCP.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vFCP"
+  },
+  {
+    "name": "icms_st_base_calculo",
+    "description": "Valor total da base de calculo do ICMS ST.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vBCST"
+  },
+  {
+    "name": "icms_st_valor_total",
+    "description": "Valor total do ICMS ST.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vST"
+  },
+  {
+    "name": "icms_st_fcp_valor_total",
+    "description": "Valor total do FCP ST.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vFCPST"
+  },
+  {
+    "name": "pis_valor_retido",
+    "description": "Valor total do PIS retido.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vRetPIS"
+  },
+  {
+    "name": "cofins_valor_retido",
+    "description": "Valor total do COFINS retido.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vRetCofins"
+  },
+  {
+    "name": "csll_valor_retido",
+    "description": "Valor total do CSLL retido.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vRetCSLL"
+  },
+  {
+    "name": "irrf_valor_retido",
+    "description": "Valor total do IRRF retido.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vIRRF"
+  },
+  {
+    "name": "cofins_valor",
+    "description": "Valor total do COFINS.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vCOFINS"
+  },
+  {
+    "name": "pis_valor",
+    "description": "Valor total do PIS.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vPIS"
+  },
+  {
+    "name": "taxa_regulatoria_valor",
+    "description": "Valor total da taxa regulatoria.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vTxReg"
+  },
+  {
+    "name": "valor_total",
+    "description": "Valor total da NFGas.",
+    "type": "Decimal[13.2]",
+    "required": true,
+    "tag": "vNF"
+  },
+  {
+    "name": null,
+    "description": "Totais de IBS e CBS da NFGas.",
+    "type": null,
+    "required": false
+  },
+  {
+    "name": "ibs_cbs_base_calculo",
+    "description": "Total da base de calculo do IBS/CBS.",
+    "type": "Decimal[13.2]",
+    "required": true,
+    "tag": "vBCIBSCBS"
+  },
+  {
+    "name": "ibs_uf_valor_total_diferimento",
+    "description": "Total do diferimento do IBS UF.",
+    "type": "Decimal[13.2]",
+    "required": true,
+    "tag": "vDif"
+  },
+  {
+    "name": "ibs_uf_valor_total_devolucao",
+    "description": "Total de devolucoes de tributos do IBS UF.",
+    "type": "Decimal[13.2]",
+    "required": true,
+    "tag": "vDevTrib"
+  },
+  {
+    "name": "ibs_uf_valor_total",
+    "description": "Valor total do IBS UF.",
+    "type": "Decimal[13.2]",
+    "required": true,
+    "tag": "vIBSUF"
+  },
+  {
+    "name": "ibs_mun_valor_total_diferimento",
+    "description": "Total do diferimento do IBS municipal.",
+    "type": "Decimal[13.2]",
+    "required": true,
+    "tag": "vDif"
+  },
+  {
+    "name": "ibs_mun_valor_total_devolucao",
+    "description": "Total de devolucoes de tributos do IBS municipal.",
+    "type": "Decimal[13.2]",
+    "required": true,
+    "tag": "vDevTrib"
+  },
+  {
+    "name": "ibs_mun_valor_total",
+    "description": "Valor total do IBS municipal.",
+    "type": "Decimal[13.2]",
+    "required": true,
+    "tag": "vIBSMun"
+  },
+  {
+    "name": "ibs_valor_total",
+    "description": "Valor total do IBS.",
+    "type": "Decimal[13.2]",
+    "required": true,
+    "tag": "vIBS"
+  },
+  {
+    "name": "cbs_valor_total_diferimento",
+    "description": "Total do diferimento da CBS.",
+    "type": "Decimal[13.2]",
+    "required": true,
+    "tag": "vDif"
+  },
+  {
+    "name": "cbs_valor_total_devolucao",
+    "description": "Total de devolucoes de tributos da CBS.",
+    "type": "Decimal[13.2]",
+    "required": true,
+    "tag": "vDevTrib"
+  },
+  {
+    "name": "cbs_valor_total",
+    "description": "Valor total da CBS.",
+    "type": "Decimal[13.2]",
+    "required": true,
+    "tag": "vCBS"
+  },
+  {
+    "name": "ibs_valor_total_estorno_credito",
+    "description": "Valor total do IBS estornado.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vIBSEstCred"
+  },
+  {
+    "name": "cbs_valor_total_estorno_credito",
+    "description": "Valor total da CBS estornada.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vCBSEstCred"
+  },
+  {
+    "name": "valor_total_dfe",
+    "description": "Valor total do documento fiscal eletronico.",
+    "type": "Decimal[13.2]",
+    "required": false,
+    "tag": "vTotDFe"
+  },
+  {
+    "name": "pagamentos_vinculados",
+    "description": "Pagamentos vinculados a transacoes financeiras.",
+    "type": "Colecao[1-99]",
+    "required": false,
+    "collection_type": "PagamentoVinculadoNfgasXML",
+    "collection": {
+      "object_type": "PagamentoVinculadoNfgasXML",
+      "object_description": "Dados de um pagamento vinculado a transacao financeira. Tag XML pgto",
+      "object_attributes": [
+        {
+          "name": "numero_pagamento",
+          "description": "Numero sequencial do pagamento.",
+          "type": "String[1-3]",
+          "required": true,
+          "tag": "nPag"
+        },
+        {
+          "name": "identificador_transacao",
+          "description": "Identificador da transacao financeira.",
+          "type": "String[2-35]",
+          "required": true,
+          "tag": "idTransacao"
+        },
+        {
+          "name": "tipo_meio_pagamento",
+          "description": "Meio de pagamento utilizado.",
+          "type": "String[2]",
+          "required": true,
+          "tag": "tpMeioPgto"
+        },
+        {
+          "name": "cnpj_recebedor",
+          "description": "CNPJ do recebedor do pagamento.",
+          "type": "String[14]",
+          "required": true,
+          "tag": "CNPJReceb"
+        },
+        {
+          "name": "cnpj_base_psp",
+          "description": "CNPJ base da instituicao financeira.",
+          "type": "String[8]",
+          "required": true,
+          "tag": "CNPJBasePSP"
+        }
+      ]
+    }
+  },
+  {
+    "name": "competencia_faturamento",
+    "description": "Ano e mes de referencia do faturamento.",
+    "type": "String[6]",
+    "required": true,
+    "tag": "CompetFat"
+  },
+  {
+    "name": "data_vencimento_fatura",
+    "description": "Data de vencimento da fatura.",
+    "type": "Date",
+    "required": true,
+    "tag": "dVencFat"
+  },
+  {
+    "name": "data_apresentacao_fatura",
+    "description": "Data de apresentacao da fatura.",
+    "type": "Date",
+    "required": false,
+    "tag": "dApresFat"
+  },
+  {
+    "name": "data_proxima_leitura",
+    "description": "Data da proxima leitura.",
+    "type": "Date",
+    "required": true,
+    "tag": "dProxLeitura"
+  },
+  {
+    "name": "numero_fatura",
+    "description": "Numero da fatura.",
+    "type": "String[1-20]",
+    "required": false,
+    "tag": "nFat"
+  },
+  {
+    "name": "codigo_barras",
+    "description": "Codigo de barras da fatura.",
+    "type": "String[1-48]",
+    "required": true,
+    "tag": "codBarras"
+  },
+  {
+    "name": "codigo_debito_automatico",
+    "description": "Codigo de autorizacao para debito automatico.",
+    "type": "String[1-20]",
+    "required": false,
+    "tag": "codDebAuto"
+  },
+  {
+    "name": "codigo_banco",
+    "description": "Codigo do banco para debito em conta.",
+    "type": "String[3-5]",
+    "required": false,
+    "tag": "codBanco"
+  },
+  {
+    "name": "codigo_agencia",
+    "description": "Codigo da agencia bancaria para debito em conta.",
+    "type": "String[1-10]",
+    "required": false,
+    "tag": "codAgencia"
+  },
+  {
+    "name": "logradouro_correspondencia",
+    "description": "Logradouro do endereco de correspondencia.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xLgr"
+  },
+  {
+    "name": "numero_correspondencia",
+    "description": "Numero do endereco de correspondencia.",
+    "type": "String[1-60]",
+    "required": true,
+    "tag": "nro"
+  },
+  {
+    "name": "complemento_correspondencia",
+    "description": "Complemento do endereco de correspondencia.",
+    "type": "String[1-60]",
+    "required": false,
+    "tag": "xCpl"
+  },
+  {
+    "name": "bairro_correspondencia",
+    "description": "Bairro do endereco de correspondencia.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xBairro"
+  },
+  {
+    "name": "codigo_municipio_correspondencia",
+    "description": "Codigo do municipio do endereco de correspondencia conforme tabela do IBGE.",
+    "type": "String[7]",
+    "required": true,
+    "tag": "cMun"
+  },
+  {
+    "name": "municipio_correspondencia",
+    "description": "Nome do municipio do endereco de correspondencia.",
+    "type": "String[2-60]",
+    "required": true,
+    "tag": "xMun"
+  },
+  {
+    "name": "cep_correspondencia",
+    "description": "CEP do endereco de correspondencia.",
+    "type": "String[8]",
+    "required": false,
+    "tag": "CEP"
+  },
+  {
+    "name": "uf_correspondencia",
+    "description": "Sigla da UF do endereco de correspondencia.",
+    "type": "String[2]",
+    "required": true,
+    "tag": "UF"
+  },
+  {
+    "name": "telefone_correspondencia",
+    "description": "Telefone do endereco de correspondencia.",
+    "type": "String[7-12]",
+    "required": false,
+    "tag": "fone"
+  },
+  {
+    "name": "email_correspondencia",
+    "description": "E-mail do endereco de correspondencia.",
+    "type": "String[1-60]",
+    "required": false,
+    "tag": "email"
+  },
+  {
+    "name": "url_qrcode_pix",
+    "description": "URL do QRCode do PIX apresentado na fatura.",
+    "type": "String[2-2000]",
+    "required": false,
+    "tag": "urlQRCodePIX"
+  },
+  {
+    "name": "informacoes_adicionais_fatura",
+    "description": "Informacoes adicionais da fatura.",
+    "type": "String[1-5000]",
+    "required": false,
+    "tag": "infAdFat"
+  },
+  {
+    "name": null,
+    "description": "Informacoes da agencia reguladora.",
+    "type": null,
+    "required": false
+  },
+  {
+    "name": "nome_agencia",
+    "description": "Nome da agencia responsavel pelo atendimento.",
+    "type": "String[2-60]",
+    "required": false,
+    "tag": "nomeAgenciaAtend"
+  },
+  {
+    "name": "endereco_agencia",
+    "description": "Endereco da agencia responsavel pelo atendimento.",
+    "type": "String[2-200]",
+    "required": false,
+    "tag": "enderAgenciaAtend"
+  },
+  {
+    "name": "sitio_agencia",
+    "description": "Sitio eletronico da agencia.",
+    "type": "String[2-200]",
+    "required": false,
+    "tag": "sitioAgenciaAtend"
+  },
+  {
+    "name": "historicos_consumo_agencia",
+    "description": "Colecao de historicos de consumo da agencia.",
+    "type": null,
+    "required": false,
+    "collection_type": "HistoricoConsumoAgenciaNfgasXML",
+    "collection": {
+      "object_type": "HistoricoConsumoAgenciaNfgasXML",
+      "object_description": "Grupo de historico de consumo da agencia reguladora. Tag XML gHistCons",
+      "object_attributes": [
+        {
+          "name": "historico",
+          "description": "Nome do historico para exibicao.",
+          "type": "String[2-60]",
+          "required": true,
+          "tag": "xHistorico"
+        },
+        {
+          "name": "consumos",
+          "description": "Colecao de consumos do historico.",
+          "type": null,
+          "required": false,
+          "collection_type": "ConsumoHistoricoAgenciaNfgasXML",
+          "collection": {
+            "object_type": "ConsumoHistoricoAgenciaNfgasXML",
+            "object_description": "Grupo de consumo historico da agencia reguladora. Tag XML gCons",
+            "object_attributes": [
+              {
+                "name": "competencia_faturamento",
+                "description": "Competencia do faturamento historico.",
+                "type": "String[6]",
+                "required": true,
+                "tag": "CompetFat"
+              },
+              {
+                "name": "unidade_medida",
+                "description": "Unidade basica de medida do historico.",
+                "type": null,
+                "required": true,
+                "enum": "* +1+: m3",
+                "tag": "uMed"
+              },
+              {
+                "name": "quantidade_dias",
+                "description": "Quantidade de dias da medicao.",
+                "type": "String[2]",
+                "required": true,
+                "tag": "qtdDias"
+              },
+              {
+                "name": "media_diaria",
+                "description": "Media diaria de consumo.",
+                "type": "Decimal[13.2-4]",
+                "required": false,
+                "tag": "medDiaria"
+              },
+              {
+                "name": "consumo",
+                "description": "Consumo no periodo.",
+                "type": "Decimal[13.2-4]",
+                "required": false,
+                "tag": "consumo"
+              },
+              {
+                "name": "valor_faturado",
+                "description": "Valor faturado no periodo.",
+                "type": "Decimal[13.2-4]",
+                "required": true,
+                "tag": "vFat"
+              }
+            ]
+          }
+        },
+        {
+          "name": "media_mensal",
+          "description": "Media mensal de consumo.",
+          "type": "Decimal[13.2-4]",
+          "required": true,
+          "tag": "medMensal"
+        }
+      ]
+    }
+  },
+  {
+    "name": "informacoes_adicionais_agencia",
+    "description": "Informacoes adicionais de interesse das agencias reguladoras.",
+    "type": "String[1-5000]",
+    "required": false,
+    "tag": "infAdReg"
+  },
+  {
+    "name": "autorizados_download_xml",
+    "description": "Autorizados para download do XML da NFGas.",
+    "type": "Colecao[0-10]",
+    "required": false,
+    "collection_type": "AutorizadosDownloadXml",
+    "collection": {
+      "object_type": "AutorizadosDownloadXml",
+      "object_description": "Autorizados para acessar o XML da NFGas. Tag XML autXML",
+      "object_attributes": [
+        {
+          "name": "cnpj",
+          "description": "CNPJ do autorizado para download do XML.",
+          "type": "String[14]",
+          "required": false,
+          "tag": "CNPJ"
+        },
+        {
+          "name": "cpf",
+          "description": "CPF do autorizado para download do XML.",
+          "type": "String[11]",
+          "required": false,
+          "tag": "CPF"
+        }
+      ]
+    }
+  },
+  {
+    "name": "informacoes_adicionais_fisco",
+    "description": "Informacoes adicionais de interesse do Fisco.",
+    "type": "String[1-2000]",
+    "required": false,
+    "tag": "infAdFisco"
+  },
+  {
+    "name": "informacoes_complementares",
+    "description": "Informacoes complementares de interesse do contribuinte.",
+    "type": "String[1-3000]",
+    "required": false,
+    "tag": "infCpl"
+  },
+  {
+    "name": "cnpj_responsavel_tecnico",
+    "description": "CNPJ do responsavel tecnico.",
+    "type": "String[14]",
+    "required": false,
+    "tag": "CNPJ"
+  },
+  {
+    "name": "nome_responsavel_tecnico",
+    "description": "Nome da pessoa de contato do responsavel tecnico.",
+    "type": "String[2-60]",
+    "required": false,
+    "tag": "xContato"
+  },
+  {
+    "name": "email_responsavel_tecnico",
+    "description": "E-mail do responsavel tecnico.",
+    "type": "String[1-60]",
+    "required": false,
+    "tag": "email"
+  },
+  {
+    "name": "telefone_responsavel_tecnico",
+    "description": "Telefone do responsavel tecnico.",
+    "type": "String[7-12]",
+    "required": false,
+    "tag": "fone"
+  },
+  {
+    "name": "codigo_responsavel_tecnico",
+    "description": "Identificador do CSRT.",
+    "type": "String[3]",
+    "required": false,
+    "tag": "idCSRT"
+  },
+  {
+    "name": "hash_responsavel_tecnico",
+    "description": "Hash do CSRT.",
+    "type": "String",
+    "required": false,
+    "tag": "hashCSRT"
+  },
+  {
+    "name": "qrcode_nfgas",
+    "description": "QRCode da NFGas para consulta.",
+    "type": "String[50-1000]",
+    "required": true,
+    "tag": "qrCodNFGas"
+  }
+]

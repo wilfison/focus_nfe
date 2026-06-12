@@ -1,0 +1,99 @@
+[
+  {
+    "name": "prefixo_trem",
+    "description": "Prefixo do Trem",
+    "type": "String[1-10]",
+    "required": false,
+    "tag": "xPref"
+  },
+  {
+    "name": "data_hora_liberacao_trem_origem",
+    "description": "Prefixo do Trem",
+    "type": "String[1-10]",
+    "required": false,
+    "tag": "dhTrem"
+  },
+  {
+    "name": "origem_trem",
+    "description": "Origem do Trem. Sigla da estação de origem",
+    "type": "String[1-3]",
+    "required": false,
+    "tag": "xOri"
+  },
+  {
+    "name": "destino_trem",
+    "description": "Destino do Trem. Sigla da estação de destino",
+    "type": "String[1-3]",
+    "required": false,
+    "tag": "xDest"
+  },
+  {
+    "name": "quantidade_vagoes",
+    "description": "Quantidade de vagões carregados",
+    "type": "Integer[1-3]",
+    "required": false,
+    "tag": "qVag"
+  },
+  {
+    "name": "vagoes",
+    "description": "Informações dos Vagões",
+    "type": "Coleção[1-1000]",
+    "required": false,
+    "collection_type": "InfoVagaoXML",
+    "collection": {
+      "object_type": "InfoVagaoXML",
+      "object_description": "Informações de Vagão",
+      "object_attributes": [
+        {
+          "name": "peso_base_calculo_frete",
+          "description": "Peso Base de Cálculo de Frete em Toneladas",
+          "type": "Decimal[3.3]",
+          "required": false,
+          "tag": "pesoBC"
+        },
+        {
+          "name": "peso_real",
+          "description": "Peso Real em Toneladas",
+          "type": "Decimal[3.3]",
+          "required": false,
+          "tag": "pesoR"
+        },
+        {
+          "name": "tipo_vagao",
+          "description": "Tipo de Vagão",
+          "type": "String[3]",
+          "required": false,
+          "tag": "tpVag"
+        },
+        {
+          "name": "serie",
+          "description": "Serie de Identificação do vagão",
+          "type": "String[3]",
+          "required": true,
+          "tag": "serie"
+        },
+        {
+          "name": "numero_identificao_vagao",
+          "description": "Número de Identificação do vagão",
+          "type": "Integer[1-8]",
+          "required": true,
+          "tag": "nVag"
+        },
+        {
+          "name": "sequencia_vagao_composicao",
+          "description": "Sequência do vagão na composição",
+          "type": "Integer[1-3]",
+          "required": false,
+          "tag": "nSeq"
+        },
+        {
+          "name": "tonelada_util",
+          "description": "Tonelada Útil",
+          "type": "Decimal[3.3]",
+          "required": false,
+          "tag": "TU"
+        }
+      ]
+    }
+  }
+]

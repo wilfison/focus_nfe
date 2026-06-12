@@ -1,0 +1,209 @@
+[
+  {
+    "name": "irin_navio",
+    "description": "Irin do navio sempre deverá ser informado",
+    "type": "String[1-10]",
+    "required": false,
+    "tag": "irin"
+  },
+  {
+    "name": "tipo_embarcacao",
+    "description": "Código do tipo de embarcação. Preencher com código da Tabela de Tipo de Embarcação definida no Ministério dos Transportes",
+    "type": "Integer[2]",
+    "required": false,
+    "tag": "tpEmb"
+  },
+  {
+    "name": "codigo_embarcacao",
+    "description": "Código da embarcação",
+    "type": "String[1-10]",
+    "required": false,
+    "tag": "cEmbar"
+  },
+  {
+    "name": "nome_embarcacao",
+    "description": "Nome da embarcação",
+    "type": "String[1-60]",
+    "required": false,
+    "tag": "xEmbar"
+  },
+  {
+    "name": "numero_viagem",
+    "description": "Número da Viagem",
+    "type": "Integer[1-10]",
+    "required": false,
+    "tag": "nViag"
+  },
+  {
+    "name": "codigo_porto_embarque",
+    "description": "Código do Porto de Embarque",
+    "type": "String[1-5]",
+    "required": false,
+    "tag": "cPrtEmb"
+  },
+  {
+    "name": "codigo_porto_destino",
+    "description": "Código do Porto de Destino",
+    "type": "String[1-5]",
+    "required": false,
+    "tag": "cPrtDest"
+  },
+  {
+    "name": "porto_transbordo",
+    "description": "Porto de Transbordo",
+    "type": "String[1-60]",
+    "required": false,
+    "tag": "prtTrans"
+  },
+  {
+    "name": "tipo_navegacao",
+    "description": "Tipo de Navegação",
+    "type": "Integer[0-1]",
+    "required": false,
+    "tag": "tpNav"
+  },
+  {
+    "name": "terminais_carregamento",
+    "description": "Grupo de informações dos terminais de carregamento.",
+    "type": "Coleção[0-5]",
+    "required": false,
+    "collection_type": "InfoTerminalCarregamentoXML",
+    "collection": {
+      "object_type": "InfoTerminalCarregamentoXML",
+      "object_description": "Grupo de informações dos terminais de carregamento.",
+      "object_attributes": [
+        {
+          "name": "codigo",
+          "description": "Código do Terminal de Carregamento",
+          "type": "String[1-8]",
+          "required": true,
+          "tag": "cTermCarreg"
+        },
+        {
+          "name": "nome",
+          "description": "Nome do Terminal de Carregamento",
+          "type": "String[1-60]",
+          "required": true,
+          "tag": "xTermCarreg"
+        }
+      ]
+    }
+  },
+  {
+    "name": "terminais_descarregamento",
+    "description": "Grupo de informações dos terminais de descarregamento.",
+    "type": "Coleção[0-5]",
+    "required": false,
+    "collection_type": "InfoTerminalDescarregamentoXML",
+    "collection": {
+      "object_type": "InfoTerminalDescarregamentoXML",
+      "object_description": "Grupo de informações do Terminal",
+      "object_attributes": [
+        {
+          "name": "codigo_terminal",
+          "description": "Código do Terminal de Descarregamento",
+          "type": "String[1-8]",
+          "required": true,
+          "tag": "cTermDescarreg"
+        },
+        {
+          "name": "nome_terminal",
+          "description": "Nome do Terminal de Descarregamento",
+          "type": "String[1-60]",
+          "required": true,
+          "tag": "xTermDescarreg"
+        }
+      ]
+    }
+  },
+  {
+    "name": "embarcacoes_comboio",
+    "description": "Informações das Embarcações do Comboio",
+    "type": "Coleção[0-30]",
+    "required": false,
+    "collection_type": "InfoEmbarcacaoComboioXML",
+    "collection": {
+      "object_type": "InfoEmbarcacaoComboioXML",
+      "object_description": "Informações das Embarcações do Comboio",
+      "object_attributes": [
+        {
+          "name": "codigo",
+          "description": "Código da embarcação do comboio",
+          "type": "String[1-10]",
+          "required": true,
+          "tag": "cEmbComb"
+        },
+        {
+          "name": "identificacao_balsa",
+          "description": "Identificador da Balsa",
+          "type": "String[1-60]",
+          "required": true,
+          "tag": "xBalsa"
+        }
+      ]
+    }
+  },
+  {
+    "name": "unidades_carga_vazias",
+    "description": "Informações das Undades de Transporte vazias",
+    "type": "Coleção[0-1000]",
+    "required": false,
+    "collection_type": "InfoUnidadeCargaVaziaXML",
+    "collection": {
+      "object_type": "InfoUnidadeCargaVaziaXML",
+      "object_description": "Informações das Undade de Transporte Vazia",
+      "object_attributes": [
+        {
+          "name": "identificacao",
+          "description": "Identificação da unidades de carga vazia",
+          "type": "String[1-20]",
+          "required": false,
+          "tag": "idUnidCargaVazia"
+        },
+        {
+          "name": "tipo",
+          "description": "Tipo da unidade de carga vazia",
+          "type": null,
+          "required": true,
+          "enum": "* +1+: Container\\n* +2+: ULD\\n* +3+: Pallet\\n* +4+: Outros",
+          "tag": "tpUnidCargaVazia"
+        }
+      ]
+    }
+  },
+  {
+    "name": "unidades_transporte_vazias",
+    "description": "Informações das Undades de Transporte vazias",
+    "type": "Coleção[0-1000]",
+    "required": false,
+    "collection_type": "InfoUnidadeTransporteVaziaXML",
+    "collection": {
+      "object_type": "InfoUnidadeTransporteVaziaXML",
+      "object_description": "Informações da Undade de Transporte Vazia",
+      "object_attributes": [
+        {
+          "name": "identificacao",
+          "description": "Identificação da Unidade de Transporte Vazia",
+          "type": "String[1-20]",
+          "required": true,
+          "tag": "idUnidTranspVazia"
+        },
+        {
+          "name": "tipo",
+          "description": "Tipo da Unidade de Transporte Vazia",
+          "type": null,
+          "required": true,
+          "enum": "* +1+: Rodoviário Tração do tipo caminhão\\n* +2+: Rodoviário reboque do tipo carreta",
+          "tag": "tpUnidTranspVazia"
+        }
+      ]
+    }
+  },
+  {
+    "name": "mmsi",
+    "description": "Maritime Mobile Service Identify",
+    "type": "Integer[9]",
+    "required": false,
+    "tag": "MMSI"
+  }
+]

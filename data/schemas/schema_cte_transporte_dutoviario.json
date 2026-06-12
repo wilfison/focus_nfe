@@ -1,0 +1,65 @@
+[
+  {
+    "name": "valor_tarifa",
+    "description": "Valor da tarifa",
+    "type": "Decimal[9.6]",
+    "required": false,
+    "tag": "vTar"
+  },
+  {
+    "name": "data_inicio",
+    "description": "Data de Início da prestação do serviço",
+    "type": null,
+    "required": false,
+    "tag": "dIni"
+  },
+  {
+    "name": "data_fim",
+    "description": "Data de Fim da prestação do serviço",
+    "type": null,
+    "required": false,
+    "tag": "dFim"
+  },
+  {
+    "name": "classificacao_dutoviario",
+    "description": "Classificação Dutoviário",
+    "type": null,
+    "required": false,
+    "reforma_tributaria": true,
+    "enum": "* +1+: Gasoduto\\n* +2+: Mineroduto\\n* +3+: Oleoduto",
+    "tag": "classDuto"
+  },
+  {
+    "name": "tipo_contratacao_servico",
+    "description": "Tipo de contratação do serviço de transporte (apenas para gasoduto)",
+    "type": null,
+    "required": false,
+    "reforma_tributaria": true,
+    "enum": "* +0+: Ponto a ponto\\n* +1+: Capacidade de Entrada\\n* +2+: Capacidade de Saída",
+    "tag": "tpContratacao"
+  },
+  {
+    "name": "codigo_ponto_entrada",
+    "description": "Código do Ponto de Entrada",
+    "type": "String[20]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "codPontoEntrada"
+  },
+  {
+    "name": "codigo_ponto_saida",
+    "description": "Código do Ponto de Saída",
+    "type": "String[20]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "codPontoSaida"
+  },
+  {
+    "name": "numero_contrato_capacidade",
+    "description": "Número do Contrato de Capacidade",
+    "type": "String[20]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "nContrato"
+  }
+]
