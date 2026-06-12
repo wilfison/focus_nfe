@@ -3,7 +3,7 @@
 RSpec.describe FocusNfe::Recursos::Nfe do
   subject(:nfe) { described_class.new(client.connection) }
 
-  let(:client) { FocusNfe::Client.new(token: "tok", environment: environment) }
+  let(:client) { FocusNfe::Client.new(token_empresa: "tok", environment: environment) }
   let(:environment) { :homologacao }
   let(:json) { { "Content-Type" => "application/json" } }
   let(:dados) { { "natureza_operacao" => "Venda" } }

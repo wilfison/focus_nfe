@@ -1,18 +1,20 @@
 # frozen_string_literal: true
 
 module FocusNfe
-  # Raiz de acesso à API para um par token/ambiente. Cada cliente carrega sua
-  # própria {Configuration} e {HTTP::Connection}, permitindo coexistência de
-  # várias empresas no mesmo processo sem estado compartilhado. Expõe os
-  # recursos da API instanciados preguiçosamente e memoizados.
+  # Raiz de acesso à API. Cada cliente carrega sua própria {Configuration} e
+  # mantém duas {HTTP::Connection} memoizadas, uma por token: a de empresa
+  # (emissão/consulta de documentos) e a de conta (consultas auxiliares e gestão
+  # de empresas). Permite coexistência de várias empresas no mesmo processo sem
+  # estado compartilhado. Expõe os recursos da API instanciados preguiçosamente.
   class Client
     # @return [FocusNfe::Configuration] configuração validada deste cliente
     attr_reader :configuration
 
     # @overload initialize(configuration)
     #   @param configuration [FocusNfe::Configuration] configuração já montada
-    # @overload initialize(token:, environment:, **options)
-    #   @param token [String] token de acesso da API
+    # @overload initialize(token_empresa:, token_conta:, environment:, **options)
+    #   @param token_empresa [String] token da empresa (emissão/consulta de documentos)
+    #   @param token_conta [String] token da conta (consultas auxiliares e gestão de empresas)
     #   @param environment [Symbol] :producao ou :homologacao
     #   @param options [Hash] demais opções da {Configuration} (timeout, headers, …)
     # @raise [FocusNfe::Errors::ConfigurationError] se a configuração for inválida
@@ -20,9 +22,16 @@ module FocusNfe
       @configuration = (configuration || Configuration.new(**)).tap(&:validate!)
     end
 
-    # @return [FocusNfe::HTTP::Connection] conexão memoizada ligada à configuração
+    # @return [FocusNfe::HTTP::Connection] conexão da empresa, memoizada
+    # @raise [FocusNfe::Errors::ConfigurationError] se +token_empresa+ estiver ausente
     def connection
-      @connection ||= HTTP::Connection.new(configuration)
+      @connection ||= build_connection(:empresa)
+    end
+
+    # @return [FocusNfe::HTTP::Connection] conexão da conta, memoizada
+    # @raise [FocusNfe::Errors::ConfigurationError] se +token_conta+ estiver ausente
+    def connection_conta
+      @connection_conta ||= build_connection(:conta)
     end
 
     # @return [FocusNfe::Recursos::Nfe] recurso de NF-e, memoizado
@@ -92,37 +101,37 @@ module FocusNfe
 
     # @return [FocusNfe::Recursos::Ceps] recurso de consulta de CEP, memoizado
     def ceps
-      @ceps ||= Recursos::Ceps.new(connection)
+      @ceps ||= Recursos::Ceps.new(connection_conta)
     end
 
     # @return [FocusNfe::Recursos::Municipios] recurso de consulta de municípios, memoizado
     def municipios
-      @municipios ||= Recursos::Municipios.new(connection)
+      @municipios ||= Recursos::Municipios.new(connection_conta)
     end
 
     # @return [FocusNfe::Recursos::Cfops] recurso de consulta de CFOP, memoizado
     def cfops
-      @cfops ||= Recursos::Cfops.new(connection)
+      @cfops ||= Recursos::Cfops.new(connection_conta)
     end
 
     # @return [FocusNfe::Recursos::Cnaes] recurso de consulta de CNAE, memoizado
     def cnaes
-      @cnaes ||= Recursos::Cnaes.new(connection)
+      @cnaes ||= Recursos::Cnaes.new(connection_conta)
     end
 
     # @return [FocusNfe::Recursos::Ncms] recurso de consulta de NCM, memoizado
     def ncms
-      @ncms ||= Recursos::Ncms.new(connection)
+      @ncms ||= Recursos::Ncms.new(connection_conta)
     end
 
     # @return [FocusNfe::Recursos::Cnpjs] recurso de consulta de CNPJ, memoizado
     def cnpjs
-      @cnpjs ||= Recursos::Cnpjs.new(connection)
+      @cnpjs ||= Recursos::Cnpjs.new(connection_conta)
     end
 
     # @return [FocusNfe::Recursos::Empresas] recurso de gestão de empresas, memoizado
     def empresas
-      @empresas ||= Recursos::Empresas.new(connection)
+      @empresas ||= Recursos::Empresas.new(connection_conta)
     end
 
     # @return [FocusNfe::Recursos::Webhooks] recurso de gestão de webhooks, memoizado
@@ -138,6 +147,16 @@ module FocusNfe
     # @return [FocusNfe::Recursos::Backups] recurso de backups de XML, memoizado
     def backups
       @backups ||= Recursos::Backups.new(connection)
+    end
+
+    private
+
+    # @param escopo [Symbol] :empresa ou :conta
+    # @return [FocusNfe::HTTP::Connection] conexão autenticada com o token do escopo
+    # @raise [FocusNfe::Errors::ConfigurationError] se o token do escopo estiver ausente
+    def build_connection(escopo)
+      configuration.validate_token!(escopo)
+      HTTP::Connection.new(configuration, token: configuration.token_de(escopo))
     end
   end
 end

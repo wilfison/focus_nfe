@@ -18,9 +18,10 @@ Cobre:
 - **Documentos recebidos** — `nfes_recebidas`, `ctes_recebidas`,
   `nfses_nacionais_recebidas` (listagem com sincronização incremental,
   consulta, downloads, manifestação e eventos).
-- **APIs auxiliares** (somente leitura) — `ceps`, `municipios`, `cfops`,
-  `cnaes`, `ncms`, `cnpjs`.
-- **APIs de gestão** — `empresas`, `webhooks`, `emails_bloqueados`, `backups`.
+- **APIs auxiliares** (somente leitura, autenticadas pelo **token da conta**) —
+  `ceps`, `municipios`, `cfops`, `cnaes`, `ncms`, `cnpjs`.
+- **APIs de gestão** — `empresas` (token da conta); `webhooks`,
+  `emails_bloqueados`, `backups` (token da empresa).
 
 ## Instalação
 
@@ -38,16 +39,32 @@ gem install focus_nfe
 
 ## Configuração
 
+### Os dois tokens da Focus NFe
+
+A API usa **dois tokens distintos**, e a gem os separa:
+
+- **`token_empresa`** — identifica a empresa que emite/consulta o documento.
+  Autentica todos os documentos (`nfe`, `nfce`, …, e as recebidas) e as APIs
+  de gestão por empresa (`webhooks`, `emails_bloqueados`, `backups`).
+- **`token_conta`** — token da conta. Autentica as consultas auxiliares (`ceps`,
+  `municipios`, `cfops`, `cnaes`, `ncms`, `cnpjs`) e a gestão de empresas
+  (`empresas`).
+
+Configure só o que for usar: um cliente só com `token_empresa` emite documentos;
+acessar um recurso de conta sem `token_conta` levanta `ConfigurationError` (e
+vice-versa), antes de qualquer ida à rede.
+
 Há dois modos de uso, que coexistem.
 
 ### Global — para aplicações de uma empresa só
 
 ```ruby
 FocusNfe.configure do |config|
-  config.token       = ENV["FOCUS_NFE_TOKEN"]
-  config.environment = :producao         # ou :homologacao (padrão)
-  config.timeout     = 30
-  config.logger      = Rails.logger
+  config.token_empresa = ENV["FOCUS_NFE_TOKEN_EMPRESA"]
+  config.token_conta   = ENV["FOCUS_NFE_TOKEN_CONTA"]   # opcional (consultas auxiliares/empresas)
+  config.environment   = :producao       # ou :homologacao (padrão)
+  config.timeout       = 30
+  config.logger        = Rails.logger
 end
 
 client = FocusNfe.client                 # usa a config global
@@ -55,12 +72,18 @@ client = FocusNfe.client                 # usa a config global
 
 ### Explícito — várias empresas no mesmo processo
 
-O token é por empresa; cada `Client` carrega seu próprio token e ambiente, sem
-estado compartilhado.
+O `token_empresa` é por empresa; cada `Client` carrega seus próprios tokens e
+ambiente, sem estado compartilhado. O `token_conta`, quando usado, é o mesmo da
+conta que agrupa as empresas.
 
 ```ruby
-loja   = FocusNfe::Client.new(token: "TOKEN_LOJA",   environment: :producao)
-filial = FocusNfe::Client.new(token: "TOKEN_FILIAL", environment: :homologacao)
+loja   = FocusNfe::Client.new(token_empresa: "TOKEN_LOJA",   environment: :producao)
+filial = FocusNfe::Client.new(token_empresa: "TOKEN_FILIAL", environment: :homologacao)
+
+# Consultas auxiliares e gestão de empresas usam o token da conta:
+conta  = FocusNfe::Client.new(token_conta: "TOKEN_CONTA", environment: :producao)
+conta.cnpjs.consultar("12345678000123")
+conta.empresas.criar(dados: dados_empresa, dry_run: true)
 ```
 
 O ambiente resolve a URL base (o prefixo `/v2` é interno):
@@ -131,6 +154,8 @@ client.nfes_recebidas.manifestar(chave, tipo: "confirmacao")
 ```
 
 ### APIs auxiliares
+
+Autenticadas pelo `token_conta` (ver [Configuração](#configuração)):
 
 ```ruby
 client.ceps.consultar("69909032")

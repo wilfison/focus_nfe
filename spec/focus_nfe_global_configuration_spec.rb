@@ -11,11 +11,11 @@ RSpec.describe FocusNfe do
 
     it "memoiza a configuração ajustada no bloco", :aggregate_failures do
       described_class.configure do |config|
-        config.token = "tok-global"
+        config.token_empresa = "tok-global"
         config.environment = :producao
       end
 
-      expect(described_class.configuration).to have_attributes(token: "tok-global", environment: :producao)
+      expect(described_class.configuration).to have_attributes(token_empresa: "tok-global", environment: :producao)
     end
   end
 
@@ -33,18 +33,18 @@ RSpec.describe FocusNfe do
 
   describe ".client" do
     it "constrói um Client a partir da config global" do
-      described_class.configure { |config| config.token = "tok-global" }
+      described_class.configure { |config| config.token_empresa = "tok-global" }
 
       expect(described_class.client).to be_a(FocusNfe::Client)
     end
 
     it "usa a config global no cliente" do
-      described_class.configure { |config| config.token = "tok-global" }
+      described_class.configure { |config| config.token_empresa = "tok-global" }
 
       expect(described_class.client.configuration).to be(described_class.configuration)
     end
 
-    it "levanta ConfigurationError quando a config global ainda não tem token" do
+    it "levanta ConfigurationError quando a config global ainda não tem nenhum token" do
       expect { described_class.client }.to raise_error(FocusNfe::Errors::ConfigurationError)
     end
   end
@@ -60,7 +60,7 @@ RSpec.describe FocusNfe do
 
   describe "isolamento entre exemplos" do
     it "não vê o token de um exemplo anterior" do
-      expect(described_class.configuration.token).to be_nil
+      expect(described_class.configuration.token_empresa).to be_nil
     end
   end
 end

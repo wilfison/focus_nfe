@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe FocusNfe::Recursos::Concerns::Emitivel do
-  let(:client) { FocusNfe::Client.new(token: "tok", environment: :homologacao) }
+  let(:client) { FocusNfe::Client.new(token_empresa: "tok", environment: :homologacao) }
   let(:nfe) { FocusNfe::Recursos::Nfe.new(client.connection) }
   let(:nfce) { FocusNfe::Recursos::Nfce.new(client.connection) }
   let(:json) { { "Content-Type" => "application/json" } }

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 RSpec.describe FocusNfe::HTTP::Connection do
-  subject(:connection) { described_class.new(config) }
+  subject(:connection) { described_class.new(config, token: "tok") }
 
-  let(:config) { FocusNfe::Configuration.new(token: "tok", environment: environment, headers: extras) }
+  let(:config) { FocusNfe::Configuration.new(token_empresa: "tok", environment: environment, headers: extras) }
   let(:environment) { :homologacao }
   let(:extras) { {} }
 

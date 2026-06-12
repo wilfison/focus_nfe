@@ -2,10 +2,10 @@
 
 RSpec.describe FocusNfe::Configuration do
   describe "valores padrão" do
-    it "usa homologação, timeouts numéricos e cabeçalhos vazios" do
+    it "usa homologação, timeouts numéricos, tokens nil e cabeçalhos vazios" do
       expect(described_class.new).to have_attributes(
-        token: nil, environment: :homologacao, timeout: 30, open_timeout: 10,
-        logger: nil, http_adapter: nil, headers: {}
+        token_empresa: nil, token_conta: nil, environment: :homologacao, timeout: 30,
+        open_timeout: 10, logger: nil, http_adapter: nil, headers: {}
       )
     end
   end
@@ -13,26 +13,34 @@ RSpec.describe FocusNfe::Configuration do
   describe "atributos" do
     it "aceita todos os atributos via argumentos nomeados" do
       logger = Object.new
-      config = described_class.new(token: "t", environment: :producao, timeout: 5,
-                                   open_timeout: 2, logger: logger, headers: { "X" => "1" })
+      config = described_class.new(token_empresa: "te", token_conta: "tc", environment: :producao,
+                                   timeout: 5, open_timeout: 2, logger: logger, headers: { "X" => "1" })
 
-      expect(config).to have_attributes(token: "t", environment: :producao, timeout: 5,
-                                        open_timeout: 2, logger: logger, headers: { "X" => "1" })
+      expect(config).to have_attributes(token_empresa: "te", token_conta: "tc", environment: :producao,
+                                        timeout: 5, open_timeout: 2, logger: logger, headers: { "X" => "1" })
     end
 
-    it "permite escrever os atributos após a construção", :aggregate_failures do
+    it "permite escrever os tokens após a construção", :aggregate_failures do
       config = described_class.new
-      config.token = "token-123"
-      config.headers["X-Foo"] = "bar"
+      config.token_empresa = "te-123"
+      config.token_conta = "tc-123"
 
-      expect(config.token).to eq("token-123")
-      expect(config.headers).to eq("X-Foo" => "bar")
+      expect(config).to have_attributes(token_empresa: "te-123", token_conta: "tc-123")
     end
 
     it "apenas armazena a referência ao logger nesta fase" do
       logger = Object.new
 
       expect(described_class.new(logger: logger).logger).to be(logger)
+    end
+  end
+
+  describe "#token_de" do
+    it "resolve o token de cada escopo", :aggregate_failures do
+      config = described_class.new(token_empresa: "te", token_conta: "tc")
+
+      expect(config.token_de(:empresa)).to eq("te")
+      expect(config.token_de(:conta)).to eq("tc")
     end
   end
 
@@ -51,34 +59,63 @@ RSpec.describe FocusNfe::Configuration do
   end
 
   describe "#validate!" do
-    it "levanta ConfigurationError quando o token é nil" do
-      config = described_class.new(token: nil, environment: :producao)
+    it "levanta ConfigurationError quando nenhum token está presente" do
+      config = described_class.new(token_empresa: nil, token_conta: nil, environment: :producao)
 
       expect { config.validate! }.to raise_error(FocusNfe::Errors::ConfigurationError, /token/)
     end
 
-    it "levanta ConfigurationError quando o token é vazio ou só espaços" do
-      config = described_class.new(token: "   ", environment: :producao)
+    it "levanta ConfigurationError quando os tokens são vazios ou só espaços" do
+      config = described_class.new(token_empresa: "   ", token_conta: "", environment: :producao)
 
       expect { config.validate! }.to raise_error(FocusNfe::Errors::ConfigurationError, /token/)
+    end
+
+    it "aceita apenas o token de empresa" do
+      config = described_class.new(token_empresa: "te", environment: :producao)
+
+      expect(config.validate!).to be(config)
+    end
+
+    it "aceita apenas o token de conta" do
+      config = described_class.new(token_conta: "tc", environment: :producao)
+
+      expect(config.validate!).to be(config)
     end
 
     it "levanta ConfigurationError quando o ambiente é desconhecido" do
-      config = described_class.new(token: "t", environment: :sandbox)
+      config = described_class.new(token_empresa: "te", environment: :sandbox)
 
       expect { config.validate! }.to raise_error(FocusNfe::Errors::ConfigurationError, /ambiente/)
     end
+  end
 
-    it "devolve a própria configuração quando produção é válida" do
-      config = described_class.new(token: "t", environment: :producao)
+  describe "#validate_token!" do
+    it "devolve a própria configuração quando o token do escopo está presente" do
+      config = described_class.new(token_empresa: "te", token_conta: "tc")
 
-      expect(config.validate!).to be(config)
+      expect(config.validate_token!(:empresa)).to be(config)
     end
 
-    it "devolve a própria configuração quando homologação é válida" do
-      config = described_class.new(token: "t", environment: :homologacao)
+    it "levanta ConfigurationError citando token_empresa quando o escopo :empresa não tem token" do
+      config = described_class.new(token_conta: "tc")
 
-      expect(config.validate!).to be(config)
+      expect { config.validate_token!(:empresa) }
+        .to raise_error(FocusNfe::Errors::ConfigurationError, /token_empresa/)
+    end
+
+    it "levanta ConfigurationError citando token_conta quando o escopo :conta não tem token" do
+      config = described_class.new(token_empresa: "te")
+
+      expect { config.validate_token!(:conta) }
+        .to raise_error(FocusNfe::Errors::ConfigurationError, /token_conta/)
+    end
+
+    it "valida o ambiente antes do token" do
+      config = described_class.new(token_empresa: "te", environment: :sandbox)
+
+      expect { config.validate_token!(:empresa) }
+        .to raise_error(FocusNfe::Errors::ConfigurationError, /ambiente/)
     end
   end
 end

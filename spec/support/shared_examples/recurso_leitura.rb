@@ -3,7 +3,7 @@
 RSpec.shared_context "com recurso conectado" do
   subject(:recurso) { described_class.new(client.connection) }
 
-  let(:client) { FocusNfe::Client.new(token: "tok", environment: :homologacao) }
+  let(:client) { FocusNfe::Client.new(token_empresa: "tok", environment: :homologacao) }
   let(:json) { { "Content-Type" => "application/json" } }
 
   def homologacao = "https://homologacao.focusnfe.com.br"

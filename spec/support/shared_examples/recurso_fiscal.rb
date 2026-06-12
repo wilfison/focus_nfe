@@ -3,7 +3,7 @@
 RSpec.shared_examples "um recurso emitível" do |caminho|
   subject(:recurso) { described_class.new(client.connection) }
 
-  let(:client) { FocusNfe::Client.new(token: "tok", environment: environment) }
+  let(:client) { FocusNfe::Client.new(token_empresa: "tok", environment: environment) }
   let(:environment) { :homologacao }
   let(:json) { { "Content-Type" => "application/json" } }
   let(:dados) { { "natureza_operacao" => "Venda" } }
@@ -65,7 +65,7 @@ end
 RSpec.shared_examples "um recurso consultável" do |caminho|
   subject(:recurso) { described_class.new(client.connection) }
 
-  let(:client) { FocusNfe::Client.new(token: "tok", environment: :homologacao) }
+  let(:client) { FocusNfe::Client.new(token_empresa: "tok", environment: :homologacao) }
   let(:json) { { "Content-Type" => "application/json" } }
 
   def homologacao = "https://homologacao.focusnfe.com.br"
@@ -108,7 +108,7 @@ end
 RSpec.shared_examples "um recurso cancelável" do |caminho|
   subject(:recurso) { described_class.new(client.connection) }
 
-  let(:client) { FocusNfe::Client.new(token: "tok", environment: :homologacao) }
+  let(:client) { FocusNfe::Client.new(token_empresa: "tok", environment: :homologacao) }
   let(:json) { { "Content-Type" => "application/json" } }
 
   def homologacao = "https://homologacao.focusnfe.com.br"

@@ -68,7 +68,7 @@ module FocusNfe
     end
 
     # @return [FocusNfe::Client] cliente construído a partir da config global
-    # @raise [FocusNfe::Errors::ConfigurationError] se a config global não tiver token/ambiente válido
+    # @raise [FocusNfe::Errors::ConfigurationError] se a config global não tiver ao menos um token e ambiente válido
     def client
       Client.new(configuration)
     end

@@ -21,8 +21,10 @@ module FocusNfe
       }.freeze
 
       # @param configuration [FocusNfe::Configuration] configuração já validada
-      def initialize(configuration)
+      # @param token [String] token que autentica esta conexão (empresa ou conta)
+      def initialize(configuration, token:)
         @configuration = configuration
+        @token = token
       end
 
       # @!method get(path, params: {}, body: nil, headers: {})
@@ -43,7 +45,7 @@ module FocusNfe
 
       private
 
-      attr_reader :configuration
+      attr_reader :configuration, :token
 
       def execute(verb, path, params:, body:, headers:)
         response = adapter.call(
@@ -69,7 +71,7 @@ module FocusNfe
         DEFAULT_HEADERS
           .merge(configuration.headers)
           .merge(call_headers)
-          .merge(Authentication.header(configuration.token))
+          .merge(Authentication.header(token))
       end
 
       def serialize(body)
