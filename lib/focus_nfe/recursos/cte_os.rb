@@ -10,6 +10,17 @@ module FocusNfe
       include Concerns::Cancelavel
 
       caminho_base "cte_os"
+
+      MODAIS = {
+        "01" => { "modal_rodoviario" => "cte_os_transporte_rodoviario" }
+      }.freeze
+
+      private
+
+      # @see FocusNfe::Recursos::Base#esquemas_extras
+      def esquemas_extras(dados)
+        MODAIS.fetch(dados["modal"], {})
+      end
     end
   end
 end

@@ -5,6 +5,8 @@ RSpec.describe FocusNfe::Recursos::Concerns::Emitivel do
   let(:nfe) { FocusNfe::Recursos::Nfe.new(client.connection) }
   let(:nfce) { FocusNfe::Recursos::Nfce.new(client.connection) }
   let(:cte) { FocusNfe::Recursos::Cte.new(client.connection) }
+  let(:cte_os) { FocusNfe::Recursos::CteOs.new(client.connection) }
+  let(:mdfe) { FocusNfe::Recursos::Mdfe.new(client.connection) }
 
   def json = { "Content-Type" => "application/json" }
   def processando = '{"status":"processando_autorizacao"}'
@@ -68,6 +70,68 @@ RSpec.describe FocusNfe::Recursos::Concerns::Emitivel do
                    validar: true)
 
         expect(a_request(:post, "#{homologacao}/v2/cte?ref=cte-1")).to have_been_made
+      end
+    end
+
+    context "quando o CTe OS tem modal condicional" do
+      def stub_cte_os_base_vazio
+        vazio = FocusNfe::Esquemas::Esquema.new([])
+        allow(FocusNfe::Esquemas::Esquema).to receive(:carregar).and_call_original
+        allow(FocusNfe::Esquemas::Esquema).to receive(:carregar).with("cte_os").and_return(vazio)
+      end
+
+      it "valida o sub-esquema do modal e bloqueia a emissão" do
+        stub_cte_os_base_vazio
+
+        expect do
+          cte_os.emitir(ref: "cte-os-1", dados: { "modal" => "01", "modal_rodoviario" => { "placa" => "ABC1234" } },
+                        validar: true)
+        end.to raise_error(FocusNfe::Esquemas::ErroDeValidacao, /modal_rodoviario\.placa/)
+      end
+
+      it "emite quando base e modal são válidos" do
+        stub_cte_os_base_vazio
+        stub_emissao("cte_os?ref=cte-os-1")
+
+        cte_os.emitir(ref: "cte-os-1", dados: { "modal" => "01", "modal_rodoviario" => { "placa" => "AB12" } },
+                      validar: true)
+
+        expect(a_request(:post, "#{homologacao}/v2/cte_os?ref=cte-os-1")).to have_been_made
+      end
+
+      it "não valida modal quando o campo modal não é 01" do
+        stub_cte_os_base_vazio
+        stub_emissao("cte_os?ref=cte-os-1")
+
+        cte_os.emitir(ref: "cte-os-1", dados: { "modal" => "02", "modal_rodoviario" => { "placa" => "ABC1234" } },
+                      validar: true)
+
+        expect(a_request(:post, "#{homologacao}/v2/cte_os?ref=cte-os-1")).to have_been_made
+      end
+    end
+
+    context "quando a MDFe deduz o modal pela chave presente" do
+      def stub_mdfe_base_vazia
+        vazio = FocusNfe::Esquemas::Esquema.new([])
+        allow(FocusNfe::Esquemas::Esquema).to receive(:carregar).and_call_original
+        allow(FocusNfe::Esquemas::Esquema).to receive(:carregar).with("mdfe").and_return(vazio)
+      end
+
+      it "valida o sub-esquema do modal presente e bloqueia a emissão" do
+        stub_mdfe_base_vazia
+
+        expect do
+          mdfe.emitir(ref: "mdfe-1", dados: { "modal_rodoviario" => {} }, validar: true)
+        end.to raise_error(FocusNfe::Esquemas::ErroDeValidacao, /modal_rodoviario/)
+      end
+
+      it "emite quando nenhuma chave de modal está presente" do
+        stub_mdfe_base_vazia
+        stub_emissao("mdfe?ref=mdfe-1")
+
+        mdfe.emitir(ref: "mdfe-1", dados: { "cnpj_emitente" => "12345678000123" }, validar: true)
+
+        expect(a_request(:post, "#{homologacao}/v2/mdfe?ref=mdfe-1")).to have_been_made
       end
     end
 

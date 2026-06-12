@@ -60,4 +60,35 @@ RSpec.describe FocusNfe::Esquemas::Validador do
       expect { validador.validar!("natureza_operacao" => "Venda", "items" => []) }.not_to raise_error
     end
   end
+
+  describe "#validar com sub-esquemas aninhados" do
+    subject(:validador) { described_class.new(esquema_topo, aninhados: { "modal_rodoviario" => sub_esquema }) }
+
+    let(:esquema_topo) { FocusNfe::Esquemas::Esquema.new([]) }
+    let(:sub_esquema) do
+      FocusNfe::Esquemas::Esquema.new([{ "name" => "rntrc", "type" => "String[8]", "required" => true }])
+    end
+
+    it "não acusa nada quando o objeto aninhado é válido" do
+      expect(validador.validar("modal_rodoviario" => { "rntrc" => "12345678" })).to eq([])
+    end
+
+    it "valida o objeto aninhado com chaves Symbol" do
+      expect(validador.validar(modal_rodoviario: { rntrc: "12345678" })).to eq([])
+    end
+
+    it "prefixa os erros do aninhado com a chave" do
+      erros = validador.validar("modal_rodoviario" => { "rntrc" => "1" })
+
+      expect(erros.join).to include("modal_rodoviario.rntrc")
+    end
+
+    it "exige o objeto aninhado declarado" do
+      expect(validador.validar({}).join).to include("modal_rodoviario: campo obrigatório ausente")
+    end
+
+    it "acusa quando o aninhado não é um objeto" do
+      expect(validador.validar("modal_rodoviario" => "x").join).to include("modal_rodoviario: deve ser um objeto")
+    end
+  end
 end

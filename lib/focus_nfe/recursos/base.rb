@@ -51,6 +51,17 @@ module FocusNfe
 
         raise ArgumentError, "referência inválida: #{ref.inspect} (esperado alfanumérico, hífen ou underscore)"
       end
+
+      # Esquemas extras a validar além do esquema de topo, dependentes do payload.
+      # Cada par associa a chave de um objeto aninhado no payload ao nome do
+      # esquema que o valida. Recursos com esquema dinâmico (CTe, CTe OS, MDFe)
+      # sobrescrevem este método para, conforme os +dados+, escolher o sub-esquema.
+      #
+      # @param dados [Hash] payload de emissão (chaves String)
+      # @return [Hash{String => String}] chave aninhada no payload => nome do esquema
+      def esquemas_extras(_dados)
+        {}
+      end
     end
   end
 end

@@ -34,9 +34,16 @@ module FocusNfe
           esquema = Esquemas::Esquema.carregar(caminho_base)
           return unless esquema
 
-          erros = Esquemas::Validador.new(esquema).validar(dados)
-          erros += Esquemas::Modais.validar(caminho_base, dados)
+          normalizados = dados.transform_keys(&:to_s)
+          aninhados = carregar_aninhados(normalizados)
+          erros = Esquemas::Validador.new(esquema, aninhados: aninhados).validar(normalizados)
           raise Esquemas::ErroDeValidacao, erros unless erros.empty?
+        end
+
+        # @param dados [Hash] payload normalizado (chaves String)
+        # @return [Hash{String => FocusNfe::Esquemas::Esquema}] sub-esquemas por chave aninhada
+        def carregar_aninhados(dados)
+          esquemas_extras(dados).transform_values { |nome| Esquemas::Esquema.carregar(nome) }.compact
         end
       end
     end
