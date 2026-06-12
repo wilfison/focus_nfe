@@ -17,6 +17,10 @@ RSpec.describe FocusNfe do
 
       expect(described_class.configuration).to have_attributes(token_empresa: "tok-global", environment: :producao)
     end
+
+    it "devolve a configuração global mesmo quando chamado sem bloco" do
+      expect(described_class.configure).to be(described_class.configuration)
+    end
   end
 
   describe ".configuration" do

@@ -60,6 +60,13 @@ RSpec.describe FocusNfe::Modelos::Pagina do
       expect(pagina.map { |i| i * 2 }).to eq([2, 4, 6])
       expect(pagina.select(&:even?)).to eq([2])
     end
+
+    it "devolve um Enumerator quando chamado sem bloco", :aggregate_failures do
+      enum = pagina.cada
+
+      expect(enum).to be_a(Enumerator)
+      expect(enum.to_a).to eq([1, 2, 3])
+    end
   end
 
   describe "imutabilidade" do

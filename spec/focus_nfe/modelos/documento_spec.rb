@@ -42,6 +42,13 @@ RSpec.describe FocusNfe::Modelos::Documento do
 
       expect(described_class.from_response(resp).response).to be(resp)
     end
+
+    it "usa dados vazios quando o corpo não é um Hash", :aggregate_failures do
+      doc = described_class.from_response(response(body: ["x"]))
+
+      expect(doc.dados).to eq({})
+      expect(doc.status).to be_nil
+    end
   end
 
   describe "predicados de status" do

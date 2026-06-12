@@ -79,6 +79,16 @@ RSpec.describe FocusNfe::HTTP::Adapters::NetHttp do
       expect(http).to have_attributes(read_timeout: 7, open_timeout: 3)
     end
 
+    it "não força timeouts quando não configurados, mantendo os defaults do Net::HTTP", :aggregate_failures do
+      stub_request(:get, url).to_return(status: 200, body: "")
+      padrao = Net::HTTP.new("x")
+
+      http = capture_http { described_class.new.call(:get, url) }
+
+      expect(http.read_timeout).to eq(padrao.read_timeout)
+      expect(http.open_timeout).to eq(padrao.open_timeout)
+    end
+
     it "usa TLS quando a URL é https" do
       stub_request(:get, url).to_return(status: 200, body: "")
 

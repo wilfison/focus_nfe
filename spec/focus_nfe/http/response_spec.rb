@@ -150,5 +150,12 @@ RSpec.describe FocusNfe::HTTP::Response do
     it "devolve nil para cabeçalho ausente" do
       expect(build.headers["X-Inexistente"]).to be_nil
     end
+
+    it "expõe os cabeçalhos normalizados via #to_h", :aggregate_failures do
+      copia = build(headers: { "Content-Type" => "application/json" }).headers.to_h
+
+      expect(copia).to eq("content-type" => "application/json")
+      expect(copia).not_to be_frozen
+    end
   end
 end

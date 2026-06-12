@@ -84,6 +84,13 @@ RSpec.describe FocusNfe::Esquemas::Campo do
       expect(campo("name" => "numero", "type" => "Integer[1-9]").validar_valor(12_345)).to be_nil
     end
 
+    it "rejeita inteiro com quantidade de dígitos fora da faixa", :aggregate_failures do
+      mensagem = campo("name" => "numero", "type" => "Integer[1-3]").validar_valor(12_345)
+
+      expect(mensagem).to include("numero")
+      expect(mensagem).to include("5 dígitos")
+    end
+
     it "não restringe enums, datetime, coleções nem tipos desconhecidos", :aggregate_failures do
       expect(campo("name" => "x", "type" => nil, "enum" => "* +1+: Sim").validar_valor("9")).to be_nil
       expect(campo("name" => "x", "type" => "DateTime").validar_valor("qualquer")).to be_nil
