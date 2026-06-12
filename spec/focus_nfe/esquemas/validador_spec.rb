@@ -36,12 +36,6 @@ RSpec.describe FocusNfe::Esquemas::Validador do
       expect(erros).to eq([])
     end
 
-    it "ignora o conteúdo de coleções (não recorre)" do
-      erros = validador.validar("natureza_operacao" => "Venda", "items" => [{ "valor" => "x" }])
-
-      expect(erros).to eq([])
-    end
-
     it "aceita chaves String e Symbol no payload", :aggregate_failures do
       expect(validador.validar(natureza_operacao: "Venda", items: [])).to eq([])
       expect(validador.validar("natureza_operacao" => "Venda", "items" => [])).to eq([])
@@ -58,6 +52,71 @@ RSpec.describe FocusNfe::Esquemas::Validador do
 
     it "não levanta para payload válido" do
       expect { validador.validar!("natureza_operacao" => "Venda", "items" => []) }.not_to raise_error
+    end
+  end
+
+  describe "#validar recorrendo em coleções" do
+    subject(:validador) { described_class.new(esquema) }
+
+    let(:esquema) do
+      FocusNfe::Esquemas::Esquema.new(
+        [
+          { "name" => "itens", "type" => "Coleção[1-990]", "required" => true,
+            "collection" => { "object_attributes" => [
+              { "name" => "descricao", "type" => "String[1-5]", "required" => true },
+              { "name" => "adicoes", "type" => "Coleção[0-99]", "required" => false,
+                "collection" => { "object_attributes" => [
+                  { "name" => "numero", "type" => "Integer[1-3]", "required" => true }
+                ] } }
+            ] } }
+        ]
+      )
+    end
+
+    it "acusa subcampo obrigatório ausente dentro do item" do
+      erros = validador.validar("itens" => [{}])
+
+      expect(erros.join).to include("itens[1].descricao", "campo obrigatório ausente")
+    end
+
+    it "valida tipo/tamanho do subcampo dentro do item" do
+      erros = validador.validar("itens" => [{ "descricao" => "longa demais" }])
+
+      expect(erros.join).to include("itens[1].descricao")
+    end
+
+    it "usa a posição (base 1) no prefixo do erro" do
+      erros = validador.validar("itens" => [{ "descricao" => "ok" }, {}])
+
+      expect(erros.join).to include("itens[2].descricao")
+    end
+
+    it "acusa coleção que não é Array" do
+      expect(validador.validar("itens" => "x").join).to include("itens: deve ser uma coleção")
+    end
+
+    it "acusa item que não é objeto" do
+      expect(validador.validar("itens" => ["x"]).join).to include("itens[1]: deve ser um objeto")
+    end
+
+    it "recorre em coleções aninhadas em qualquer profundidade" do
+      erros = validador.validar("itens" => [{ "descricao" => "ok", "adicoes" => [{}] }])
+
+      expect(erros.join).to include("itens[1].adicoes[1].numero")
+    end
+
+    it "não acusa nada quando todos os itens são válidos" do
+      dados = { "itens" => [{ "descricao" => "ok", "adicoes" => [{ "numero" => "12" }] }] }
+
+      expect(validador.validar(dados)).to eq([])
+    end
+
+    it "não restringe o conteúdo de coleção sem object_attributes" do
+      esquema = FocusNfe::Esquemas::Esquema.new(
+        [{ "name" => "anexos", "type" => "Coleção[0-9]", "collection" => {} }]
+      )
+
+      expect(described_class.new(esquema).validar("anexos" => [{ "x" => "y" }])).to eq([])
     end
   end
 

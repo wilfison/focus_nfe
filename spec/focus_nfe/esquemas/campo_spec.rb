@@ -65,6 +65,29 @@ RSpec.describe FocusNfe::Esquemas::Campo do
     end
   end
 
+  describe "#esquema_colecao" do
+    let(:atributos) do
+      [
+        { "name" => "numero", "type" => "Integer[1-3]", "required" => true },
+        { "name" => "descricao", "type" => "String[1-120]", "required" => true }
+      ]
+    end
+
+    it "devolve nil para campo escalar" do
+      expect(campo("name" => "x", "type" => "String[1-60]").esquema_colecao).to be_nil
+    end
+
+    it "devolve nil para coleção sem object_attributes" do
+      expect(campo("name" => "x", "type" => "Coleção[0-5]", "collection" => {}).esquema_colecao).to be_nil
+    end
+
+    it "constrói um Esquema com os subcampos da coleção" do
+      c = campo("name" => "items", "type" => "Coleção[1-990]", "collection" => { "object_attributes" => atributos })
+
+      expect(c.esquema_colecao.campos.map(&:nome)).to eq(%w[numero descricao])
+    end
+  end
+
   describe "#validar_valor" do
     it "aceita string dentro do tamanho" do
       expect(campo("name" => "x", "type" => "String[1-60]").validar_valor("ok")).to be_nil

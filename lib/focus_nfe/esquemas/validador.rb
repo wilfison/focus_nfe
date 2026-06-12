@@ -3,8 +3,12 @@
 module FocusNfe
   module Esquemas
     # Validação client-side opt-in de um payload de emissão contra um {Esquema}:
-    # confere presença dos campos obrigatórios e tipo/tamanho dos campos escalares
-    # de topo. Não recorre em coleções nem valida enums nesta etapa.
+    # confere presença dos campos obrigatórios e tipo/tamanho dos campos escalares.
+    # Recorre em coleções: para cada item do Array valida seus subcampos contra o
+    # sub-esquema da coleção, em profundidade arbitrária, prefixando os erros com o
+    # caminho — a posição do item é base 1 (ex.: +itens[1].descricao+,
+    # +itens[1].adicoes[3].numero+). Enums,
+    # datas e decimais não são restringidos nesta etapa.
     #
     # Além do esquema de topo, aceita sub-esquemas +aninhados+ — indexados pela
     # chave do payload que os contém (ex.: +modal_rodoviario+) — para validar
@@ -37,10 +41,7 @@ module FocusNfe
       private
 
       def validar_campos(esquema, dados)
-        esquema.campos.each_with_object([]) do |campo, erros|
-          erro = erro_para(campo, dados)
-          erros << erro if erro
-        end
+        esquema.campos.flat_map { |campo| erros_para(campo, dados) }
       end
 
       def validar_aninhados(dados)
@@ -53,13 +54,29 @@ module FocusNfe
         end
       end
 
-      def erro_para(campo, dados)
+      def erros_para(campo, dados)
         ausente = !dados.key?(campo.nome) || dados[campo.nome].nil?
 
-        return "#{campo.nome}: campo obrigatório ausente" if campo.obrigatorio? && ausente
-        return if ausente || campo.colecao?
+        return ["#{campo.nome}: campo obrigatório ausente"] if campo.obrigatorio? && ausente
+        return [] if ausente
+        return validar_colecao(campo, dados[campo.nome]) if campo.colecao?
 
-        campo.validar_valor(dados[campo.nome])
+        erro = campo.validar_valor(dados[campo.nome])
+        erro ? [erro] : []
+      end
+
+      def validar_colecao(campo, valor)
+        return ["#{campo.nome}: deve ser uma coleção"] unless valor.is_a?(Array)
+
+        sub = campo.esquema_colecao
+        return [] unless sub
+
+        valor.each_with_index.flat_map do |item, indice|
+          prefixo = "#{campo.nome}[#{indice + 1}]"
+          next ["#{prefixo}: deve ser um objeto"] unless item.is_a?(Hash)
+
+          validar_campos(sub, normalizar(item)).map { |erro| "#{prefixo}.#{erro}" }
+        end
       end
 
       def normalizar(dados)

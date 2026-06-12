@@ -34,6 +34,14 @@ module FocusNfe
       #   +:enum+, +:colecao+ ou +:desconhecido+)
       attr_reader :tipo
 
+      # @return [Esquema, nil] esquema dos subcampos da coleção, ou +nil+ se o campo
+      #   não for coleção ou não declarar +object_attributes+
+      def esquema_colecao
+        return unless colecao?
+
+        @esquema_colecao ||= (atributos = @definicao.dig("collection", "object_attributes")) && Esquema.new(atributos)
+      end
+
       # @return [Integer, nil] tamanho/quantidade de dígitos mínimo (escalares)
       attr_reader :tamanho_minimo
 

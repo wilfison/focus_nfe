@@ -214,7 +214,27 @@ e os campos mudam (ex.: Reforma Tributária em transição).
 ```ruby
 client.nfe.emitir(ref: "pedido-42", dados: payload, validar: true)
 # => levanta FocusNfe::Esquemas::ErroDeValidacao se faltar obrigatório
-#    ou o tipo/tamanho de um campo escalar de topo não bater.
+#    ou o tipo/tamanho de um campo escalar não bater.
+```
+
+A validação é **recursiva**: campos de coleção (`Coleção[...]`, como `itens`) têm
+cada item validado contra o schema da coleção, em qualquer profundidade. Os erros
+vêm com o caminho até o campo — a posição do item é base 1:
+
+```ruby
+payload = {
+  natureza_operacao: "Venda",
+  itens: [
+    { numero_item: 1, descricao: "Produto A" },
+    { numero_item: 2 } # falta a descrição obrigatória
+  ]
+}
+
+begin
+  client.nfe.emitir(ref: "pedido-42", dados: payload, validar: true)
+rescue FocusNfe::Esquemas::ErroDeValidacao => e
+  e.erros # => ["itens[2].descricao: campo obrigatório ausente", ...]
+end
 ```
 
 Documentos sem schema próprio são emitidos sem validar (pulam silenciosamente).
