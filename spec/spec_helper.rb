@@ -1,5 +1,20 @@
 # frozen_string_literal: true
 
+require "simplecov"
+
+SimpleCov.start do
+  enable_coverage :branch
+
+  add_filter "/spec/"
+  add_filter "/scripts/"
+  add_filter "lib/focus_nfe/version.rb"
+
+  add_group "Recursos", "lib/focus_nfe/recursos"
+  add_group "Esquemas", "lib/focus_nfe/esquemas"
+  add_group "HTTP", "lib/focus_nfe/http"
+  add_group "Modelos", "lib/focus_nfe/modelos"
+end
+
 require "focus_nfe"
 
 require "webmock/rspec"

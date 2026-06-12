@@ -89,6 +89,9 @@ Rules:
 - `bundle exec rake` — default task; runs **RSpec + RuboCop** (TDD is mandatory — see above). Keep it green
   before any commit.
 - `bundle exec rake pull_fields` — scrape all document-type field schemas into `data/schemas/` (see below).
+- `bundle exec rake coverage:open` — open the SimpleCov HTML report (`coverage/index.html`) in the browser;
+  generate it first with `bin/rspec` / `rake spec`. SimpleCov is configured at the top of `spec/spec_helper.rb`
+  (line + branch coverage); the `coverage/` directory is git-ignored.
 - `bundle exec rake install` / `rake release` — build/publish the gem (gemspec still has TODO metadata to fill in).
 
 Note: CI (`.github/workflows/main.yml`) pins Ruby `4.0.2`, while `focus_nfe.gemspec` requires `>= 3.2.0`.
