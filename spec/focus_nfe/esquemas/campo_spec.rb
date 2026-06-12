@@ -88,6 +88,43 @@ RSpec.describe FocusNfe::Esquemas::Campo do
     end
   end
 
+  describe "#to_h" do
+    it "descreve um campo escalar com tipo, tamanho e metadados", :aggregate_failures do
+      h = campo(
+        "name" => "natureza_operacao", "description" => "Descrição da natureza de operação.",
+        "type" => "String[1-60]", "required" => true, "tag" => "natOp"
+      ).to_h
+
+      expect(h).to include(
+        nome: "natureza_operacao", descricao: "Descrição da natureza de operação.",
+        tipo: :string, tipo_bruto: "String[1-60]", obrigatorio: true,
+        tamanho_minimo: 1, tamanho_maximo: 60, enum: nil, tag: "natOp", colecao: nil
+      )
+    end
+
+    it "expõe o enum e marca o tipo :enum", :aggregate_failures do
+      h = campo("name" => "tipo_documento", "type" => nil, "enum" => "* +1+: Sim").to_h
+
+      expect(h[:tipo]).to eq(:enum)
+      expect(h[:enum]).to eq("* +1+: Sim")
+    end
+
+    it "aninha os subcampos de uma coleção em :colecao", :aggregate_failures do
+      atributos = [{ "name" => "numero", "type" => "Integer[1-3]", "required" => true }]
+      colecao = { "object_attributes" => atributos }
+      h = campo("name" => "items", "type" => "Coleção[1-990]", "collection" => colecao).to_h
+
+      expect(h[:tipo]).to eq(:colecao)
+      expect(h[:colecao]).to eq([campo(atributos.first).to_h])
+    end
+
+    it "deixa :colecao nil para coleção sem object_attributes" do
+      h = campo("name" => "x", "type" => "Coleção[0-5]", "collection" => {}).to_h
+
+      expect(h[:colecao]).to be_nil
+    end
+  end
+
   describe "#validar_valor" do
     it "aceita string dentro do tamanho" do
       expect(campo("name" => "x", "type" => "String[1-60]").validar_valor("ok")).to be_nil

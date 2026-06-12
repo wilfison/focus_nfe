@@ -27,6 +27,14 @@ Metrics/ParameterLists:
 RSpec/MultipleMemoizedHelpers:
   Max: 7
 
+# Literais de hash/array/heredoc descrevem um único dado (payload, definição de
+# campo, schema) e não devem inflar a contagem de linhas do exemplo.
+RSpec/ExampleLength:
+  CountAsOne:
+    - array
+    - hash
+    - heredoc
+
 # Descrições de context/shared_context em português (projeto é pt-BR).
 RSpec/ContextWording:
   Enabled: true

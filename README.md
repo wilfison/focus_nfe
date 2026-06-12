@@ -239,6 +239,31 @@ end
 
 Documentos sem schema próprio são emitidos sem validar (pulam silenciosamente).
 
+### Introspecção dos schemas
+
+Os mesmos schemas empacotados ficam acessíveis como dado, para você (ou uma
+ferramenta automatizada) descobrir quais campos e tipos um documento aceita — sem
+token nem conexão:
+
+```ruby
+FocusNfe::Esquemas.disponiveis
+# => ["cte", "cte_os", "dce", "mdfe", "nfcom", "nfe", "nfe_item", "nfgas", ...]
+
+FocusNfe::Esquemas.descrever("nfe")
+# => [
+#   { nome: "natureza_operacao", descricao: "Descrição da natureza de operação.",
+#     tipo: :string, tipo_bruto: "String[1-60]", obrigatorio: true,
+#     tamanho_minimo: 1, tamanho_maximo: 60, enum: nil, tag: "natOp", colecao: nil },
+#   ...
+# ]
+# => nil para documento sem schema
+```
+
+Cada campo vira um `Hash` serializável. Campos de coleção (`Coleção[...]`) aninham
+a descrição dos subcampos em `:colecao`, em qualquer profundidade; enums trazem os
+valores aceitos em `:enum`. `disponiveis` também lista os sub-schemas auxiliares
+(`nfe_item`, `cte_transporte_aereo`, …), que igualmente podem ser descritos.
+
 ## Desenvolvimento
 
 Após clonar o repositório, rode `bin/setup` para instalar as dependências.

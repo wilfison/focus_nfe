@@ -20,6 +20,39 @@ module FocusNfe
         @definicao["name"]
       end
 
+      # @return [String, nil] descrição do campo conforme +campos.focusnfe.com.br+
+      def descricao
+        @definicao["description"]
+      end
+
+      # @return [String, nil] tipo bruto como documentado (ex.: +"String[1-60]"+)
+      def tipo_bruto
+        @definicao["type"]
+      end
+
+      # @return [String, nil] enumeração dos valores aceitos, quando houver
+      def enum
+        @definicao["enum"]
+      end
+
+      # @return [String, nil] tag XML subjacente do campo
+      def tag
+        @definicao["tag"]
+      end
+
+      # Representação serializável do campo, para introspecção externa (devs e
+      # ferramentas automatizadas). Coleções aninham a descrição dos subcampos em
+      # +:colecao+, em profundidade arbitrária; campos escalares têm +:colecao+ nil.
+      #
+      # @return [Hash] descrição estruturada do campo
+      def to_h
+        {
+          nome: nome, descricao: descricao, tipo: tipo, tipo_bruto: tipo_bruto,
+          obrigatorio: obrigatorio?, tamanho_minimo: tamanho_minimo, tamanho_maximo: tamanho_maximo,
+          enum: enum, tag: tag, colecao: esquema_colecao&.descrever
+        }
+      end
+
       # @return [Boolean] se o campo é obrigatório na emissão
       def obrigatorio?
         @definicao["required"] == true

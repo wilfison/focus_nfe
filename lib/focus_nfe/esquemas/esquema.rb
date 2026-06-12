@@ -52,6 +52,13 @@ module FocusNfe
       def initialize(definicoes)
         @campos = definicoes.map { |definicao| Campo.new(definicao) }
       end
+
+      # Descrição serializável do esquema: um Hash por campo, na ordem do schema.
+      #
+      # @return [Array<Hash>] descrição estruturada de cada {Campo}
+      def descrever
+        campos.map(&:to_h)
+      end
     end
   end
 end

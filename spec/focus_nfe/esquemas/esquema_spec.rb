@@ -34,4 +34,20 @@ RSpec.describe FocusNfe::Esquemas::Esquema do
       expect(esquema.campos.first).to be_obrigatorio
     end
   end
+
+  describe "#descrever" do
+    let(:definicoes) do
+      [
+        { "name" => "serie", "type" => "String[1-3]", "required" => true },
+        { "name" => "numero", "type" => "Integer[1-9]", "required" => true }
+      ]
+    end
+
+    it "descreve cada campo como um Hash", :aggregate_failures do
+      descricao = described_class.new(definicoes).descrever
+
+      expect(descricao).to eq(definicoes.map { |d| FocusNfe::Esquemas::Campo.new(d).to_h })
+      expect(descricao.map { |c| c[:nome] }).to eq(%w[serie numero])
+    end
+  end
 end
