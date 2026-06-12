@@ -57,7 +57,7 @@ module FocusNfe
       # esquema que o valida. Recursos com esquema dinâmico (CTe, CTe OS, MDFe)
       # sobrescrevem este método para, conforme os +dados+, escolher o sub-esquema.
       #
-      # @param dados [Hash] payload de emissão (chaves String)
+      # @param _dados [Hash] payload de emissão (chaves String)
       # @return [Hash{String => String}] chave aninhada no payload => nome do esquema
       def esquemas_extras(_dados)
         {}

@@ -1,0 +1,11 @@
+--readme README.md
+--markup markdown
+--charset utf-8
+--output-dir docs
+--protected
+--no-private
+--title "Focus NFe - Cliente Ruby"
+lib/**/*.rb
+-
+CHANGELOG.md
+LICENSE.txt
