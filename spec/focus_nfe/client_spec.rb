@@ -69,11 +69,24 @@ RSpec.describe FocusNfe::Client do
     end
   end
 
-  describe "ausência de acessores de recurso" do
+  describe "#nfe" do
     subject(:client) { described_class.new(token: "tok") }
 
-    it "ainda não expõe nfe nem empresas", :aggregate_failures do
-      expect(client).not_to respond_to(:nfe)
+    it "devolve um Recursos::Nfe" do
+      expect(client.nfe).to be_a(FocusNfe::Recursos::Nfe)
+    end
+
+    it "memoiza o recurso entre chamadas" do
+      primeiro = client.nfe
+
+      expect(client.nfe).to be(primeiro)
+    end
+  end
+
+  describe "acessores de recurso ainda não implementados" do
+    subject(:client) { described_class.new(token: "tok") }
+
+    it "ainda não expõe empresas" do
       expect(client).not_to respond_to(:empresas)
     end
   end

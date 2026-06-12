@@ -8,6 +8,12 @@ require_relative "focus_nfe/http/response"
 require_relative "focus_nfe/http/adapter"
 require_relative "focus_nfe/http/adapters/net_http"
 require_relative "focus_nfe/http/connection"
+require_relative "focus_nfe/modelos/documento"
+require_relative "focus_nfe/recursos/base"
+require_relative "focus_nfe/recursos/concerns/emitivel"
+require_relative "focus_nfe/recursos/concerns/consultavel"
+require_relative "focus_nfe/recursos/concerns/cancelavel"
+require_relative "focus_nfe/recursos/nfe"
 require_relative "focus_nfe/client"
 
 # Ponto de entrada da gem e fachada da configuração global (modo de empresa

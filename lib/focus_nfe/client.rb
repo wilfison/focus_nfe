@@ -3,8 +3,8 @@
 module FocusNfe
   # Raiz de acesso à API para um par token/ambiente. Cada cliente carrega sua
   # própria {Configuration} e {HTTP::Connection}, permitindo coexistência de
-  # várias empresas no mesmo processo sem estado compartilhado. Ainda sem
-  # acessores de recurso — estes chegam na fase de recursos.
+  # várias empresas no mesmo processo sem estado compartilhado. Expõe os
+  # recursos da API instanciados preguiçosamente e memoizados.
   class Client
     # @return [FocusNfe::Configuration] configuração validada deste cliente
     attr_reader :configuration
@@ -23,6 +23,11 @@ module FocusNfe
     # @return [FocusNfe::HTTP::Connection] conexão memoizada ligada à configuração
     def connection
       @connection ||= HTTP::Connection.new(configuration)
+    end
+
+    # @return [FocusNfe::Recursos::Nfe] recurso de NF-e, memoizado
+    def nfe
+      @nfe ||= Recursos::Nfe.new(connection)
     end
   end
 end
