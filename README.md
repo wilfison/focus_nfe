@@ -179,16 +179,16 @@ Cada faixa de status HTTP vira uma exceção específica, todas descendentes de
 `FocusNfe::Error`. Cada exceção carrega `status`, `body` (mensagens da API) e a
 `response` original.
 
-| Status | Exceção                          | Significado                              |
-| ------ | -------------------------------- | ---------------------------------------- |
-| 400    | `FocusNfe::Errors::BadRequest`   | Requisição malformada                    |
-| 401    | `FocusNfe::Errors::Unauthorized` | Token ausente ou inválido                |
-| 403    | `FocusNfe::Errors::Forbidden`    | Sem permissão                            |
-| 404    | `FocusNfe::Errors::NotFound`     | Recurso inexistente                      |
-| 409    | `FocusNfe::Errors::Conflict`     | Conflito de estado (ex.: `ref` em uso)   |
-| 422    | `FocusNfe::Errors::ValidationError` | Erro de validação dos campos          |
-| 429    | `FocusNfe::Errors::RateLimited`  | Limite de requisições excedido           |
-| 5xx    | `FocusNfe::Errors::ServerError`  | Falha no servidor da Focus/SEFAZ         |
+| Status | Exceção                             | Significado                            |
+| ------ | ----------------------------------- | -------------------------------------- |
+| 400    | `FocusNfe::Errors::BadRequest`      | Requisição malformada                  |
+| 401    | `FocusNfe::Errors::Unauthorized`    | Token ausente ou inválido              |
+| 403    | `FocusNfe::Errors::Forbidden`       | Sem permissão                          |
+| 404    | `FocusNfe::Errors::NotFound`        | Recurso inexistente                    |
+| 409    | `FocusNfe::Errors::Conflict`        | Conflito de estado (ex.: `ref` em uso) |
+| 422    | `FocusNfe::Errors::ValidationError` | Erro de validação dos campos           |
+| 429    | `FocusNfe::Errors::RateLimited`     | Limite de requisições excedido         |
+| 5xx    | `FocusNfe::Errors::ServerError`     | Falha no servidor da Focus/SEFAZ       |
 
 ```ruby
 begin
@@ -254,6 +254,10 @@ bin/rspec                 # apenas a suíte
 bin/rubocop -a            # estilo, com auto-correção
 bundle exec rake pull_fields   # regenera data/schemas/ a partir de campos.focusnfe.com.br
 ```
+
+Os arquivos em `data/schemas/` são **gerados automaticamente** por
+`rake pull_fields` — não os edite à mão. Para atualizá-los, rode o script e
+faça commit do resultado. O CI verifica em cada PR se os schemas estão em dia.
 
 Para instalar a gem localmente, rode `bundle exec rake install`. Para publicar
 uma nova versão, atualize o número em `version.rb` e rode `bundle exec rake
