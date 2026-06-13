@@ -14,7 +14,7 @@ module FocusNfe
         # @return [String] corpo cru da resposta (bytes)
         # @raise [FocusNfe::Errors::HttpError] em respostas não-2xx
         def baixar(identificador, formato:)
-          response = connection.get("#{caminho_referencia(identificador)}.#{formato}")
+          response = connection.get("#{caminho_referencia(identificador)}.#{URI.encode_www_form_component(formato)}")
           response.raw_body
         end
 

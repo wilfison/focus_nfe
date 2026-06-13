@@ -40,5 +40,17 @@ RSpec.describe FocusNfe::Recursos::Base do
     it "combina o caminho base com a ref" do
       expect(recurso.send(:caminho_referencia, "pedido-42")).to eq("nfe/pedido-42")
     end
+
+    it "preserva identificadores comuns (dígitos, hífen, underscore, ponto)", :aggregate_failures do
+      expect(recurso.send(:caminho_referencia, "12345678000190")).to eq("nfe/12345678000190")
+      expect(recurso.send(:caminho_referencia, "venda_1001")).to eq("nfe/venda_1001")
+      expect(recurso.send(:caminho_referencia, "35200114200166000187.55")).to eq("nfe/35200114200166000187.55")
+    end
+
+    it "escapa caracteres que sequestrariam o path ou injetariam query", :aggregate_failures do
+      expect(recurso.send(:caminho_referencia, "a/b")).to eq("nfe/a%2Fb")
+      expect(recurso.send(:caminho_referencia, "x?y")).to eq("nfe/x%3Fy")
+      expect(recurso.send(:caminho_referencia, "../../empresas")).to eq("nfe/..%2F..%2Fempresas")
+    end
   end
 end

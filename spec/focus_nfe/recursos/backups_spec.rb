@@ -15,5 +15,15 @@ RSpec.describe FocusNfe::Recursos::Backups do
 
       expect(recurso.consultar(cnpj)).to eq([{ "mes" => "202605" }])
     end
+
+    it "escapa o cnpj, sem injetar query nem traversal no path" do
+      stub_request(:get, /focusnfe/).to_return(status: 200, body: "[]", headers: json)
+
+      recurso.consultar("../empresas/1?x=y")
+
+      enviado = a_request(:get, /focusnfe/)
+                .with { |req| req.uri.query.nil? && req.uri.path.include?("..%2Fempresas%2F1%3Fx") }
+      expect(enviado).to have_been_made
+    end
   end
 end

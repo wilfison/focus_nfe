@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "uri"
+
 module FocusNfe
   module Recursos
     # Base dos recursos da API. Guarda a {HTTP::Connection} e o +caminho_base+
@@ -35,10 +37,15 @@ module FocusNfe
 
       attr_reader :connection
 
-      # @param ref [String] referência do documento
+      # Monta o caminho do recurso escapando o segmento dinâmico, para que um
+      # identificador com +/+, +?+, +#+ ou +..+ não sequestre o path nem injete
+      # query na requisição autenticada (identificadores comuns — dígitos, hífen,
+      # underscore, ponto — passam intactos).
+      #
+      # @param ref [String] referência/identificador do documento
       # @return [String] caminho do recurso para a referência (ex.: "nfe/pedido-42")
       def caminho_referencia(ref)
-        "#{caminho_base}/#{ref}"
+        "#{caminho_base}/#{URI.encode_www_form_component(ref)}"
       end
 
       # Valida a +ref+ client-side antes de qualquer requisição, evitando uma ida

@@ -73,6 +73,16 @@ RSpec.shared_examples "um recurso baixável" do |caminho|
 
       expect(recurso.baixar_json("CHAVE")).to eq('{"a":1}')
     end
+
+    it "escapa o formato, sem injetar query no path" do
+      stub_request(:get, /focusnfe/).to_return(status: 200, body: "ok", headers: json)
+
+      recurso.baixar("CHAVE", formato: "pdf?x=1")
+
+      enviado = a_request(:get, /focusnfe/)
+                .with { |req| req.uri.query.nil? && req.uri.path.include?("CHAVE.pdf%3F") }
+      expect(enviado).to have_been_made
+    end
   end
 end
 
