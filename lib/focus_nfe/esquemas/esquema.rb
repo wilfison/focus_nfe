@@ -27,13 +27,20 @@ module FocusNfe
       # @return [String] diretório dos schemas empacotados (+data/schemas/+)
       DIRETORIO = File.expand_path("../../../data/schemas", __dir__.to_s)
 
+      # @return [Regexp] nomes de schema aceitos (alfanumérico, hífen, underscore)
+      NOME_VALIDO = /\A[\w-]+\z/
+
       class << self
-        # Carrega o schema empacotado de um documento, memoizando por nome.
+        # Carrega o schema empacotado de um documento, memoizando por nome. Nomes
+        # fora do padrão alfanumérico são rejeitados (devolve +nil+) antes de tocar
+        # o filesystem, evitando travessia de caminho via +nome+ e não poluindo o
+        # cache com entradas arbitrárias.
         #
         # @param nome [String] nome do documento (ex.: +"nfe"+), igual ao +caminho_base+
-        # @return [Esquema, nil] o esquema, ou +nil+ se não houver arquivo para o documento
+        # @return [Esquema, nil] o esquema, ou +nil+ se o nome for inválido ou não houver arquivo
         def carregar(nome)
           return cache[nome] if cache.key?(nome)
+          return nil unless nome.to_s.match?(NOME_VALIDO)
 
           caminho = File.join(DIRETORIO, "schema_#{nome}.json")
           cache[nome] = File.exist?(caminho) ? new(JSON.parse(File.read(caminho))) : nil

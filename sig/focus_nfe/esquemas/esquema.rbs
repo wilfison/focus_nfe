@@ -9,6 +9,8 @@ module FocusNfe
     class Esquema
       DIRETORIO: String
 
+      NOME_VALIDO: Regexp
+
       self.@cache: Hash[String?, FocusNfe::Esquemas::Esquema?]
 
       def self.carregar: (String? nome) -> FocusNfe::Esquemas::Esquema?

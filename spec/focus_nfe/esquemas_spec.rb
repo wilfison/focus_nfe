@@ -31,6 +31,10 @@ RSpec.describe FocusNfe::Esquemas do
       expect(described_class.descrever("documento_inexistente")).to be_nil
     end
 
+    it "devolve nil para nomes inválidos (traversal)" do
+      expect(described_class.descrever("../../foo")).to be_nil
+    end
+
     it "expõe os campos sem exigir token nem conexão" do
       expect { described_class.descrever("nfe") }.not_to raise_error
     end

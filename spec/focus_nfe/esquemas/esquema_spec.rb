@@ -17,6 +17,26 @@ RSpec.describe FocusNfe::Esquemas::Esquema do
     it "memoiza o schema carregado" do
       expect(described_class.carregar("nfe")).to equal(described_class.carregar("nfe"))
     end
+
+    it "devolve nil para nomes inválidos (traversal)", :aggregate_failures do
+      expect(described_class.carregar("../../../../etc/hostname")).to be_nil
+      expect(described_class.carregar("nfe/../nfe")).to be_nil
+      expect(described_class.carregar("../secret")).to be_nil
+    end
+
+    it "não consulta o filesystem para nomes inválidos" do
+      allow(File).to receive(:exist?).and_call_original
+
+      described_class.carregar("../../../../etc/passwd")
+
+      expect(File).not_to have_received(:exist?)
+    end
+
+    it "não memoiza nomes inválidos (cache permanece limitado)" do
+      described_class.carregar("../etc/hostname")
+
+      expect(described_class.send(:cache)).not_to have_key("../etc/hostname")
+    end
   end
 
   describe "#campos" do
