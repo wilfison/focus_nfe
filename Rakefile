@@ -24,6 +24,8 @@ task :pull_fields do
   sh "ruby #{File.join(__dir__, "tools", "pull_fields.rb")}"
 end
 
+COBERTURA_DOCS_MINIMA = 93.0
+
 namespace :docs do
   desc "Gera a documentação YARD em docs/ e abre no navegador"
   task open: :yard do
@@ -31,6 +33,21 @@ namespace :docs do
     abort "Documentação não encontrada. Rode `bundle exec rake yard` primeiro." unless File.exist?(report)
 
     sh browser_opener, report
+  end
+
+  desc "Falha se a cobertura de documentação YARD ficar abaixo de #{COBERTURA_DOCS_MINIMA}%"
+  task :coverage do
+    saida = `yard stats --list-undoc`
+    puts saida
+
+    cobertura = saida[/([\d.]+)% documented/, 1]&.to_f
+    abort "Não foi possível ler a cobertura no resultado do `yard stats`." if cobertura.nil?
+
+    if cobertura < COBERTURA_DOCS_MINIMA
+      abort "Cobertura de documentação #{cobertura}% abaixo do mínimo de #{COBERTURA_DOCS_MINIMA}%."
+    end
+
+    puts "Cobertura de documentação: #{cobertura}% (mínimo #{COBERTURA_DOCS_MINIMA}%)."
   end
 
   desc "Sobe o servidor YARD (http://localhost:8808) com refresh automático"

@@ -62,6 +62,8 @@ jobs:
           bundler-cache: true
       - name: Generate YARD docs
         run: bundle exec yard doc --no-output --fail-on-warning
+      - name: Check documentation coverage
+        run: bundle exec rake docs:coverage
 
   schemas:
     runs-on: ubuntu-latest
