@@ -91,6 +91,20 @@ O ambiente resolve a URL base (o prefixo `/v2` é interno):
 - `:producao` → `https://api.focusnfe.com.br`
 - `:homologacao` → `https://homologacao.focusnfe.com.br`
 
+### Logger
+
+Logging é opt-in: por padrão `config.logger` é `nil` e nada é emitido. Plugue qualquer
+logger compatível com o `Logger` da stdlib (responde a `debug`/`info`/`warn`/`error`),
+como `Rails.logger` ou `Logger.new($stdout)`:
+
+```ruby
+config.logger = Logger.new($stdout)
+```
+
+A gem registra cada requisição (`debug`), resposta (`info`/`warn`) e falha (`error`). O
+`Authorization` é sempre redigido (`[FILTERED]`) e o corpo da requisição nunca é logado —
+dados sensíveis não vazam.
+
 ## Uso
 
 ### Emissão e ciclo assíncrono

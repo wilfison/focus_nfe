@@ -58,16 +58,28 @@ module FocusNfe
       attr_reader :configuration, :token
 
       def execute(verb, path, params:, body:, headers:)
-        response = adapter.call(
-          verb,
-          build_url(path, params),
-          headers: build_headers(headers),
-          body: serialize(body)
-        )
+        url = build_url(path, params)
+        request_headers = build_headers(headers)
+        logging.request(verb, url, request_headers)
+
+        started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+        response = call_adapter(verb, url, request_headers, body, started)
+        logging.response(verb, url, response.status, elapsed_since(started), response.raw_body)
 
         return response if response.success?
 
         raise Errors.from_response(response)
+      end
+
+      def call_adapter(verb, url, request_headers, body, started)
+        adapter.call(verb, url, headers: request_headers, body: serialize(body))
+      rescue Errors::ConnectionError => e
+        logging.failure(verb, url, e, elapsed_since(started))
+        raise
+      end
+
+      def elapsed_since(started)
+        Process.clock_gettime(Process::CLOCK_MONOTONIC) - started
       end
 
       def build_url(path, params)
@@ -88,6 +100,10 @@ module FocusNfe
         return if body.nil?
 
         body.is_a?(String) ? body : JSON.generate(body)
+      end
+
+      def logging
+        @logging ||= Logging.new(configuration.logger)
       end
 
       def adapter

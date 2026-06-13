@@ -31,7 +31,9 @@ module FocusNfe
     # @param environment [Symbol] :producao ou :homologacao
     # @param timeout [Integer] timeout de leitura, em segundos
     # @param open_timeout [Integer] timeout de conexão, em segundos
-    # @param logger [Logger, nil] logger apenas armazenado nesta fase
+    # @param logger [_Logger, nil] logger plugável usado pela {HTTP::Connection}; deve responder a
+    #   +debug+/+info+/+warn+/+error+ (compatível com o +Logger+ da stdlib, +Rails.logger+ etc.).
+    #   +nil+ (padrão) desliga o logging. O +Authorization+ é sempre redigido — ver {HTTP::Logging}.
     # @param http_adapter [FocusNfe::HTTP::Adapter, nil] instância pronta (nil => Connection cria a default)
     # @param headers [Hash] cabeçalhos extras enviados em toda requisição
     def initialize(token_empresa: nil, token_conta: nil, environment: DEFAULT_ENVIRONMENT,

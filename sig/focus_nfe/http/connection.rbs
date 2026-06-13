@@ -5,6 +5,7 @@ module FocusNfe
       DEFAULT_HEADERS: Hash[String, String]
 
       @adapter: FocusNfe::HTTP::Adapter?
+      @logging: FocusNfe::HTTP::Logging
 
       def initialize: (FocusNfe::Configuration configuration, token: String) -> void
 
@@ -19,9 +20,12 @@ module FocusNfe
       attr_reader token: String
 
       def execute: (Symbol verb, String? path, params: Hash[untyped, untyped]?, body: (Hash[untyped, untyped] | String)?, headers: Hash[untyped, untyped]) -> FocusNfe::HTTP::Response
+      def call_adapter: (Symbol verb, String url, Hash[untyped, untyped] request_headers, (Hash[untyped, untyped] | String)? body, Float started) -> FocusNfe::HTTP::Response
+      def elapsed_since: (Float started) -> Float
       def build_url: (String? path, Hash[untyped, untyped]? params) -> String
       def build_headers: (Hash[untyped, untyped] call_headers) -> Hash[untyped, untyped]
       def serialize: ((Hash[untyped, untyped] | String)? body) -> String?
+      def logging: () -> FocusNfe::HTTP::Logging
       def adapter: () -> FocusNfe::HTTP::Adapter
     end
   end

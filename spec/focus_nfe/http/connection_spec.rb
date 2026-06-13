@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "logger"
+require "stringio"
+
 RSpec.describe FocusNfe::HTTP::Connection do
   subject(:connection) { described_class.new(config, token: "tok") }
 
@@ -191,6 +194,61 @@ RSpec.describe FocusNfe::HTTP::Connection do
 
       expect { connection.get("nfe") }.to raise_error do |error|
         expect(error).to have_attributes(status: 422, body: { "erro" => "ref" })
+      end
+    end
+  end
+
+  describe "logging" do
+    let(:url) { "#{homologacao}/v2/nfe" }
+    let(:json) { { "Content-Type" => "application/json" } }
+    let(:io) { StringIO.new }
+    let(:logger) { Logger.new(io).tap { |l| l.level = Logger::DEBUG } }
+    let(:config) do
+      FocusNfe::Configuration.new(token_empresa: "tok", environment: environment, logger: logger)
+    end
+
+    it "registra requisição em debug e resposta 2xx em info", :aggregate_failures do
+      stub_request(:get, url).to_return(status: 200, body: "")
+
+      connection.get("nfe")
+
+      expect(io.string).to match(/DEBUG.*→ GET/)
+      expect(io.string).to match(/INFO.*← 200 GET/)
+    end
+
+    it "redige o Authorization e não vaza o token", :aggregate_failures do
+      stub_request(:get, url).to_return(status: 200, body: "")
+
+      connection.get("nfe")
+
+      expect(io.string).to include("[FILTERED]")
+      expect(io.string).not_to include(authorization("tok"))
+    end
+
+    it "registra resposta não-2xx em warn com o corpo de erro", :aggregate_failures do
+      stub_request(:get, url).to_return(status: 422, body: '{"erro":"ref"}', headers: json)
+
+      expect { connection.get("nfe") }.to raise_error(FocusNfe::Errors::ValidationError)
+      expect(io.string).to match(/WARN.*← 422 GET/)
+      expect(io.string).to include("ref")
+    end
+
+    it "registra falha de transporte em error", :aggregate_failures do
+      stub_request(:get, url).to_timeout
+
+      expect { connection.get("nfe") }.to raise_error(FocusNfe::Errors::ConnectionError)
+      expect(io.string).to match(/ERROR.*✕ GET/)
+    end
+
+    context "sem logger configurado (padrão nil)" do
+      let(:config) { FocusNfe::Configuration.new(token_empresa: "tok", environment: environment) }
+
+      it "não quebra o fluxo de requisição" do
+        stub = stub_request(:get, url).to_return(status: 200, body: "")
+
+        connection.get("nfe")
+
+        expect(stub).to have_been_requested
       end
     end
   end

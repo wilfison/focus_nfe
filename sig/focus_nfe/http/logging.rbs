@@ -1,0 +1,30 @@
+module FocusNfe
+  module HTTP
+    interface _Logger
+      def debug: (?untyped progname) ?{ () -> untyped } -> untyped
+      def info: (?untyped progname) ?{ () -> untyped } -> untyped
+      def warn: (?untyped progname) ?{ () -> untyped } -> untyped
+      def error: (?untyped progname) ?{ () -> untyped } -> untyped
+    end
+
+    class Logging
+      REDACTED: String
+      SENSITIVE_HEADERS: Array[String]
+      BODY_MAX: Integer
+
+      @logger: _Logger?
+
+      def initialize: (_Logger? logger) -> void
+
+      def request: (Symbol verb, String url, Hash[String, String] headers) -> void
+      def response: (Symbol verb, String url, Integer status, Float elapsed, String? body) -> void
+      def failure: (Symbol verb, String url, Exception error, Float elapsed) -> void
+
+      private
+
+      def redact: (Hash[String, String] headers) -> Hash[String, String]
+      def truncate: (String? body) -> String
+      def ms: (Float elapsed) -> Integer
+    end
+  end
+end
