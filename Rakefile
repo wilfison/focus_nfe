@@ -25,9 +25,9 @@ task :pull_fields do
 end
 
 namespace :docs do
-  desc "Gera a documentação YARD em doc/ e abre no navegador"
+  desc "Gera a documentação YARD em docs/ e abre no navegador"
   task open: :yard do
-    report = File.join(__dir__, "doc", "index.html")
+    report = File.join(__dir__, "docs", "index.html")
     abort "Documentação não encontrada. Rode `bundle exec rake yard` primeiro." unless File.exist?(report)
 
     sh browser_opener, report
