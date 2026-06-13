@@ -1,14 +1,9 @@
-# Configuração do overcommit (https://github.com/sds/overcommit).
-# Instale os hooks com `bundle exec overcommit --install`.
-
 gemfile: false
 
 CommitMsg:
   ALL:
     requires_files: false
 
-  # Exige que toda mensagem de commit siga o padrão Conventional Commits
-  # (https://www.conventionalcommits.org): <tipo>(escopo opcional)!: <descrição>
   MessageFormat:
     enabled: true
     pattern: '\A(?:Merge|Revert|fixup!|squash!).*|\A(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([\w\-./ ]+\))?!?: .+'
@@ -55,7 +50,20 @@ PreCommit:
   YamlSyntax:
     enabled: true
 
+  YardCoverage:
+    enabled: true
+    min_coverage_percentage: 93
+    flags: []
+
 PrePush:
   RSpec:
     enabled: true
     command: ["bundle", "exec", "rspec"]
+
+  Steep:
+    enabled: true
+    required_executable: "bundle"
+
+  YardDoc:
+    enabled: true
+    required_executable: "bundle"
