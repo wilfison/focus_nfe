@@ -1,0 +1,119 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Tag a publicar (ex.: v0.2.0)"
+        required: true
+        default: ""
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+
+      - name: Gate de CI (bundle exec rake ci)
+        run: bundle exec rake ci
+
+      - name: Regenera schemas
+        run: bundle exec rake pull_fields
+      - name: Verifica se os schemas estão atualizados
+        run: |
+          if ! git diff --exit-code -- data/schemas; then
+            echo "::error::Os schemas em data/schemas estão desatualizados. Rode 'bundle exec rake pull_fields' e faça commit das alterações."
+            exit 1
+          fi
+
+      - name: Verifica se a tag bate com FocusNfe::VERSION
+        env:
+          TAG: ${{ inputs.ref || github.ref_name }}
+        run: |
+          want="${TAG#v}"
+          have="$(ruby -Ilib -rfocus_nfe/version -e 'print FocusNfe::VERSION')"
+          if [ "$want" != "$have" ]; then
+            echo "::error::a tag v$want não corresponde a FocusNfe::VERSION ($have)"
+            exit 1
+          fi
+
+      - name: Build da gem
+        run: gem build focus_nfe.gemspec
+
+      - name: Publica no RubyGems (trusted publishing)
+        uses: rubygems/release-gem@v1
+
+      - name: Gera o corpo da release
+        env:
+          TAG: ${{ inputs.ref || github.ref_name }}
+        run: |
+          VERSION="${TAG#v}"
+          # `-Fxv "$TAG"`: -F string fixa (pontos não são curingas de regex),
+          # -x match de linha inteira. Robusto contra pontos na versão.
+          PREV_TAG=$(git tag --sort=-v:refname | grep -Fxv "$TAG" | head -1)
+
+          # Extrai a seção "## [VERSION]" do CHANGELOG.md (formato Keep-A-Changelog),
+          # se existir. Ignorada silenciosamente quando ausente.
+          : > changelog_section.md
+          if [ -f CHANGELOG.md ]; then
+            awk -v ver="$VERSION" '
+              BEGIN { hdr = "## [" ver "]" }
+              index($0, hdr) == 1 { flag=1; next }
+              flag && index($0, "## [") == 1 { exit }
+              flag { print }
+            ' CHANGELOG.md > changelog_section.md
+          fi
+
+          {
+            if [ -s changelog_section.md ]; then
+              echo "## O que mudou"
+              echo
+              cat changelog_section.md
+              echo
+            fi
+
+            echo "## Instalação"
+            echo
+            echo '```bash'
+            echo "gem install focus_nfe -v ${VERSION}"
+            echo '```'
+
+            if [ -n "$PREV_TAG" ]; then
+              echo
+              echo "**Diff completo**: https://github.com/${GITHUB_REPOSITORY}/compare/${PREV_TAG}...${TAG}"
+            fi
+          } > body.md
+
+      - name: Cria / atualiza a GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.ref || github.ref_name }}
+        run: |
+          ASSET="focus_nfe-${TAG#v}.gem"
+          # Idempotente: um re-run via workflow_dispatch sobre uma tag existente
+          # sobrescreve assets e notas em vez de falhar.
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$ASSET" --clobber
+            gh release edit "$TAG" --notes-file body.md
+          else
+            gh release create "$TAG" "$ASSET" \
+              --title "$TAG" \
+              --notes-file body.md \
+              --latest
+          fi

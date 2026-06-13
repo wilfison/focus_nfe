@@ -20,17 +20,13 @@ end
 task default: %i[spec rubocop]
 
 desc "Roda localmente as mesmas verificações do CI (.github/workflows/ci.yml)"
-task :ci do # rubocop:disable Metrics/BlockLength
+task :ci do
   etapas = [
-    ["Specs (RSpec)",       -> { Rake::Task["spec"].invoke }],
-    ["Lint (RuboCop)",      -> { Rake::Task["rubocop"].invoke }],
-    ["Tipos (Steep)",       -> { sh "bundle exec steep check" }],
-    ["Docs (YARD)",         -> { sh "bundle exec yard doc --no-output --fail-on-warning" }],
-    ["Cobertura de docs",   -> { Rake::Task["docs:coverage"].invoke }],
-    ["Schemas atualizados", lambda {
-      Rake::Task["pull_fields"].invoke
-      sh "git diff --exit-code -- data/schemas"
-    }]
+    ["Specs (RSpec)",     -> { Rake::Task["spec"].invoke }],
+    ["Lint (RuboCop)",    -> { Rake::Task["rubocop"].invoke }],
+    ["Tipos (Steep)",     -> { sh "bundle exec steep check" }],
+    ["Docs (YARD)",       -> { sh "bundle exec yard doc --no-output --fail-on-warning" }],
+    ["Cobertura de docs", -> { Rake::Task["docs:coverage"].invoke }]
   ]
 
   falhas = []

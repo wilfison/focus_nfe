@@ -64,24 +64,3 @@ jobs:
         run: bundle exec yard doc --no-output --fail-on-warning
       - name: Check documentation coverage
         run: bundle exec rake docs:coverage
-
-  schemas:
-    runs-on: ubuntu-latest
-    name: Schemas up to date
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.4'
-          bundler-cache: true
-      - name: Regenerate schemas
-        run: bundle exec rake pull_fields
-      - name: Check for schema changes
-        run: |
-          if ! git diff --exit-code -- data/schemas; then
-            echo "::error::Os schemas em data/schemas estão desatualizados. Rode 'bundle exec rake pull_fields' e faça commit das alterações."
-            exit 1
-          fi
