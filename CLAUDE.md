@@ -54,6 +54,9 @@ classes, methods, branches arrive test-first; each bug fix starts with a reprodu
 - `bin/console` — IRB with the gem loaded.
 - `bin/rspec` / `bin/rubocop` — binstubs (faster than `bundle exec`). `bin/rubocop -a` auto-corrects.
 - `bundle exec rake` — default; runs **RSpec + RuboCop**. Keep green before committing.
+- `bundle exec rake ci` — roda **localmente todas as verificações do CI** (`.github/workflows/ci.yml`):
+  specs, RuboCop, Steep, YARD (`--fail-on-warning`), cobertura de docs e schemas atualizados. Continua
+  mesmo se um passo falhar e imprime um resumo no fim — pegue o CI quebrado antes de enviar ao GitHub.
 - `bundle exec rake steep` — **Steep** type-check (`sig/` vs `lib/`). Standalone, *not* in default rake;
   CI gates it in a `typecheck` job. See *Type signatures*.
 - `bundle exec rake pull_fields` — regenerate field schemas into `data/schemas/`.
@@ -61,7 +64,7 @@ classes, methods, branches arrive test-first; each bug fix starts with a reprodu
   configured atop `spec/spec_helper.rb`, line+branch; `coverage/` git-ignored).
 - `bundle exec rake install` / `release` — build/publish (gemspec metadata still has TODOs).
 
-CI (`.github/workflows/main.yml`) pins Ruby `4.0.2`; gemspec requires `>= 3.2.0`.
+CI (`.github/workflows/ci.yml`) pins Ruby `4.0.2`; gemspec requires `>= 3.2.0`.
 
 ## Git hooks / commits (overcommit + Conventional Commits)
 

@@ -19,6 +19,41 @@ end
 
 task default: %i[spec rubocop]
 
+desc "Roda localmente as mesmas verificações do CI (.github/workflows/ci.yml)"
+task :ci do # rubocop:disable Metrics/BlockLength
+  etapas = [
+    ["Specs (RSpec)",       -> { Rake::Task["spec"].invoke }],
+    ["Lint (RuboCop)",      -> { Rake::Task["rubocop"].invoke }],
+    ["Tipos (Steep)",       -> { sh "bundle exec steep check" }],
+    ["Docs (YARD)",         -> { sh "bundle exec yard doc --no-output --fail-on-warning" }],
+    ["Cobertura de docs",   -> { Rake::Task["docs:coverage"].invoke }],
+    ["Schemas atualizados", lambda {
+      Rake::Task["pull_fields"].invoke
+      sh "git diff --exit-code -- data/schemas"
+    }]
+  ]
+
+  falhas = []
+  etapas.each do |nome, acao|
+    puts "\n\e[1m▶ #{nome}\e[0m"
+    acao.call
+    puts "\e[32m✓ #{nome}\e[0m"
+  rescue SystemExit, StandardError => e
+    falhas << nome
+    puts "\e[31m✗ #{nome} (#{e.class}: #{e.message})\e[0m"
+  end
+
+  puts "\n\e[1mResumo do CI local\e[0m"
+  etapas.each do |etapa|
+    marcador = falhas.include?(etapa[0]) ? "\e[31m✗\e[0m" : "\e[32m✓\e[0m"
+    puts "  #{marcador} #{etapa[0]}"
+  end
+
+  abort "\n#{falhas.size} verificação(ões) falharam: #{falhas.join(", ")}" if falhas.any?
+
+  puts "\n\e[32mTudo verde — pronto para enviar ao GitHub.\e[0m"
+end
+
 desc "Pull fields from FocusNFe API and save to JSON files"
 task :pull_fields do
   sh "ruby #{File.join(__dir__, "tools", "pull_fields.rb")}"
