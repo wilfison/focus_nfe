@@ -89,6 +89,8 @@ Rules:
   strings are double-quoted, and `rubocop-performance` + `rubocop-rspec` are loaded as plugins (`.rubocop.yml`).
 - `bundle exec rake` — default task; runs **RSpec + RuboCop** (TDD is mandatory — see above). Keep it green
   before any commit.
+- `bundle exec rake steep` — run **Steep** type-checking (`sig/` RBS vs `lib/`). Standalone task, *not* part of
+  the default; CI gates it in a dedicated `typecheck` job. See *Type signatures* below.
 - `bundle exec rake pull_fields` — scrape all document-type field schemas into `data/schemas/` (see below).
 - `bundle exec rake coverage:open` — open the SimpleCov HTML report (`coverage/index.html`) in the browser;
   generate it first with `bin/rspec` / `rake spec`. SimpleCov is configured at the top of `spec/spec_helper.rb`
@@ -134,3 +136,29 @@ opt-in client-side validation (`FocusNfe::Esquemas::*`, `emitir(..., validar: tr
 `campos.focusnfe.com.br`. To change a schema, update the source (or `tools/pull_fields.rb`), rerun the task,
 and commit the regenerated output. CI runs the `schemas` job on every PR (`.github/workflows/main.yml`), which
 regenerates the schemas and fails if they differ from what is committed.
+
+## Type signatures (RBS + Steep)
+
+The gem ships **hand-written RBS** under `sig/`, type-checked by **Steep**. `steep check` must stay green: CI
+gates it in a dedicated `typecheck` job (Ruby 3.4) and `bundle exec rake steep` runs it locally (standalone —
+*not* in the default `rake` task, to keep the 3.2–4.0 build matrix fast). `Steepfile` declares one `target :lib`
+that checks `lib` against `sig` with the stdlib libraries `json`, `uri`, `net-http`, `timeout` (no
+`rbs_collection` — the gem has zero runtime deps). `sig/` is git-tracked and packaged with the gem (consumers
+get the signatures); `Steepfile`/`rbs_collection.*` are excluded from the package via the gemspec reject-list.
+
+- **`sig/` mirrors `lib/` one file per `.rb`** (`sig/focus_nfe/recursos/nfe.rbs`, …). Keep them in sync: a new
+  class/method/branch arrives with its signature. RBS is **hand-written, never generated** — `rbs prototype`
+  may scaffold member names but loses overloads, module self-types, and `define_method`'d methods.
+- **Typing boundary mirrors the naming rule** (*Coding conventions* above): the gem's own plumbing is **precise**
+  (`Response#status: Integer`, `raw_body: String?`, `Configuration`, `Connection`/`Adapter` shapes, `Campo`'s
+  parsed type/size); the **fiscal payload/JSON domain is `untyped`** (`Response#body`, `Documento` fields and
+  `#dados`, every `**dados`/`**opcoes`/`**filtros`, and the raw-body returns of the auxiliary/recebidas/management
+  resources). At a payload boundary, when unsure, widen to `Hash[untyped, untyped]`/`untyped` rather than
+  over-narrow.
+- **Mixins use RBS self-types.** Each `Recursos::Concerns::*` module is declared `module X : FocusNfe::Recursos::Base`
+  so Steep resolves the host's (private) `connection`/`caminho_*`/`esquemas_extras` calls.
+- **No `# steep:ignore`.** The comment rule (*Comments* above) allows only YARD, so type-checker pragmas are out.
+  When Steep can't follow the code (e.g. `define_method` doesn't rebind `self`, so dynamic readers/verbs fail),
+  **restructure to explicit methods** instead of silencing — this is why `HTTP::Connection`'s verbs and
+  `Modelos::Documento`'s field readers are written out. For stdlib nil-narrowing, capture into a local and guard.
+- The noisy `Ruby::UnannotatedEmptyCollection` diagnostic (empty `{}` literals) is disabled in `Steepfile`.
