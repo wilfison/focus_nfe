@@ -33,6 +33,21 @@ jobs:
       - name: Run the default task
         run: bundle exec rake
 
+  typecheck:
+    runs-on: ubuntu-latest
+    name: Steep type check
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+      - name: Run Steep
+        run: bundle exec steep check
+
   schemas:
     runs-on: ubuntu-latest
     name: Schemas up to date
