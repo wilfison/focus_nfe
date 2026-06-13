@@ -3,7 +3,7 @@
 module FocusNfe
   module Recursos
     module Concerns
-      # Comportamento de download (+GET /<base>/{identificador}.{formato}+). Devolve
+      # Comportamento de download (+GET /<base>/<identificador>.<formato>+). Devolve
       # os bytes crus da resposta (+raw_body+); o eventual +302+ para URL pré-assinada
       # (PDFs) é seguido pelo adaptador sem reenviar a autenticação.
       module Baixavel

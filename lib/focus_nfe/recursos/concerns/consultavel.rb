@@ -3,7 +3,7 @@
 module FocusNfe
   module Recursos
     module Concerns
-      # Comportamento de consulta (+GET /<base>/{ref}+). Devolve o {Modelos::Documento}
+      # Comportamento de consulta (+GET /<base>/<ref>+). Devolve o {Modelos::Documento}
       # com o estado fiscal atual do documento.
       module Consultavel
         # Consulta o estado de um documento já emitido.

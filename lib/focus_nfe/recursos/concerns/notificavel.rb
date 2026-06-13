@@ -3,7 +3,7 @@
 module FocusNfe
   module Recursos
     module Concerns
-      # Comportamento de reenvio de notificação (+POST /<base>/{identificador}/hook+),
+      # Comportamento de reenvio de notificação (+POST /<base>/<identificador>/hook+),
       # disparando de novo o webhook do documento.
       module Notificavel
         # Reenvia a notificação (webhook) do documento.

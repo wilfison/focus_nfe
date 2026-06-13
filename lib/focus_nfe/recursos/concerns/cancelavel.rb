@@ -3,7 +3,7 @@
 module FocusNfe
   module Recursos
     module Concerns
-      # Comportamento de cancelamento (+DELETE /<base>/{ref}+ com +justificativa+ no
+      # Comportamento de cancelamento (+DELETE /<base>/<ref>+ com +justificativa+ no
       # corpo). Devolve o {Modelos::Documento} com o estado fiscal resultante.
       module Cancelavel
         # Cancela um documento já emitido.

@@ -4,7 +4,7 @@ module FocusNfe
   module Recursos
     # Base dos recursos da API. Guarda a {HTTP::Connection} e o +caminho_base+
     # declarado por cada recurso, e oferece os utilitários compartilhados pelos
-    # mixins de comportamento ({Emitivel}, {Consultavel}, {Cancelavel}, …):
+    # mixins de comportamento ({Concerns::Emitivel}, {Concerns::Consultavel}, {Concerns::Cancelavel}, …):
     # montagem do caminho por referência e validação client-side da +ref+.
     class Base
       REFERENCIA = /\A[\w-]+\z/

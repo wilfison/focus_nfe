@@ -3,7 +3,7 @@
 module FocusNfe
   module Recursos
     module Concerns
-      # Comportamento de consulta por identificador (+GET /<base>/{identificador}+),
+      # Comportamento de consulta por identificador (+GET /<base>/<identificador>+),
       # para recursos de leitura e referência. Devolve o corpo cru da resposta
       # (Hash) — sem validação fiscal de +ref+, pois o identificador é um código,
       # chave ou CNPJ.
