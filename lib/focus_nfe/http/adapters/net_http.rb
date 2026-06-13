@@ -9,8 +9,9 @@ module FocusNfe
     module Adapters
       # Adaptador HTTP padrão, implementado sobre a stdlib (+Net::HTTP+), sem
       # dependências externas. Aplica os timeouts recebidos no construtor, usa TLS
-      # para URLs +https+, segue redirecionamentos +302+ de download (sem reenviar
-      # +Authorization+) e relança falhas de transporte como {Errors::ConnectionError}.
+      # para URLs +https+, segue redirecionamentos +302+ de download apenas para
+      # destinos +https+ (sem reenviar +Authorization+) e relança falhas de
+      # transporte como {Errors::ConnectionError}.
       class NetHttp < Adapter
         # @return [Integer] número máximo de redirecionamentos 302 seguidos
         MAX_REDIRECTS = 5
@@ -51,6 +52,8 @@ module FocusNfe
             raise Errors::ConnectionError, "excedido o limite de redirecionamentos" if redirects_left.zero?
 
             target = URI.join(uri.to_s, location)
+            raise Errors::ConnectionError, "redirecionamento não-https recusado" unless target.scheme == "https"
+
             return dispatch(:get, target, without_authorization(headers), nil, redirects_left - 1)
           end
 

@@ -123,6 +123,15 @@ RSpec.describe FocusNfe::HTTP::Adapters::NetHttp do
       expect(a_request(:get, target).with { |req| req.headers["Authorization"].nil? }).to have_been_made
     end
 
+    it "recusa redirecionamento para destino não-https", :aggregate_failures do
+      destino_http = "http://arquivos.exemplo.test/assinado/123.pdf"
+      stub_request(:get, origin).to_return(status: 302, headers: { "Location" => destino_http })
+      segundo = stub_request(:get, destino_http)
+
+      expect { adapter.call(:get, origin) }.to raise_error(FocusNfe::Errors::ConnectionError, /não-https/)
+      expect(segundo).not_to have_been_requested
+    end
+
     it "não segue outros 3xx além de 302 (devolve a resposta crua)" do
       stub_request(:get, url).to_return(status: 301, headers: { "Location" => "https://outro.test/x" })
 
