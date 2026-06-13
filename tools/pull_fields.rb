@@ -47,13 +47,16 @@ end
 
 FileUtils.mkdir_p(OUTPUT_DIR)
 
+puts "Starting..."
 URLS.each do |name, url|
-  puts "Loading fields from #{name} API..."
   schema = load_schema(url)
+  next if schema.empty?
 
   file_name = File.join(OUTPUT_DIR, "schema_#{name}.json")
   FileUtils.rm_f(file_name)
   File.write(file_name, JSON.pretty_generate(schema))
 
-  puts "Fields from #{name} API saved to #{file_name}"
+  puts "Loaded:  #{name.rjust(30, " ")} ✅"
+rescue StandardError => e
+  puts "Error:  #{name.rjust(30, " ")} => #{e.message}"
 end
