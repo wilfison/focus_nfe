@@ -16,13 +16,28 @@ module FocusNfe
       # @return [Hash] corpo cru da resposta
       attr_reader :dados
 
+      # @return [String, nil] status do documento na Focus NFe (ex.: +autorizado+)
       def status = dados["status"]
+
+      # @return [String, nil] código de status retornado pela SEFAZ
       def status_sefaz = dados["status_sefaz"]
+
+      # @return [String, nil] mensagem descritiva retornada pela SEFAZ
       def mensagem_sefaz = dados["mensagem_sefaz"]
+
+      # @return [String, nil] chave de acesso do documento autorizado
       def chave_nfe = dados["chave_nfe"]
+
+      # @return [String, nil] número do documento fiscal
       def numero = dados["numero"]
+
+      # @return [String, nil] série do documento fiscal
       def serie = dados["serie"]
+
+      # @return [String, nil] caminho relativo do XML da nota na Focus NFe
       def caminho_xml_nota_fiscal = dados["caminho_xml_nota_fiscal"]
+
+      # @return [String, nil] caminho relativo do PDF (DANFe/DACTe/DANFSe) na Focus NFe
       def caminho_danfe = dados["caminho_danfe"]
 
       # Constrói um {Documento} a partir de uma {HTTP::Response}.
