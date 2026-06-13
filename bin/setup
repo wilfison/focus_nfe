@@ -1,10 +1,21 @@
 #!/usr/bin/env bash
 set -euo pipefail
 IFS=$'\n\t'
-set -vx
 
-mkdir -p tmp/shemas/
+cd "$(dirname "$0")/.."
 
+echo "==> Instalando dependências (bundle install)"
 bundle install
 
-# Do any other automated setup that you need to do here
+echo "==> Instalando git hooks (overcommit)"
+bundle exec overcommit --install
+bundle exec overcommit --sign
+
+echo "==> Verificando ambiente (bundle exec rake)"
+bundle exec rake
+
+echo
+echo "Pronto! Comandos úteis:"
+echo "  bin/console          IRB com a gem carregada"
+echo "  bundle exec rake     RSpec + RuboCop (default)"
+echo "  bundle exec rake ci  todas as verificações do CI"

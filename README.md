@@ -266,8 +266,10 @@ valores aceitos em `:enum`. `disponiveis` também lista os sub-schemas auxiliare
 
 ## Desenvolvimento
 
-Após clonar o repositório, rode `bin/setup` para instalar as dependências.
-`bin/console` abre um IRB com a gem carregada.
+Após clonar o repositório, rode `bin/setup`: ele instala as dependências,
+configura os git hooks ([overcommit](https://github.com/sds/overcommit) —
+pre-commit/pre-push/commit-msg) e roda o `rake` default como verificação de
+ambiente. `bin/console` abre um IRB com a gem carregada.
 
 O projeto é desenvolvido **test-first (TDD)** com RSpec + WebMock — nenhuma
 classe/método/branch nasce sem um spec falhando que o exija. O `rake` default
