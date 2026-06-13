@@ -1,164 +1,115 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code when working in this repository.
 
 ## What this is
 
-Unofficial Ruby gem providing a client for the [Focus NFe](https://focusnfe.com.br) API — a Brazilian
-service for issuing electronic fiscal documents (NFe, NFCe, NFSe, CTe, MDFe, NFCom, DCe, etc.).
-
-The project is at its very start: `lib/focus_nfe.rb` currently holds only the `FocusNfe` module and an
-`Error` class. Most of the gem still has to be built. The substantive code that exists today is the
-**field-scraping tooling** described below.
+Unofficial Ruby gem: a client for the [Focus NFe](https://focusnfe.com.br) API (Brazilian electronic
+fiscal documents — NFe, NFCe, NFSe, CTe, MDFe, NFCom, DCe, …). Early stage: most of the gem is still
+to be built; the substantive existing code is the field-scraping tooling (*Field schemas* below).
 
 ## Coding conventions
 
-### Language of identifiers (hybrid — English plumbing, Portuguese domain)
+### Identifier language (hybrid: English plumbing, Portuguese domain)
 
-This gem uses a **two-language naming rule**. The dividing line is one question:
+Dividing question: **does the identifier name something in the Focus NFe / SEFAZ fiscal domain?**
+Yes → **Portuguese**. The gem's own machinery → **English**.
 
-> **Does this identifier appear in, or directly name, something in the Focus NFe / SEFAZ fiscal domain?**
-> If yes → **Portuguese**. If it is the gem's own machinery → **English**.
+- **English (gem plumbing, not in the API):** classes/modules (`Client`, `Configuration`, `Connection`,
+  `Response`, `Adapter`, `Authentication`, `Error`, `Errors::*`); structural methods (`configure`,
+  `connection`, `call`, `get`/`post`/`put`/`delete`, `validate!`, `success?`, `from_response`,
+  `class_for`); infra config & HTTP terms (`environment`, `timeout`, `logger`, `http_adapter`, `headers`,
+  `path`, `params`, `body`, `status`, `url`); all internal vars, private methods, constants.
+- **Portuguese (the API's own vocabulary):** resource accessors / fiscal operations mapping 1:1 to API
+  actions (`nfe`, `nfce`, `nfse`, `cte`, `mdfe`, `emitir`, `consultar`, `cancelar`, `inutilizar`,
+  `justificativa`, `referencia`); **payload field names verbatim from the schemas — never translated**
+  (`natureza_operacao`, `cnpj_emitente`, `valor_total`, …).
+- **Domain values stay Portuguese even behind an English key:** `config.environment = :homologacao`
+  (`:producao`/`:homologacao`); fiscal statuses like `"autorizado"`/`"cancelado"`.
+- Debated boundaries: `environment` is English (resolves the base URL; `ambiente` is not an API field);
+  `referencia` is Portuguese (the API's `ref`).
 
-- **English — the gem's own plumbing** (everything that does *not* exist in the Focus NFe API):
-  - Classes/modules: `Client`, `Configuration`, `Connection`, `Response`, `Adapter`,
-    `Adapters::NetHttp`, `Authentication`, `Error`, `Errors::*` (`HttpError`, `BadRequest`,
-    `Unauthorized`, `ValidationError`, `ServerError`, `ConfigurationError`, `ConnectionError`, …).
-  - Structural methods: `configure`, `configuration`, `client`, `connection`, `call`,
-    `get`/`post`/`put`/`delete`, `validate!`, `success?`, `from_response`, `class_for`.
-  - Generic infrastructure config options & HTTP identifiers: `environment`, `timeout`,
-    `open_timeout`, `logger`, `http_adapter`, `headers`, `path`, `params`, `body`, `status`, `url`.
-  - All internal variables, private methods, and constants (`BASE_URLS`, `DEFAULT_HEADERS`, `VERBS`, …).
-- **Portuguese — the Focus NFe / SEFAZ fiscal domain** (the API's own vocabulary):
-  - Resource accessors and fiscal operations that map 1:1 to API actions: `nfe`, `nfce`, `nfse`,
-    `cte`, `mdfe`, `emitir`, `consultar`, `cancelar`, `inutilizar`, `justificativa`, `referencia`.
-  - **Payload field names: verbatim from the schemas — never translated** (`natureza_operacao`,
-    `cnpj_emitente`, `valor_total`, …). These are generated from `campos.focusnfe.com.br`; translating
-    them would be a bug. See *Field schemas* below.
-- **Domain data *values* stay Portuguese even behind an English identifier.** The key is the gem's API
-  (English), the value is fiscal data (Portuguese): e.g. `config.environment = :homologacao`
-  (`:producao`/`:homologacao`), or fiscal status strings like `"autorizado"`/`"cancelado"`.
-
-Rule of thumb for the two debated boundaries: the *attribute* `environment` is English (it's gem
-machinery that resolves the base URL — `ambiente` is not an API field); `referencia` is Portuguese
-(it's the API's `ref`).
-
-Follow established Ruby and gem best practices throughout (file/dir naming, `frozen_string_literal`,
-double-quoted strings, Ruby 3.2 target — see `.rubocop.yml`).
+General Ruby/gem best practices: `frozen_string_literal`, double-quoted strings, Ruby 3.2 target (`.rubocop.yml`).
 
 ### Comments
 
-- **No unnecessary comments.** Code must be self-explanatory through clear names; do not narrate what the
-  code already says, restate logic, or leave section/banner comments. If a comment only paraphrases the
-  next line, delete it and improve the name instead.
-- **The only allowed comments are YARD documentation** on public classes, modules, and methods — including
-  type tags (`@param name [Type]`, `@return [Type]`, `@raise [Type]`). **Comment/YARD prose is written in
-  Portuguese**, regardless of the identifier language above (type references in tags use the real English
-  identifier, e.g. `@return [FocusNfe::Configuration]`).
-- Prefer expressing intent in code (well-named methods/constants) over explanatory prose. A genuinely
-  non-obvious *why* (a workaround, an external constraint) belongs in the YARD doc of the relevant method,
-  not as a loose inline comment.
+- **No unnecessary comments** — names carry intent; no narration, restatement, or banner/section comments.
+- **Only YARD docs allowed**, on public classes/modules/methods, with type tags (`@param`, `@return`,
+  `@raise`). **Prose in Portuguese**; type references use the real English identifier (`@return [FocusNfe::Configuration]`).
+- A genuinely non-obvious *why* (workaround, external constraint) goes in the method's YARD doc, not inline.
 
-## Test-Driven Development (mandatory)
+## TDD (mandatory — hard rule)
 
-This project is built with **TDD — it is a hard rule, not a preference**. For every behavior:
+Red → Green → Refactor for every behavior. **No production code without a failing spec first** (new
+classes, methods, branches arrive test-first; each bug fix starts with a reproducing spec).
 
-1. **Red** — write a failing spec that describes the desired behavior _before_ writing any
-   implementation code.
-2. **Green** — write the minimum implementation needed to make the spec pass.
-3. **Refactor** — clean up while keeping the suite green.
-
-Rules:
-
-- **No production code without a failing spec that requires it.** New classes, methods, or branches
-  arrive test-first.
-- Tests use **RSpec** under `spec/`, mirroring `lib/` (`spec/focus_nfe/recursos/nfe_spec.rb`, …).
-- HTTP is never hit for real in tests — stub it with **WebMock** (and VCR for recorded interactions
-  if useful). Cover both `:homologacao` and `:producao` base URLs.
-- Each bug fix starts with a failing spec that reproduces the bug.
-- `bundle exec rake` must run **RSpec and RuboCop**, and stay green before any commit.
+- **RSpec** under `spec/`, mirroring `lib/` (`spec/focus_nfe/recursos/nfe_spec.rb`, …).
+- HTTP never hit for real — stub with **WebMock** (VCR for recorded interactions if useful). Cover both
+  `:homologacao` and `:producao` base URLs.
+- `bundle exec rake` (RSpec + RuboCop) must stay green before any commit.
 
 ## Commands
 
-- `bin/setup` — install dependencies. Após o `bundle install`, instale os git hooks com
-  `bundle exec overcommit --install` (veja *Git hooks / commits* abaixo).
-- `bin/console` — IRB session with the gem loaded.
-- `bin/rspec` — run the RSpec suite directly (binstub; faster than `bundle exec rspec`). Pass paths/options
-  through, e.g. `bin/rspec spec/focus_nfe_spec.rb`.
-- `bin/rubocop` — run RuboCop directly (binstub). `bin/rubocop -a` auto-corrects style. Ruby target is 3.2;
-  strings are double-quoted, and `rubocop-performance` + `rubocop-rspec` are loaded as plugins (`.rubocop.yml`).
-- `bundle exec rake` — default task; runs **RSpec + RuboCop** (TDD is mandatory — see above). Keep it green
-  before any commit.
-- `bundle exec rake steep` — run **Steep** type-checking (`sig/` RBS vs `lib/`). Standalone task, *not* part of
-  the default; CI gates it in a dedicated `typecheck` job. See *Type signatures* below.
-- `bundle exec rake pull_fields` — scrape all document-type field schemas into `data/schemas/` (see below).
-- `bundle exec rake coverage:open` — open the SimpleCov HTML report (`coverage/index.html`) in the browser;
-  generate it first with `bin/rspec` / `rake spec`. SimpleCov is configured at the top of `spec/spec_helper.rb`
-  (line + branch coverage); the `coverage/` directory is git-ignored.
-- `bundle exec rake install` / `rake release` — build/publish the gem (gemspec still has TODO metadata to fill in).
+- `bin/setup` — install deps; then `bundle exec overcommit --install` (git hooks, see below).
+- `bin/console` — IRB with the gem loaded.
+- `bin/rspec` / `bin/rubocop` — binstubs (faster than `bundle exec`). `bin/rubocop -a` auto-corrects.
+- `bundle exec rake` — default; runs **RSpec + RuboCop**. Keep green before committing.
+- `bundle exec rake steep` — **Steep** type-check (`sig/` vs `lib/`). Standalone, *not* in default rake;
+  CI gates it in a `typecheck` job. See *Type signatures*.
+- `bundle exec rake pull_fields` — regenerate field schemas into `data/schemas/`.
+- `bundle exec rake coverage:open` — open SimpleCov HTML report (generate first via `bin/rspec`/`rake spec`;
+  configured atop `spec/spec_helper.rb`, line+branch; `coverage/` git-ignored).
+- `bundle exec rake install` / `release` — build/publish (gemspec metadata still has TODOs).
 
-Note: CI (`.github/workflows/main.yml`) pins Ruby `4.0.2`, while `focus_nfe.gemspec` requires `>= 3.2.0`.
+CI (`.github/workflows/main.yml`) pins Ruby `4.0.2`; gemspec requires `>= 3.2.0`.
 
 ## Git hooks / commits (overcommit + Conventional Commits)
 
-Os git hooks são gerenciados pelo [overcommit](https://github.com/sds/overcommit) (`.overcommit.yml`).
-Após clonar e instalar as dependências, ative-os uma vez com `bundle exec overcommit --install`.
+Managed by [overcommit](https://github.com/sds/overcommit) (`.overcommit.yml`); activate once with
+`bundle exec overcommit --install`. After editing `.overcommit.yml`, re-sign: `bundle exec overcommit --sign`.
 
-- **pre-commit** — roda `bundle exec rubocop` nos arquivos alterados, além de checagens de espaços em
-  branco, tabs, conflitos de merge e sintaxe YAML.
-- **pre-push** — roda a suíte completa (`bundle exec rspec`).
-- **commit-msg** — exige que a mensagem siga o padrão
-  [Conventional Commits](https://www.conventionalcommits.org): `<tipo>(escopo opcional)!: <descrição>`.
-  Tipos aceitos: `build`, `chore`, `ci`, `docs`, `feat`, `fix`, `perf`, `refactor`, `revert`, `style`,
-  `test`. Exemplo: `feat(nfe): adiciona emissão de NFe`. Mensagens de `Merge`/`Revert`/`fixup!`/`squash!`
-  são liberadas. O assunto vai até 72 colunas e não pode terminar em ponto.
+- **pre-commit** — `rubocop` on changed files + whitespace/tab/merge-conflict/YAML checks.
+- **pre-push** — full `rspec` suite.
+- **commit-msg** — [Conventional Commits](https://www.conventionalcommits.org): `<tipo>(escopo)!: <descrição>`.
+  Types: `build`, `chore`, `ci`, `docs`, `feat`, `fix`, `perf`, `refactor`, `revert`, `style`, `test`.
+  Subject ≤ 72 cols, no trailing period (`Merge`/`Revert`/`fixup!`/`squash!` exempt).
 
-Ao alterar o `.overcommit.yml`, o overcommit pede para reassinar a configuração: `bundle exec overcommit --sign`.
+## Field schemas (source of truth for API fields)
 
-## Field schemas (the source of truth for API fields)
+The request/field layer is derived from `campos.focusnfe.com.br`, not hand-transcribed.
 
-Focus NFe documents every request field on `campos.focusnfe.com.br`. The gem's request/field layer should be
-derived from these definitions rather than hand-transcribed.
+- `tools/pull_fields.rb` fetches each page, extracts the embedded `__NEXT_DATA__` JSON
+  (`props.pageProps.json.object_attributes`), and writes `data/schemas/schema_<name>.json` per document
+  type (URL map at the top of the script).
+- Each entry: `{ name, description, type, required, tag }`, optionally `enum`, `reforma_tributaria`, and a
+  nested `collection` (with `collection_type`). `name` = JSON field the API expects; `tag` = XML tag;
+  `type` encodes Brazilian fiscal type/length (`String[1-60]`, `Integer[1-9]`, `Decimal[13.2]`, `Coleção[0-500]`).
+- `data/schemas/` is git-tracked and packaged (gemspec `git ls-files`); powers opt-in client-side validation
+  (`FocusNfe::Esquemas::*`, `emitir(..., validar: true)`).
 
-- `tools/pull_fields.rb` — fetches each documented page, extracts the embedded `__NEXT_DATA__` JSON
-  (`props.pageProps.json.object_attributes`), and writes one file per document type to
-  `data/schemas/schema_<name>.json`. The full URL map for every document type lives at the top of this script.
-- Each schema entry is `{ name, description, type, required, tag }` and may also carry `enum`,
-  `reforma_tributaria` and a nested `collection` (with `collection_type`). `name` is the JSON field the API
-  expects, `tag` is the underlying XML tag, and `type` encodes Brazilian fiscal type/length (e.g. `String[1-60]`,
-  `Integer[1-9]`, `Decimal[13.2]`, `Coleção[0-500]`).
-
-`data/schemas/` is git-tracked and packaged with the gem (via `git ls-files` in the gemspec), powering the
-opt-in client-side validation (`FocusNfe::Esquemas::*`, `emitir(..., validar: true)`). Regenerate it with
-`rake pull_fields`.
-
-**Never edit the `data/schemas/*.json` files by hand** — they are generated by `rake pull_fields` from
-`campos.focusnfe.com.br`. To change a schema, update the source (or `tools/pull_fields.rb`), rerun the task,
-and commit the regenerated output. CI runs the `schemas` job on every PR (`.github/workflows/main.yml`), which
-regenerates the schemas and fails if they differ from what is committed.
+**Never edit `data/schemas/*.json` by hand** — generated by `rake pull_fields`. To change a schema, edit the
+source / `tools/pull_fields.rb`, rerun, and commit the regenerated output. CI's `schemas` job regenerates on
+every PR and fails on any diff.
 
 ## Type signatures (RBS + Steep)
 
-The gem ships **hand-written RBS** under `sig/`, type-checked by **Steep**. `steep check` must stay green: CI
-gates it in a dedicated `typecheck` job (Ruby 3.4) and `bundle exec rake steep` runs it locally (standalone —
-*not* in the default `rake` task, to keep the 3.2–4.0 build matrix fast). `Steepfile` declares one `target :lib`
-that checks `lib` against `sig` with the stdlib libraries `json`, `uri`, `net-http`, `timeout` (no
-`rbs_collection` — the gem has zero runtime deps). `sig/` is git-tracked and packaged with the gem (consumers
-get the signatures); `Steepfile`/`rbs_collection.*` are excluded from the package via the gemspec reject-list.
+Hand-written RBS under `sig/`, checked by Steep — `steep check` must stay green (CI `typecheck` job, Ruby 3.4;
+local `bundle exec rake steep`, standalone to keep the 3.2–4.0 matrix fast). `Steepfile` has one `target :lib`
+checking `lib` against `sig` with stdlib `json`, `uri`, `net-http`, `timeout` (no `rbs_collection` — zero
+runtime deps). `sig/` is packaged with the gem; `Steepfile`/`rbs_collection.*` are excluded via the gemspec
+reject-list.
 
-- **`sig/` mirrors `lib/` one file per `.rb`** (`sig/focus_nfe/recursos/nfe.rbs`, …). Keep them in sync: a new
-  class/method/branch arrives with its signature. RBS is **hand-written, never generated** — `rbs prototype`
-  may scaffold member names but loses overloads, module self-types, and `define_method`'d methods.
-- **Typing boundary mirrors the naming rule** (*Coding conventions* above): the gem's own plumbing is **precise**
-  (`Response#status: Integer`, `raw_body: String?`, `Configuration`, `Connection`/`Adapter` shapes, `Campo`'s
-  parsed type/size); the **fiscal payload/JSON domain is `untyped`** (`Response#body`, `Documento` fields and
-  `#dados`, every `**dados`/`**opcoes`/`**filtros`, and the raw-body returns of the auxiliary/recebidas/management
-  resources). At a payload boundary, when unsure, widen to `Hash[untyped, untyped]`/`untyped` rather than
-  over-narrow.
-- **Mixins use RBS self-types.** Each `Recursos::Concerns::*` module is declared `module X : FocusNfe::Recursos::Base`
-  so Steep resolves the host's (private) `connection`/`caminho_*`/`esquemas_extras` calls.
-- **No `# steep:ignore`.** The comment rule (*Comments* above) allows only YARD, so type-checker pragmas are out.
-  When Steep can't follow the code (e.g. `define_method` doesn't rebind `self`, so dynamic readers/verbs fail),
-  **restructure to explicit methods** instead of silencing — this is why `HTTP::Connection`'s verbs and
-  `Modelos::Documento`'s field readers are written out. For stdlib nil-narrowing, capture into a local and guard.
-- The noisy `Ruby::UnannotatedEmptyCollection` diagnostic (empty `{}` literals) is disabled in `Steepfile`.
+- **`sig/` mirrors `lib/`, one file per `.rb`.** Keep in sync — a new class/method/branch arrives with its
+  signature. **Hand-written, never generated** (`rbs prototype` loses overloads, self-types, `define_method`'d methods).
+- **Typing boundary mirrors the naming rule:** gem plumbing is **precise** (`Response#status: Integer`,
+  `raw_body: String?`, `Configuration`/`Connection`/`Adapter` shapes, `Campo`'s parsed type/size); the
+  **fiscal payload/JSON domain is `untyped`** (`Response#body`, `Documento` fields & `#dados`, every
+  `**dados`/`**opcoes`/`**filtros`, raw-body returns of auxiliary/recebidas/management resources). When unsure
+  at a payload boundary, widen to `Hash[untyped, untyped]`/`untyped`.
+- **Mixins use RBS self-types:** each `Recursos::Concerns::*` is `module X : FocusNfe::Recursos::Base` so Steep
+  resolves the host's private `connection`/`caminho_*`/`esquemas_extras`.
+- **No `# steep:ignore`** (the comment rule allows only YARD). When Steep can't follow the code (e.g.
+  `define_method` doesn't rebind `self`), **restructure to explicit methods** instead of silencing — why
+  `HTTP::Connection`'s verbs and `Modelos::Documento`'s readers are written out. For stdlib nil-narrowing,
+  capture into a local and guard.
+- `Ruby::UnannotatedEmptyCollection` (empty `{}`) is disabled in `Steepfile`.
