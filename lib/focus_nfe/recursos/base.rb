@@ -7,6 +7,7 @@ module FocusNfe
     # mixins de comportamento ({Concerns::Emitivel}, {Concerns::Consultavel}, {Concerns::Cancelavel}, …):
     # montagem do caminho por referência e validação client-side da +ref+.
     class Base
+      # @return [Regexp] formato aceito para a +ref+ (alfanumérico, hífen ou underscore)
       REFERENCIA = /\A[\w-]+\z/
 
       class << self

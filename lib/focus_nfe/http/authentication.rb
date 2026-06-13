@@ -8,6 +8,7 @@ module FocusNfe
     # Base64.strict_encode64 — evitando a lib `base64`, que deixou de ser
     # default gem no Ruby 4.x, e mantendo zero dependências de runtime.
     module Authentication
+      # @return [String] nome do cabeçalho HTTP de autenticação
       NAME = "Authorization"
 
       module_function

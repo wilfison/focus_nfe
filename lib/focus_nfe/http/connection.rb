@@ -11,6 +11,7 @@ module FocusNfe
     # Devolve a {Response} em 2xx e levanta a exceção tipada em não-2xx — assim
     # cada recurso futuro vira uma camada fina sobre esta classe.
     class Connection
+      # @return [String] prefixo de versão da API, inserido em toda URL
       PREFIX = "v2"
 
       # @return [Hash{String=>String}] cabeçalhos enviados em toda requisição

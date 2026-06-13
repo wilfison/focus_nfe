@@ -16,8 +16,11 @@ module FocusNfe
     # @return [Hash{Symbol=>Symbol}] escopo => atributo de token correspondente
     ESCOPOS_TOKEN = { empresa: :token_empresa, conta: :token_conta }.freeze
 
+    # @return [Symbol] ambiente padrão quando nenhum é informado
     DEFAULT_ENVIRONMENT = :homologacao
+    # @return [Integer] timeout de leitura padrão, em segundos
     DEFAULT_TIMEOUT = 30
+    # @return [Integer] timeout de conexão padrão, em segundos
     DEFAULT_OPEN_TIMEOUT = 10
 
     attr_accessor :token_empresa, :token_conta, :environment, :timeout,

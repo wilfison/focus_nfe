@@ -5,6 +5,7 @@ module FocusNfe
   # e descreve seus campos como dado serializável, para devs e ferramentas
   # automatizadas — sem token nem conexão.
   module Esquemas
+    # @return [String] glob dos arquivos de schema empacotados em +data/schemas/+
     GLOB_SCHEMAS = "schema_*.json"
 
     class << self

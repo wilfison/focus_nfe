@@ -34,6 +34,7 @@ module FocusNfe
         end
       end
 
+      # @return [Regexp] reconhece +Content-Type+ JSON (incluindo sufixos +.../...+json+)
       JSON_TYPE = %r{\bapplication/(?:[\w.+-]+\+)?json\b}i
 
       attr_reader :status, :headers, :body, :raw_body

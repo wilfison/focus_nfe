@@ -12,6 +12,7 @@ module FocusNfe
 
       caminho_base "cte"
 
+      # @return [Hash{String=>Hash{String=>String}}] código do modal => chave do payload => nome do sub-esquema
       MODAIS = {
         "01" => { "modal_rodoviario" => "cte_transporte_rodoviario" },
         "02" => { "modal_aereo" => "cte_transporte_aereo" },

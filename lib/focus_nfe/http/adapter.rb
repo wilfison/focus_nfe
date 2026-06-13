@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module FocusNfe
+  # Camada de transporte HTTP: conexão, autenticação, resposta e os adaptadores
+  # plugáveis que executam as requisições.
   module HTTP
     # Interface de um cliente HTTP plugável. A {Connection} despacha cada
     # requisição já montada (URL absoluta, cabeçalhos e corpo serializado) para um

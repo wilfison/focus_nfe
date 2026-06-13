@@ -5,6 +5,7 @@ require "uri"
 
 module FocusNfe
   module HTTP
+    # Implementações concretas de {Adapter}.
     module Adapters
       # Adaptador HTTP padrão, implementado sobre a stdlib (+Net::HTTP+), sem
       # dependências externas. Aplica os timeouts recebidos no construtor, usa TLS

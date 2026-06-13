@@ -7,6 +7,7 @@ module FocusNfe
     # sabe parsear o tipo fiscal (+String[1-60]+, +Integer[1-9]+, +Decimal[13.2]+,
     # +DateTime+, enum, coleção) em restrições de tipo/tamanho aplicáveis a um valor.
     class Campo
+      # @return [Regexp] captura base e tamanho/precisão de um tipo escalar (ex.: +String[1-60]+)
       ESCALAR = /\A(?<base>String|Integer|Decimal)\[(?<inicio>\d+)(?:[-.](?<fim>\d+))?\]/
 
       # @param definicao [Hash] entrada do schema ({ "name", "type", "required", "collection", … })
