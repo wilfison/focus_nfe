@@ -1,0 +1,9 @@
+module FocusNfe
+  module Recursos
+    module Concerns
+      module Localizavel : FocusNfe::Recursos::Base
+        def consultar: (String identificador) -> untyped
+      end
+    end
+  end
+end

@@ -1,0 +1,11 @@
+module FocusNfe
+  module Recursos
+    class NfsesNacionaisRecebidas < FocusNfe::Recursos::Base
+      include FocusNfe::Recursos::Concerns::Listavel
+      include FocusNfe::Recursos::Concerns::Baixavel
+      include FocusNfe::Recursos::Concerns::Notificavel
+
+      def baixar_html: (String chave) -> String?
+    end
+  end
+end

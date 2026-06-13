@@ -1,0 +1,22 @@
+module FocusNfe
+  module Recursos
+    class Base
+      REFERENCIA: Regexp
+
+      self.@caminho_base: String?
+
+      def self.caminho_base: (?String? valor) -> String?
+
+      def initialize: (FocusNfe::HTTP::Connection connection) -> void
+      def caminho_base: () -> String?
+
+      private
+
+      attr_reader connection: FocusNfe::HTTP::Connection
+
+      def caminho_referencia: (String | Integer ref) -> String
+      def validar_referencia!: (untyped ref) -> void
+      def esquemas_extras: (Hash[untyped, untyped] dados) -> Hash[String, String]
+    end
+  end
+end

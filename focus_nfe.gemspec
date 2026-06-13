@@ -29,7 +29,8 @@ Gem::Specification.new do |spec|
   spec.files = IO.popen(%w[git ls-files -z], chdir: __dir__, err: IO::NULL) do |ls|
     ls.readlines("\x0", chomp: true).reject do |f|
       (f == gemspec) ||
-        f.start_with?(*%w[bin/ Gemfile .gitignore .github/ .rubocop.yml])
+        f.start_with?(*%w[bin/ Gemfile .gitignore .github/ .rubocop.yml
+                          Steepfile rbs_collection.yaml rbs_collection.lock.yaml])
     end
   end
   spec.bindir = "exe"
@@ -47,6 +48,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rubocop-performance", "~> 1.25"
   spec.add_development_dependency "rubocop-rspec", "~> 3.6"
   spec.add_development_dependency "simplecov", "~> 0.22"
+  spec.add_development_dependency "steep", "~> 2.0"
   spec.add_development_dependency "vcr", "~> 6.3"
   spec.add_development_dependency "webmock", "~> 3.25"
   spec.add_development_dependency "webrick", "~> 1.9"

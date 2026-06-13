@@ -1,0 +1,28 @@
+module FocusNfe
+  module HTTP
+    class Connection
+      PREFIX: String
+      DEFAULT_HEADERS: Hash[String, String]
+
+      @adapter: FocusNfe::HTTP::Adapter?
+
+      def initialize: (FocusNfe::Configuration configuration, token: String) -> void
+
+      def get: (String? path, ?params: Hash[untyped, untyped]?, ?body: (Hash[untyped, untyped] | String)?, ?headers: Hash[untyped, untyped]) -> FocusNfe::HTTP::Response
+      def post: (String? path, ?params: Hash[untyped, untyped]?, ?body: (Hash[untyped, untyped] | String)?, ?headers: Hash[untyped, untyped]) -> FocusNfe::HTTP::Response
+      def put: (String? path, ?params: Hash[untyped, untyped]?, ?body: (Hash[untyped, untyped] | String)?, ?headers: Hash[untyped, untyped]) -> FocusNfe::HTTP::Response
+      def delete: (String? path, ?params: Hash[untyped, untyped]?, ?body: (Hash[untyped, untyped] | String)?, ?headers: Hash[untyped, untyped]) -> FocusNfe::HTTP::Response
+
+      private
+
+      attr_reader configuration: FocusNfe::Configuration
+      attr_reader token: String
+
+      def execute: (Symbol verb, String? path, params: Hash[untyped, untyped]?, body: (Hash[untyped, untyped] | String)?, headers: Hash[untyped, untyped]) -> FocusNfe::HTTP::Response
+      def build_url: (String? path, Hash[untyped, untyped]? params) -> String
+      def build_headers: (Hash[untyped, untyped] call_headers) -> Hash[untyped, untyped]
+      def serialize: ((Hash[untyped, untyped] | String)? body) -> String?
+      def adapter: () -> FocusNfe::HTTP::Adapter
+    end
+  end
+end

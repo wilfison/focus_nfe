@@ -1,0 +1,7 @@
+module FocusNfe
+  module Recursos
+    class Cnpjs < FocusNfe::Recursos::Base
+      include FocusNfe::Recursos::Concerns::Localizavel
+    end
+  end
+end

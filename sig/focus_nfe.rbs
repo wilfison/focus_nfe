@@ -1,4 +1,10 @@
 module FocusNfe
   VERSION: String
-  # See the writing guide of rbs: https://github.com/ruby/rbs#guides
+
+  self.@configuration: FocusNfe::Configuration?
+
+  def self.configure: () ?{ (FocusNfe::Configuration) -> void } -> FocusNfe::Configuration
+  def self.configuration: () -> FocusNfe::Configuration
+  def self.client: () -> FocusNfe::Client
+  def self.reset_configuration!: () -> void
 end

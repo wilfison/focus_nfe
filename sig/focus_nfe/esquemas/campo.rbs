@@ -1,0 +1,37 @@
+module FocusNfe
+  module Esquemas
+    class Campo
+      ESCALAR: Regexp
+
+      @definicao: Hash[untyped, untyped]
+      @tipo: Symbol?
+      @tamanho_minimo: Integer?
+      @tamanho_maximo: Integer?
+      @esquema_colecao: FocusNfe::Esquemas::Esquema?
+
+      attr_reader tipo: Symbol?
+      attr_reader tamanho_minimo: Integer?
+      attr_reader tamanho_maximo: Integer?
+
+      def initialize: (Hash[untyped, untyped] definicao) -> void
+      def nome: () -> String
+      def descricao: () -> String?
+      def tipo_bruto: () -> String?
+      def enum: () -> untyped
+      def tag: () -> String?
+      def to_h: () -> Hash[Symbol, untyped]
+      def obrigatorio?: () -> bool
+      def colecao?: () -> bool
+      def esquema_colecao: () -> FocusNfe::Esquemas::Esquema?
+      def validar_valor: (untyped valor) -> String?
+
+      private
+
+      def parsear_tipo: () -> void
+      def tipo_nao_escalar: (String? bruto) -> Symbol
+      def parsear_escalar: (MatchData match) -> void
+      def validar_string: (untyped valor) -> String?
+      def validar_integer: (untyped valor) -> String?
+    end
+  end
+end

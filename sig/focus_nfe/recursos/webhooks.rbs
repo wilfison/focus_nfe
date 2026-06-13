@@ -1,0 +1,11 @@
+module FocusNfe
+  module Recursos
+    class Webhooks < FocusNfe::Recursos::Base
+      include FocusNfe::Recursos::Concerns::Listavel
+      include FocusNfe::Recursos::Concerns::Localizavel
+      include FocusNfe::Recursos::Concerns::Removivel
+
+      def criar: (dados: Hash[untyped, untyped]) -> untyped
+    end
+  end
+end

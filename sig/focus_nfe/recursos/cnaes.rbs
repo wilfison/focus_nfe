@@ -1,0 +1,10 @@
+module FocusNfe
+  module Recursos
+    class Cnaes < FocusNfe::Recursos::Base
+      include FocusNfe::Recursos::Concerns::Localizavel
+      include FocusNfe::Recursos::Concerns::Listavel
+
+      def buscar: (**untyped filtros) -> FocusNfe::Modelos::Pagina
+    end
+  end
+end

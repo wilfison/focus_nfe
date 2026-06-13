@@ -1,0 +1,52 @@
+module FocusNfe
+  class Error < StandardError
+  end
+
+  module Errors
+    class HttpError < FocusNfe::Error
+      attr_reader status: Integer?
+      attr_reader body: untyped
+      attr_reader response: FocusNfe::HTTP::Response?
+
+      def initialize: (?String? message, ?status: Integer?, ?body: untyped, ?response: FocusNfe::HTTP::Response?) -> void
+    end
+
+    class BadRequest < HttpError
+    end
+
+    class Unauthorized < HttpError
+    end
+
+    class Forbidden < HttpError
+    end
+
+    class NotFound < HttpError
+    end
+
+    class Conflict < HttpError
+    end
+
+    class ValidationError < HttpError
+    end
+
+    class RateLimited < HttpError
+    end
+
+    class ServerError < HttpError
+    end
+
+    class UnexpectedResponse < HttpError
+    end
+
+    class ConfigurationError < FocusNfe::Error
+    end
+
+    class ConnectionError < FocusNfe::Error
+    end
+
+    BY_STATUS: Hash[Integer, singleton(FocusNfe::Errors::HttpError)]
+
+    def self?.class_for: (Integer status) -> singleton(FocusNfe::Errors::HttpError)
+    def self?.from_response: (FocusNfe::HTTP::Response response) -> FocusNfe::Errors::HttpError
+  end
+end

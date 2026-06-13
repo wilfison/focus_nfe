@@ -1,0 +1,7 @@
+module FocusNfe
+  module HTTP
+    class Adapter
+      def call: (Symbol method, String url, ?headers: Hash[String, String], ?body: String?) -> FocusNfe::HTTP::Response
+    end
+  end
+end

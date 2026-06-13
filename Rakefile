@@ -10,6 +10,13 @@ RuboCop::RakeTask.new
 
 YARD::Rake::YardocTask.new(:yard)
 
+begin
+  require "steep/rake_task"
+  Steep::RakeTask.new(:steep)
+rescue LoadError
+  # ambiente sem dependências de desenvolvimento
+end
+
 task default: %i[spec rubocop]
 
 desc "Pull fields from FocusNFe API and save to JSON files"

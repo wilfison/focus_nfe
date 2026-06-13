@@ -1,0 +1,15 @@
+module FocusNfe
+  module Recursos
+    class Municipios < FocusNfe::Recursos::Base
+      include FocusNfe::Recursos::Concerns::Localizavel
+      include FocusNfe::Recursos::Concerns::Listavel
+
+      def listar_codigos_tributarios: (String codigo_municipio, **untyped filtros) -> FocusNfe::Modelos::Pagina
+      def listar_itens_lista_servico: (String codigo_municipio, **untyped filtros) -> FocusNfe::Modelos::Pagina
+
+      private
+
+      def sub_listagem: (String codigo_municipio, String sufixo, Hash[untyped, untyped] filtros) -> FocusNfe::Modelos::Pagina
+    end
+  end
+end

@@ -1,0 +1,9 @@
+module FocusNfe
+  module Recursos
+    module Concerns
+      module Notificavel : FocusNfe::Recursos::Base
+        def reenviar_hook: (String identificador) -> untyped
+      end
+    end
+  end
+end

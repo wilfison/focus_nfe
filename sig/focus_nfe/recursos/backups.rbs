@@ -1,0 +1,7 @@
+module FocusNfe
+  module Recursos
+    class Backups < FocusNfe::Recursos::Base
+      def consultar: (String cnpj) -> untyped
+    end
+  end
+end

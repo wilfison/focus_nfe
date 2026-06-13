@@ -1,0 +1,21 @@
+module FocusNfe
+  module Modelos
+    class Pagina
+      include Enumerable[untyped]
+
+      attr_reader response: FocusNfe::HTTP::Response
+      attr_reader itens: Array[untyped]
+      attr_reader total: Integer?
+      attr_reader versao_maxima: Integer?
+
+      def self.from_response: (FocusNfe::HTTP::Response response) -> FocusNfe::Modelos::Pagina
+
+      def initialize: (response: FocusNfe::HTTP::Response) -> void
+
+      def each: () { (untyped) -> void } -> self
+              | () -> ::Enumerator[untyped, untyped]
+
+      alias cada each
+    end
+  end
+end

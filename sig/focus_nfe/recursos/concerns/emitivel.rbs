@@ -1,0 +1,14 @@
+module FocusNfe
+  module Recursos
+    module Concerns
+      module Emitivel : FocusNfe::Recursos::Base
+        def emitir: (ref: String, dados: Hash[untyped, untyped], ?validar: bool, **untyped opcoes) -> FocusNfe::Modelos::Documento
+
+        private
+
+        def validar_dados!: (Hash[untyped, untyped] dados) -> void
+        def carregar_aninhados: (Hash[untyped, untyped] dados) -> Hash[String, FocusNfe::Esquemas::Esquema]
+      end
+    end
+  end
+end

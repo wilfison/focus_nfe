@@ -156,7 +156,7 @@ module FocusNfe
     # @raise [FocusNfe::Errors::ConfigurationError] se o token do escopo estiver ausente
     def build_connection(escopo)
       configuration.validate_token!(escopo)
-      HTTP::Connection.new(configuration, token: configuration.token_de(escopo))
+      HTTP::Connection.new(configuration, token: configuration.token_de(escopo).to_s)
     end
   end
 end

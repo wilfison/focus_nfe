@@ -1,0 +1,9 @@
+module FocusNfe
+  module Recursos
+    module Concerns
+      module Removivel : FocusNfe::Recursos::Base
+        def excluir: (String identificador) -> untyped
+      end
+    end
+  end
+end

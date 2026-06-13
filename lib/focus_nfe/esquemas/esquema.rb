@@ -24,7 +24,7 @@ module FocusNfe
     # Esquema de emissão de um documento fiscal: a coleção de {Campo}s esperados
     # pela API para aquele tipo de documento.
     class Esquema
-      DIRETORIO = File.expand_path("../../../data/schemas", __dir__)
+      DIRETORIO = File.expand_path("../../../data/schemas", __dir__.to_s)
 
       class << self
         # Carrega o schema empacotado de um documento, memoizando por nome.

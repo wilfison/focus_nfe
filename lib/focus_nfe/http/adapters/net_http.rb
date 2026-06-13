@@ -44,11 +44,12 @@ module FocusNfe
 
         def dispatch(method, uri, headers, body, redirects_left)
           raw = transport(method, uri, headers, body)
+          location = raw["location"]
 
-          if raw.code.to_i == 302 && raw["location"]
+          if raw.code.to_i == 302 && location
             raise Errors::ConnectionError, "excedido o limite de redirecionamentos" if redirects_left.zero?
 
-            target = URI.join(uri.to_s, raw["location"])
+            target = URI.join(uri.to_s, location)
             return dispatch(:get, target, without_authorization(headers), nil, redirects_left - 1)
           end
 
@@ -71,10 +72,12 @@ module FocusNfe
         end
 
         def http_for(uri)
-          Net::HTTP.new(uri.host, uri.port).tap do |http|
+          Net::HTTP.new(uri.host.to_s, uri.port).tap do |http|
             http.use_ssl = uri.scheme == "https"
-            http.read_timeout = @timeout if @timeout
-            http.open_timeout = @open_timeout if @open_timeout
+            read_timeout = @timeout
+            open_timeout = @open_timeout
+            http.read_timeout = read_timeout if read_timeout
+            http.open_timeout = open_timeout if open_timeout
           end
         end
 

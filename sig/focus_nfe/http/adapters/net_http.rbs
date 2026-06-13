@@ -1,0 +1,25 @@
+module FocusNfe
+  module HTTP
+    module Adapters
+      class NetHttp < FocusNfe::HTTP::Adapter
+        MAX_REDIRECTS: Integer
+        VERBS: Hash[Symbol, singleton(Net::HTTPRequest)]
+
+        @timeout: Integer?
+        @open_timeout: Integer?
+
+        def initialize: (?timeout: Integer?, ?open_timeout: Integer?) -> void
+        def call: (Symbol method, String url, ?headers: Hash[untyped, untyped], ?body: String?) -> FocusNfe::HTTP::Response
+
+        private
+
+        def dispatch: (Symbol method, URI::Generic uri, Hash[untyped, untyped] headers, String? body, Integer redirects_left) -> FocusNfe::HTTP::Response
+        def transport: (Symbol method, URI::Generic uri, Hash[untyped, untyped] headers, String? body) -> Net::HTTPResponse
+        def build_request: (Symbol method, URI::Generic uri, Hash[untyped, untyped] headers, String? body) -> Net::HTTPRequest
+        def http_for: (URI::Generic uri) -> Net::HTTP
+        def build_response: (Net::HTTPResponse raw) -> FocusNfe::HTTP::Response
+        def without_authorization: (Hash[untyped, untyped] headers) -> Hash[untyped, untyped]
+      end
+    end
+  end
+end

@@ -1,0 +1,12 @@
+module FocusNfe
+  module Recursos
+    class EmailsBloqueados < FocusNfe::Recursos::Base
+      def consultar: (String email) -> untyped
+      def desbloquear: (String email) -> untyped
+
+      private
+
+      def caminho_email: (String email) -> String
+    end
+  end
+end

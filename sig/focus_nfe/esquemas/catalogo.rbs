@@ -1,0 +1,8 @@
+module FocusNfe
+  module Esquemas
+    GLOB_SCHEMAS: String
+
+    def self.disponiveis: () -> Array[String]
+    def self.descrever: (String nome) -> Array[Hash[Symbol, untyped]]?
+  end
+end

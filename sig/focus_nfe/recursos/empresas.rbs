@@ -1,0 +1,12 @@
+module FocusNfe
+  module Recursos
+    class Empresas < FocusNfe::Recursos::Base
+      include FocusNfe::Recursos::Concerns::Listavel
+      include FocusNfe::Recursos::Concerns::Localizavel
+      include FocusNfe::Recursos::Concerns::Removivel
+
+      def criar: (dados: Hash[untyped, untyped], ?dry_run: bool) -> untyped
+      def atualizar: ((String | Integer) id, dados: Hash[untyped, untyped]) -> untyped
+    end
+  end
+end

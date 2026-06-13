@@ -1,0 +1,38 @@
+module FocusNfe
+  class Client
+    attr_reader configuration: FocusNfe::Configuration
+
+    def initialize: (?FocusNfe::Configuration? configuration, **untyped options) -> void
+
+    def connection: () -> FocusNfe::HTTP::Connection
+    def connection_conta: () -> FocusNfe::HTTP::Connection
+
+    def nfe: () -> FocusNfe::Recursos::Nfe
+    def nfce: () -> FocusNfe::Recursos::Nfce
+    def nfse: () -> FocusNfe::Recursos::Nfse
+    def nfse_nacional: () -> FocusNfe::Recursos::NfseNacional
+    def cte: () -> FocusNfe::Recursos::Cte
+    def cte_os: () -> FocusNfe::Recursos::CteOs
+    def mdfe: () -> FocusNfe::Recursos::Mdfe
+    def nfcom: () -> FocusNfe::Recursos::Nfcom
+    def dce: () -> FocusNfe::Recursos::Dce
+    def nfgas: () -> FocusNfe::Recursos::Nfgas
+    def nfes_recebidas: () -> FocusNfe::Recursos::NfesRecebidas
+    def ctes_recebidas: () -> FocusNfe::Recursos::CtesRecebidas
+    def nfses_nacionais_recebidas: () -> FocusNfe::Recursos::NfsesNacionaisRecebidas
+    def ceps: () -> FocusNfe::Recursos::Ceps
+    def municipios: () -> FocusNfe::Recursos::Municipios
+    def cfops: () -> FocusNfe::Recursos::Cfops
+    def cnaes: () -> FocusNfe::Recursos::Cnaes
+    def ncms: () -> FocusNfe::Recursos::Ncms
+    def cnpjs: () -> FocusNfe::Recursos::Cnpjs
+    def empresas: () -> FocusNfe::Recursos::Empresas
+    def webhooks: () -> FocusNfe::Recursos::Webhooks
+    def emails_bloqueados: () -> FocusNfe::Recursos::EmailsBloqueados
+    def backups: () -> FocusNfe::Recursos::Backups
+
+    private
+
+    def build_connection: (Symbol escopo) -> FocusNfe::HTTP::Connection
+  end
+end

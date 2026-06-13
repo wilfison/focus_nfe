@@ -1,0 +1,29 @@
+module FocusNfe
+  class Configuration
+    BASE_URLS: Hash[Symbol, String]
+    ESCOPOS_TOKEN: Hash[Symbol, Symbol]
+    DEFAULT_ENVIRONMENT: Symbol
+    DEFAULT_TIMEOUT: Integer
+    DEFAULT_OPEN_TIMEOUT: Integer
+
+    attr_accessor token_empresa: String?
+    attr_accessor token_conta: String?
+    attr_accessor environment: Symbol
+    attr_accessor timeout: Integer
+    attr_accessor open_timeout: Integer
+    attr_accessor logger: untyped
+    attr_accessor http_adapter: FocusNfe::HTTP::Adapter?
+    attr_accessor headers: Hash[untyped, untyped]
+
+    def initialize: (?token_empresa: String?, ?token_conta: String?, ?environment: Symbol, ?timeout: Integer, ?open_timeout: Integer, ?logger: untyped, ?http_adapter: FocusNfe::HTTP::Adapter?, ?headers: Hash[untyped, untyped]) -> void
+    def base_url: () -> String
+    def token_de: (Symbol escopo) -> String?
+    def validate!: () -> self
+    def validate_token!: (Symbol escopo) -> self
+
+    private
+
+    def validate_environment!: () -> void
+    def token_presente?: (Symbol escopo) -> bool
+  end
+end

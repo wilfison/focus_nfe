@@ -16,14 +16,14 @@ module FocusNfe
       # @return [Hash] corpo cru da resposta
       attr_reader :dados
 
-      CAMPOS = %i[
-        status status_sefaz mensagem_sefaz chave_nfe numero serie
-        caminho_xml_nota_fiscal caminho_danfe
-      ].freeze
-
-      CAMPOS.each do |campo|
-        define_method(campo) { dados[campo.to_s] }
-      end
+      def status = dados["status"]
+      def status_sefaz = dados["status_sefaz"]
+      def mensagem_sefaz = dados["mensagem_sefaz"]
+      def chave_nfe = dados["chave_nfe"]
+      def numero = dados["numero"]
+      def serie = dados["serie"]
+      def caminho_xml_nota_fiscal = dados["caminho_xml_nota_fiscal"]
+      def caminho_danfe = dados["caminho_danfe"]
 
       # Constrói um {Documento} a partir de uma {HTTP::Response}.
       #

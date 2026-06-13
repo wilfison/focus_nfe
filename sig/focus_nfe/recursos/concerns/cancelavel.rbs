@@ -1,0 +1,9 @@
+module FocusNfe
+  module Recursos
+    module Concerns
+      module Cancelavel : FocusNfe::Recursos::Base
+        def cancelar: (String ref, justificativa: String) -> FocusNfe::Modelos::Documento
+      end
+    end
+  end
+end

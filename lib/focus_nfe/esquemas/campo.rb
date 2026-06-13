@@ -111,7 +111,7 @@ module FocusNfe
       end
 
       def parsear_escalar(match)
-        @tipo = { "String" => :string, "Integer" => :integer, "Decimal" => :decimal }[match[:base]]
+        @tipo = { "String" => :string, "Integer" => :integer, "Decimal" => :decimal }[match[:base].to_s]
         @tamanho_minimo = Integer(match[:inicio])
         @tamanho_maximo = match[:fim] ? Integer(match[:fim]) : @tamanho_minimo
       end

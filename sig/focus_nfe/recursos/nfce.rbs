@@ -1,0 +1,9 @@
+module FocusNfe
+  module Recursos
+    class Nfce < FocusNfe::Recursos::Base
+      include FocusNfe::Recursos::Concerns::Emitivel
+      include FocusNfe::Recursos::Concerns::Consultavel
+      include FocusNfe::Recursos::Concerns::Cancelavel
+    end
+  end
+end

@@ -1,4 +1,5 @@
 /.bundle/
+/.steep/
 /.yardoc
 /_yardoc/
 /coverage/

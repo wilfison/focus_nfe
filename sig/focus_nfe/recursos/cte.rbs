@@ -1,0 +1,15 @@
+module FocusNfe
+  module Recursos
+    class Cte < FocusNfe::Recursos::Base
+      include FocusNfe::Recursos::Concerns::Emitivel
+      include FocusNfe::Recursos::Concerns::Consultavel
+      include FocusNfe::Recursos::Concerns::Cancelavel
+
+      MODAIS: Hash[String, Hash[String, String]]
+
+      private
+
+      def esquemas_extras: (Hash[untyped, untyped] dados) -> Hash[String, String]
+    end
+  end
+end

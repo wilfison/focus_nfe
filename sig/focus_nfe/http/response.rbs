@@ -1,0 +1,28 @@
+module FocusNfe
+  module HTTP
+    class Response
+      class Headers
+        @data: Hash[String, untyped]
+
+        def initialize: (Hash[untyped, untyped] source) -> void
+        def []: (untyped key) -> String?
+        def to_h: () -> Hash[String, untyped]
+      end
+
+      JSON_TYPE: Regexp
+
+      attr_reader status: Integer
+      attr_reader headers: FocusNfe::HTTP::Response::Headers
+      attr_reader body: untyped
+      attr_reader raw_body: String?
+
+      def initialize: (status: Integer, ?headers: Hash[untyped, untyped], ?body: String?) -> void
+      def success?: () -> bool
+
+      private
+
+      def parse_body: () -> untyped
+      def json?: () -> bool
+    end
+  end
+end

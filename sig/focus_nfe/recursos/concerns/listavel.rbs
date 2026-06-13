@@ -1,0 +1,9 @@
+module FocusNfe
+  module Recursos
+    module Concerns
+      module Listavel : FocusNfe::Recursos::Base
+        def listar: (**untyped filtros) -> FocusNfe::Modelos::Pagina
+      end
+    end
+  end
+end

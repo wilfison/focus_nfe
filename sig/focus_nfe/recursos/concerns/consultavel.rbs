@@ -1,0 +1,9 @@
+module FocusNfe
+  module Recursos
+    module Concerns
+      module Consultavel : FocusNfe::Recursos::Base
+        def consultar: (String ref, ?completa: bool) -> FocusNfe::Modelos::Documento
+      end
+    end
+  end
+end

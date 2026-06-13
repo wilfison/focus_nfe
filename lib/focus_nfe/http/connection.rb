@@ -27,20 +27,29 @@ module FocusNfe
         @token = token
       end
 
-      # @!method get(path, params: {}, body: nil, headers: {})
-      # @!method post(path, params: {}, body: nil, headers: {})
-      # @!method put(path, params: {}, body: nil, headers: {})
-      # @!method delete(path, params: {}, body: nil, headers: {})
       # @param path [String] caminho do recurso, sem o prefixo /v2 (ex.: "nfe")
       # @param params [Hash] pares convertidos em query string
       # @param body [Hash, String, nil] Hash é serializado para JSON; nil não envia corpo
       # @param headers [Hash] cabeçalhos extras desta chamada
       # @return [FocusNfe::HTTP::Response] em respostas 2xx
       # @raise [FocusNfe::Errors::HttpError] a exceção tipada correspondente em não-2xx
-      %i[get post put delete].each do |verb|
-        define_method(verb) do |path, params: {}, body: nil, headers: {}|
-          execute(verb, path, params: params, body: body, headers: headers)
-        end
+      def get(path, params: {}, body: nil, headers: {})
+        execute(:get, path, params: params, body: body, headers: headers)
+      end
+
+      # (see #get)
+      def post(path, params: {}, body: nil, headers: {})
+        execute(:post, path, params: params, body: body, headers: headers)
+      end
+
+      # (see #get)
+      def put(path, params: {}, body: nil, headers: {})
+        execute(:put, path, params: params, body: body, headers: headers)
+      end
+
+      # (see #get)
+      def delete(path, params: {}, body: nil, headers: {})
+        execute(:delete, path, params: params, body: body, headers: headers)
       end
 
       private

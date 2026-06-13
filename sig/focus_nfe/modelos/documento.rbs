@@ -1,0 +1,29 @@
+module FocusNfe
+  module Modelos
+    class Documento
+      attr_reader response: FocusNfe::HTTP::Response
+      attr_reader ref: String?
+      attr_reader dados: Hash[untyped, untyped]
+
+      def self.from_response: (FocusNfe::HTTP::Response response, ?ref: String?) -> FocusNfe::Modelos::Documento
+
+      def initialize: (response: FocusNfe::HTTP::Response, ?ref: String?) -> void
+
+      def status: () -> untyped
+      def status_sefaz: () -> untyped
+      def mensagem_sefaz: () -> untyped
+      def chave_nfe: () -> untyped
+      def numero: () -> untyped
+      def serie: () -> untyped
+      def caminho_xml_nota_fiscal: () -> untyped
+      def caminho_danfe: () -> untyped
+
+      def []: (untyped chave) -> untyped
+      def autorizado?: () -> bool
+      def cancelado?: () -> bool
+      def processando?: () -> bool
+      def erro?: () -> bool
+      def denegado?: () -> bool
+    end
+  end
+end

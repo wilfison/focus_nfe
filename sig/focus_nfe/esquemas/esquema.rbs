@@ -1,0 +1,28 @@
+module FocusNfe
+  module Esquemas
+    class ErroDeValidacao < FocusNfe::Error
+      attr_reader erros: Array[String]
+
+      def initialize: (Array[String] erros) -> void
+    end
+
+    class Esquema
+      DIRETORIO: String
+
+      self.@cache: Hash[String?, FocusNfe::Esquemas::Esquema?]
+
+      def self.carregar: (String? nome) -> FocusNfe::Esquemas::Esquema?
+
+      private
+
+      def self.cache: () -> Hash[String?, FocusNfe::Esquemas::Esquema?]
+
+      public
+
+      attr_reader campos: Array[FocusNfe::Esquemas::Campo]
+
+      def initialize: (Array[Hash[untyped, untyped]] definicoes) -> void
+      def descrever: () -> Array[Hash[Symbol, untyped]]
+    end
+  end
+end

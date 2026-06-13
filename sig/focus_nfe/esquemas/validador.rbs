@@ -1,0 +1,20 @@
+module FocusNfe
+  module Esquemas
+    class Validador
+      @esquema: FocusNfe::Esquemas::Esquema
+      @aninhados: Hash[String, FocusNfe::Esquemas::Esquema]
+
+      def initialize: (FocusNfe::Esquemas::Esquema esquema, ?aninhados: Hash[String, FocusNfe::Esquemas::Esquema]) -> void
+      def validar: (Hash[untyped, untyped] dados) -> Array[String]
+      def validar!: (Hash[untyped, untyped] dados) -> void
+
+      private
+
+      def validar_campos: (FocusNfe::Esquemas::Esquema esquema, Hash[untyped, untyped] dados) -> Array[String]
+      def validar_aninhados: (Hash[untyped, untyped] dados) -> Array[String]
+      def erros_para: (FocusNfe::Esquemas::Campo campo, Hash[untyped, untyped] dados) -> Array[String]
+      def validar_colecao: (FocusNfe::Esquemas::Campo campo, untyped valor) -> Array[String]
+      def normalizar: (Hash[untyped, untyped] dados) -> Hash[String, untyped]
+    end
+  end
+end

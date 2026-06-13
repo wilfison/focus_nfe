@@ -1,0 +1,9 @@
+module FocusNfe
+  module HTTP
+    module Authentication
+      NAME: String
+
+      def self?.header: (String token) -> Hash[String, String]
+    end
+  end
+end
