@@ -17,6 +17,9 @@ module FocusNfe
       def serie: () -> untyped
       def caminho_xml_nota_fiscal: () -> untyped
       def caminho_danfe: () -> untyped
+      def caminho_xml_carta_correcao: () -> untyped
+      def caminho_pdf_carta_correcao: () -> untyped
+      def numero_carta_correcao: () -> untyped
 
       def []: (untyped chave) -> untyped
       def autorizado?: () -> bool

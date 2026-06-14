@@ -1,0 +1,15 @@
+module FocusNfe
+  module Recursos
+    module Concerns
+      module Corrigivel : FocusNfe::Recursos::Base
+        TAMANHO_CORRECAO: Range[Integer]
+
+        def corrigir: (String ref, correcao: String, ?data_evento: String?) -> FocusNfe::Modelos::Documento
+
+        private
+
+        def validar_correcao!: (untyped correcao) -> void
+      end
+    end
+  end
+end

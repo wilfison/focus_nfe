@@ -31,6 +31,16 @@ RSpec.describe FocusNfe::Modelos::Documento do
       expect(doc).to have_attributes(caminho_xml_nota_fiscal: "/x.xml", caminho_danfe: "/x.pdf")
     end
 
+    it "mapeia os campos da carta de correção", :aggregate_failures do
+      corpo = { "caminho_xml_carta_correcao" => "/cce.xml", "caminho_pdf_carta_correcao" => "/cce.pdf",
+                "numero_carta_correcao" => "1" }
+      doc = described_class.from_response(response(body: corpo))
+
+      expect(doc).to have_attributes(caminho_xml_carta_correcao: "/cce.xml",
+                                     caminho_pdf_carta_correcao: "/cce.pdf",
+                                     numero_carta_correcao: "1")
+    end
+
     it "injeta a ref conhecida pela chamada quando o corpo não a traz" do
       doc = described_class.from_response(response(body: { "status" => "processando_autorizacao" }), ref: "pedido-42")
 

@@ -1,0 +1,20 @@
+module FocusNfe
+  module Recursos
+    module Concerns
+      module Inutilizavel : FocusNfe::Recursos::Base
+        CAMINHO_INUTILIZACAO: String
+        CAMINHO_INUTILIZACOES: String
+        JUSTIFICATIVA_MINIMA: Integer
+
+        def inutilizar: (cnpj: String, serie: untyped, numero_inicial: untyped, numero_final: untyped, justificativa: String) -> FocusNfe::Modelos::Inutilizacao
+        def consultar_inutilizacoes: (**untyped filtros) -> Array[FocusNfe::Modelos::Inutilizacao]
+
+        private
+
+        def validar_justificativa!: (untyped justificativa) -> void
+        def validar_faixa!: (untyped numero_inicial, untyped numero_final) -> void
+        def numero_para_inteiro: (untyped valor) -> Integer?
+      end
+    end
+  end
+end

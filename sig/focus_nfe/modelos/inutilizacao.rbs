@@ -1,0 +1,24 @@
+module FocusNfe
+  module Modelos
+    class Inutilizacao
+      attr_reader response: FocusNfe::HTTP::Response?
+      attr_reader dados: Hash[untyped, untyped]
+
+      def self.from_response: (FocusNfe::HTTP::Response response) -> FocusNfe::Modelos::Inutilizacao
+      def self.from_item: (untyped item) -> FocusNfe::Modelos::Inutilizacao
+
+      def initialize: (dados: Hash[untyped, untyped], ?response: FocusNfe::HTTP::Response?) -> void
+
+      def status: () -> untyped
+      def status_sefaz: () -> untyped
+      def mensagem_sefaz: () -> untyped
+      def protocolo: () -> untyped
+      def serie: () -> untyped
+      def numero_inicial: () -> untyped
+      def numero_final: () -> untyped
+
+      def []: (untyped chave) -> untyped
+      def autorizado?: () -> bool
+    end
+  end
+end

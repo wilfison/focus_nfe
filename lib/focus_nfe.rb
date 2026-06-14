@@ -25,6 +25,7 @@ module FocusNfe
   # Modelos de resposta da API (documento fiscal, página de listagem).
   module Modelos
     autoload :Documento, "focus_nfe/modelos/documento"
+    autoload :Inutilizacao, "focus_nfe/modelos/inutilizacao"
     autoload :Pagina, "focus_nfe/modelos/pagina"
   end
 
@@ -48,6 +49,8 @@ module FocusNfe
       autoload :Emitivel, "focus_nfe/recursos/concerns/emitivel"
       autoload :Consultavel, "focus_nfe/recursos/concerns/consultavel"
       autoload :Cancelavel, "focus_nfe/recursos/concerns/cancelavel"
+      autoload :Corrigivel, "focus_nfe/recursos/concerns/corrigivel"
+      autoload :Inutilizavel, "focus_nfe/recursos/concerns/inutilizavel"
       autoload :Listavel, "focus_nfe/recursos/concerns/listavel"
       autoload :Baixavel, "focus_nfe/recursos/concerns/baixavel"
       autoload :Localizavel, "focus_nfe/recursos/concerns/localizavel"

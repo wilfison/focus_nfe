@@ -16,6 +16,9 @@ RSpec.describe FocusNfe::Recursos::Nfe do
     stub_request(verb, "#{host}/v2/#{path}").to_return(status: status, body: body, headers: json)
   end
 
+  it_behaves_like "um recurso corrigível", "nfe"
+  it_behaves_like "um recurso inutilizável", "nfe"
+
   describe "#emitir" do
     before { stub_nfe(:post, "nfe?ref=pedido-42", status: 202, body: processando) }
 

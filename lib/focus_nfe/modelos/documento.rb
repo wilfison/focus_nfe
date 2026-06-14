@@ -40,6 +40,15 @@ module FocusNfe
       # @return [String, nil] caminho relativo do PDF (DANFe/DACTe/DANFSe) na Focus NFe
       def caminho_danfe = dados["caminho_danfe"]
 
+      # @return [String, nil] caminho relativo do XML da carta de correção na Focus NFe
+      def caminho_xml_carta_correcao = dados["caminho_xml_carta_correcao"]
+
+      # @return [String, nil] caminho relativo do PDF da carta de correção na Focus NFe
+      def caminho_pdf_carta_correcao = dados["caminho_pdf_carta_correcao"]
+
+      # @return [String, nil] número sequencial da carta de correção emitida
+      def numero_carta_correcao = dados["numero_carta_correcao"]
+
       # Constrói um {Documento} a partir de uma {HTTP::Response}.
       #
       # @param response [FocusNfe::HTTP::Response] resposta de emissão/consulta

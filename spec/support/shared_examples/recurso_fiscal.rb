@@ -105,6 +105,191 @@ RSpec.shared_examples "um recurso consultável" do |caminho|
   end
 end
 
+RSpec.shared_examples "um recurso corrigível" do |caminho|
+  subject(:recurso) { described_class.new(client.connection) }
+
+  let(:client) { FocusNfe::Client.new(token_empresa: "tok", environment: environment) }
+  let(:environment) { :homologacao }
+  let(:json) { { "Content-Type" => "application/json" } }
+  let(:correcao) { "corrigindo o endereco de entrega do destinatario" }
+
+  def homologacao = "https://homologacao.focusnfe.com.br"
+  def producao = "https://api.focusnfe.com.br"
+
+  def stub_recurso(verb, path, host: homologacao, status: 200, body: "{}")
+    stub_request(verb, "#{host}/v2/#{path}").to_return(status: status, body: body, headers: json)
+  end
+
+  describe "#corrigir" do
+    let(:autorizada) { '{"status":"autorizado","numero_carta_correcao":"1","caminho_xml_carta_correcao":"/cce.xml"}' }
+
+    before { stub_recurso(:post, "#{caminho}/pedido-42/carta_correcao", body: autorizada) }
+
+    it "envia POST em /v2/#{caminho}/{ref}/carta_correcao só com a correção" do
+      recurso.corrigir("pedido-42", correcao: correcao)
+
+      url = "#{homologacao}/v2/#{caminho}/pedido-42/carta_correcao"
+
+      expect(a_request(:post, url).with(body: JSON.generate(correcao: correcao))).to have_been_made
+    end
+
+    it "devolve um Documento com os dados da carta de correção", :aggregate_failures do
+      doc = recurso.corrigir("pedido-42", correcao: correcao)
+
+      expect(doc).to be_a(FocusNfe::Modelos::Documento)
+      expect(doc).to be_autorizado
+      expect(doc.numero_carta_correcao).to eq("1")
+      expect(doc.caminho_xml_carta_correcao).to eq("/cce.xml")
+    end
+
+    it "inclui data_evento no corpo quando informado" do
+      recurso.corrigir("pedido-42", correcao: correcao, data_evento: "2026-06-13T10:00:00-03:00")
+
+      url = "#{homologacao}/v2/#{caminho}/pedido-42/carta_correcao"
+      corpo = JSON.generate(correcao: correcao, data_evento: "2026-06-13T10:00:00-03:00")
+
+      expect(a_request(:post, url).with(body: corpo)).to have_been_made
+    end
+
+    it "rejeita correção com menos de 15 caracteres sem requisição", :aggregate_failures do
+      expect { recurso.corrigir("pedido-42", correcao: "curta") }.to raise_error(ArgumentError)
+      expect(a_request(:post, "#{homologacao}/v2/#{caminho}/pedido-42/carta_correcao")).not_to have_been_made
+    end
+
+    it "rejeita correção com mais de 1000 caracteres sem requisição", :aggregate_failures do
+      expect { recurso.corrigir("pedido-42", correcao: "a" * 1001) }.to raise_error(ArgumentError)
+      expect(a_request(:post, "#{homologacao}/v2/#{caminho}/pedido-42/carta_correcao")).not_to have_been_made
+    end
+
+    it "rejeita ref inválida sem requisição" do
+      expect { recurso.corrigir("pedido 42", correcao: correcao) }.to raise_error(ArgumentError)
+    end
+
+    context "quando o ambiente é produção" do
+      let(:environment) { :producao }
+
+      it "usa o host de produção" do
+        stub = stub_recurso(:post, "#{caminho}/pedido-42/carta_correcao", host: producao, body: autorizada)
+
+        recurso.corrigir("pedido-42", correcao: correcao)
+
+        expect(stub).to have_been_requested
+      end
+    end
+  end
+end
+
+RSpec.shared_examples "um recurso inutilizável" do |caminho|
+  subject(:recurso) { described_class.new(client.connection) }
+
+  let(:client) { FocusNfe::Client.new(token_empresa: "tok", environment: environment) }
+  let(:environment) { :homologacao }
+  let(:json) { { "Content-Type" => "application/json" } }
+  let(:dados) do
+    { cnpj: "12345678000190", serie: "1", numero_inicial: "10", numero_final: "20",
+      justificativa: "erro de digitacao no sistema" }
+  end
+
+  def homologacao = "https://homologacao.focusnfe.com.br"
+  def producao = "https://api.focusnfe.com.br"
+
+  def stub_recurso(verb, path, host: homologacao, status: 200, body: "{}")
+    stub_request(verb, "#{host}/v2/#{path}").to_return(status: status, body: body, headers: json)
+  end
+
+  describe "#inutilizar" do
+    let(:autorizada) { '{"status":"autorizado","protocolo_sefaz":"135200"}' }
+
+    before { stub_recurso(:post, "#{caminho}/inutilizacao", body: autorizada) }
+
+    it "envia POST em /v2/#{caminho}/inutilizacao com o JSON dos campos" do
+      recurso.inutilizar(**dados)
+
+      url = "#{homologacao}/v2/#{caminho}/inutilizacao"
+
+      expect(a_request(:post, url).with(body: JSON.generate(dados))).to have_been_made
+    end
+
+    it "devolve uma Inutilizacao autorizada com o protocolo", :aggregate_failures do
+      inut = recurso.inutilizar(**dados)
+
+      expect(inut).to be_a(FocusNfe::Modelos::Inutilizacao)
+      expect(inut).to be_autorizado
+      expect(inut.protocolo).to eq("135200")
+    end
+
+    it "rejeita justificativa com menos de 15 caracteres sem requisição", :aggregate_failures do
+      expect { recurso.inutilizar(**dados, justificativa: "curta") }.to raise_error(ArgumentError)
+      expect(a_request(:post, "#{homologacao}/v2/#{caminho}/inutilizacao")).not_to have_been_made
+    end
+
+    it "rejeita numero_inicial maior que numero_final sem requisição", :aggregate_failures do
+      expect { recurso.inutilizar(**dados, numero_inicial: "20", numero_final: "10") }.to raise_error(ArgumentError)
+      expect(a_request(:post, "#{homologacao}/v2/#{caminho}/inutilizacao")).not_to have_been_made
+    end
+
+    it "aceita faixa de um único número (inicial igual a final)" do
+      recurso.inutilizar(**dados, numero_inicial: "10", numero_final: "10")
+
+      expect(a_request(:post, "#{homologacao}/v2/#{caminho}/inutilizacao")).to have_been_made
+    end
+
+    it "aceita numero_inicial e numero_final como inteiros" do
+      recurso.inutilizar(**dados, numero_inicial: 10, numero_final: 20)
+
+      expect(a_request(:post, "#{homologacao}/v2/#{caminho}/inutilizacao")).to have_been_made
+    end
+
+    it "rejeita numero_inicial ausente sem requisição", :aggregate_failures do
+      expect { recurso.inutilizar(**dados, numero_inicial: nil) }.to raise_error(ArgumentError)
+      expect(a_request(:post, "#{homologacao}/v2/#{caminho}/inutilizacao")).not_to have_been_made
+    end
+
+    it "rejeita numero_final não numérico sem requisição", :aggregate_failures do
+      expect { recurso.inutilizar(**dados, numero_final: "abc") }.to raise_error(ArgumentError)
+      expect(a_request(:post, "#{homologacao}/v2/#{caminho}/inutilizacao")).not_to have_been_made
+    end
+
+    context "quando o ambiente é produção" do
+      let(:environment) { :producao }
+
+      it "usa o host de produção" do
+        stub = stub_recurso(:post, "#{caminho}/inutilizacao", host: producao, body: autorizada)
+
+        recurso.inutilizar(**dados)
+
+        expect(stub).to have_been_requested
+      end
+    end
+  end
+
+  describe "#consultar_inutilizacoes" do
+    it "faz GET em /v2/#{caminho}/inutilizacoes e devolve Inutilizacoes", :aggregate_failures do
+      corpo = '[{"status":"autorizado","protocolo_sefaz":"1"},{"status":"autorizado","protocolo_sefaz":"2"}]'
+      stub_recurso(:get, "#{caminho}/inutilizacoes", body: corpo)
+
+      lista = recurso.consultar_inutilizacoes
+
+      expect(lista.map(&:protocolo)).to eq(%w[1 2])
+      expect(lista).to all(be_a(FocusNfe::Modelos::Inutilizacao))
+    end
+
+    it "envia os filtros como query string" do
+      stub = stub_recurso(:get, "#{caminho}/inutilizacoes?cnpj=123&serie=1", body: "[]")
+
+      recurso.consultar_inutilizacoes(cnpj: "123", serie: "1")
+
+      expect(stub).to have_been_requested
+    end
+
+    it "devolve lista vazia quando o corpo não é um array" do
+      stub_recurso(:get, "#{caminho}/inutilizacoes", body: "{}")
+
+      expect(recurso.consultar_inutilizacoes).to eq([])
+    end
+  end
+end
+
 RSpec.shared_examples "um recurso cancelável" do |caminho|
   subject(:recurso) { described_class.new(client.connection) }
 
