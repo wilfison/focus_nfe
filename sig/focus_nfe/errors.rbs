@@ -9,6 +9,10 @@ module FocusNfe
       attr_reader response: FocusNfe::HTTP::Response?
 
       def initialize: (?String? message, ?status: Integer?, ?body: untyped, ?response: FocusNfe::HTTP::Response?) -> void
+
+      def codigo: () -> String?
+
+      def erros: () -> Array[untyped]
     end
 
     class BadRequest < HttpError

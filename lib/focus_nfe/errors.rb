@@ -31,6 +31,20 @@ module FocusNfe
         @response = response
         super(message)
       end
+
+      # @return [String, nil] código de erro da API, quando o corpo é estruturado
+      def codigo
+        body["codigo"] if body.is_a?(Hash)
+      end
+
+      # @return [Array<Hash>] erros no formato +{ "campo" => String?, "mensagem" => String }+;
+      #   vazio quando o corpo não traz erros estruturados
+      def erros
+        return [] unless body.is_a?(Hash)
+        return body["erros"] if body["erros"].is_a?(Array)
+
+        body["mensagem"] ? [{ "campo" => nil, "mensagem" => body["mensagem"] }] : []
+      end
     end
 
     # 400 — requisição malformada.

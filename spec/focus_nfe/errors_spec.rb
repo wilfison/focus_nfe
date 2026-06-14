@@ -30,6 +30,41 @@ RSpec.describe FocusNfe::Errors do
       expect(error.body).to be_nil
       expect(error.response).to be_nil
     end
+
+    describe "#codigo" do
+      it "extrai o código do corpo estruturado" do
+        error = described_class.new(body: { "codigo" => "nao_encontrado", "mensagem" => "..." })
+
+        expect(error.codigo).to eq("nao_encontrado")
+      end
+
+      it "é nil quando o corpo não traz codigo, é String ou é nil", :aggregate_failures do
+        expect(described_class.new(body: { "mensagem" => "..." }).codigo).to be_nil
+        expect(described_class.new(body: "<html>500</html>").codigo).to be_nil
+        expect(described_class.new(body: nil).codigo).to be_nil
+      end
+    end
+
+    describe "#erros" do
+      it "devolve a lista de validação como está" do
+        lista = [{ "campo" => "natureza_operacao", "mensagem" => "não pode ficar em branco" }]
+        error = described_class.new(body: { "erros" => lista })
+
+        expect(error.erros).to eq(lista)
+      end
+
+      it "embrulha o erro único no formato { campo, mensagem }" do
+        error = described_class.new(body: { "codigo" => "x", "mensagem" => "A NFe não está autorizada" })
+
+        expect(error.erros).to eq([{ "campo" => nil, "mensagem" => "A NFe não está autorizada" }])
+      end
+
+      it "é vazio sem erros nem mensagem, ou com corpo não-Hash", :aggregate_failures do
+        expect(described_class.new(body: { "codigo" => "x" }).erros).to eq([])
+        expect(described_class.new(body: "<html>500</html>").erros).to eq([])
+        expect(described_class.new(body: nil).erros).to eq([])
+      end
+    end
   end
 
   describe "subclasses tipadas de HttpError" do
