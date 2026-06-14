@@ -56,6 +56,7 @@ module FocusNfe
       autoload :Localizavel, "focus_nfe/recursos/concerns/localizavel"
       autoload :Notificavel, "focus_nfe/recursos/concerns/notificavel"
       autoload :Removivel, "focus_nfe/recursos/concerns/removivel"
+      autoload :Visualizavel, "focus_nfe/recursos/concerns/visualizavel"
     end
 
     autoload :Nfe, "focus_nfe/recursos/nfe"

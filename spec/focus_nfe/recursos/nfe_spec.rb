@@ -18,6 +18,7 @@ RSpec.describe FocusNfe::Recursos::Nfe do
 
   it_behaves_like "um recurso corrigível", "nfe"
   it_behaves_like "um recurso inutilizável", "nfe"
+  it_behaves_like "um recurso visualizável", "nfe/danfe"
 
   describe "#emitir" do
     before { stub_nfe(:post, "nfe?ref=pedido-42", status: 202, body: processando) }
@@ -102,6 +103,15 @@ RSpec.describe FocusNfe::Recursos::Nfe do
 
     it "rejeita ref inválida sem requisição" do
       expect { nfe.cancelar("pedido 42", justificativa: "x") }.to raise_error(ArgumentError)
+    end
+  end
+
+  describe "#previa com validar: true" do
+    it "levanta ErroDeValidacao sem fazer requisição quando faltam obrigatórios", :aggregate_failures do
+      stub = stub_nfe(:post, "nfe/danfe", body: "%PDF-1.4")
+
+      expect { nfe.previa(dados: {}, validar: true) }.to raise_error(FocusNfe::Esquemas::ErroDeValidacao)
+      expect(stub).not_to have_been_requested
     end
   end
 end

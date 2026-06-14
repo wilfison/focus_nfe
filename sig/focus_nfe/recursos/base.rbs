@@ -4,11 +4,14 @@ module FocusNfe
       REFERENCIA: Regexp
 
       self.@caminho_base: String?
+      self.@caminho_base_previa: String?
 
       def self.caminho_base: (?String? valor) -> String?
+      def self.caminho_base_previa: (?String? valor) -> String?
 
       def initialize: (FocusNfe::HTTP::Connection connection) -> void
       def caminho_base: () -> String?
+      def caminho_base_previa: () -> String?
 
       private
 

@@ -1,0 +1,9 @@
+module FocusNfe
+  module Recursos
+    module Concerns
+      module Visualizavel : FocusNfe::Recursos::Base, FocusNfe::Recursos::Concerns::Emitivel
+        def previa: (dados: Hash[untyped, untyped], ?validar: bool) -> String?
+      end
+    end
+  end
+end

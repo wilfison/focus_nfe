@@ -21,6 +21,17 @@ module FocusNfe
           @caminho_base = valor unless valor.nil?
           @caminho_base
         end
+
+        # Declara (ou lê) o caminho da prévia do recurso, sem o prefixo +/v2+.
+        # Usado por {Concerns::Visualizavel}; cada documento com prévia o declara
+        # (ex.: +"nfe/danfe"+).
+        #
+        # @param valor [String, nil] caminho a declarar; omitido apenas lê o atual
+        # @return [String, nil] caminho de prévia efetivo da classe
+        def caminho_base_previa(valor = nil)
+          @caminho_base_previa = valor unless valor.nil?
+          @caminho_base_previa
+        end
       end
 
       # @param connection [FocusNfe::HTTP::Connection] conexão do cliente
@@ -31,6 +42,11 @@ module FocusNfe
       # @return [String, nil] caminho base declarado pela classe do recurso
       def caminho_base
         self.class.caminho_base
+      end
+
+      # @return [String, nil] caminho de prévia declarado pela classe do recurso
+      def caminho_base_previa
+        self.class.caminho_base_previa
       end
 
       private

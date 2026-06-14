@@ -105,6 +105,54 @@ RSpec.shared_examples "um recurso consultável" do |caminho|
   end
 end
 
+RSpec.shared_examples "um recurso visualizável" do |caminho_previa|
+  subject(:recurso) { described_class.new(client.connection) }
+
+  let(:client) { FocusNfe::Client.new(token_empresa: "tok", environment: environment) }
+  let(:environment) { :homologacao }
+  let(:dados) { { "natureza_operacao" => "Venda" } }
+  let(:pdf) { { "Content-Type" => "application/pdf" } }
+
+  def homologacao = "https://homologacao.focusnfe.com.br"
+  def producao = "https://api.focusnfe.com.br"
+
+  def stub_previa(caminho_previa, host: homologacao, status: 200, body: "%PDF-1.4 previa")
+    stub_request(:post, "#{host}/v2/#{caminho_previa}").to_return(status: status, body: body, headers: pdf)
+  end
+
+  describe "#previa" do
+    it "faz POST em /v2/#{caminho_previa} com o JSON dos dados e devolve os bytes do PDF", :aggregate_failures do
+      stub_previa(caminho_previa)
+      bytes = recurso.previa(dados: dados)
+
+      url = "#{homologacao}/v2/#{caminho_previa}"
+
+      expect(a_request(:post, url).with(body: JSON.generate(dados))).to have_been_made
+      expect(bytes).to eq("%PDF-1.4 previa")
+    end
+
+    it "não valida por padrão" do
+      stub_previa(caminho_previa)
+
+      recurso.previa(dados: {})
+
+      expect(a_request(:post, "#{homologacao}/v2/#{caminho_previa}")).to have_been_made
+    end
+
+    context "quando o ambiente é produção" do
+      let(:environment) { :producao }
+
+      it "usa o host de produção" do
+        stub = stub_previa(caminho_previa, host: producao)
+
+        recurso.previa(dados: dados)
+
+        expect(stub).to have_been_requested
+      end
+    end
+  end
+end
+
 RSpec.shared_examples "um recurso corrigível" do |caminho|
   subject(:recurso) { described_class.new(client.connection) }
 
