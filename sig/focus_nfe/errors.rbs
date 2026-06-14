@@ -48,6 +48,9 @@ module FocusNfe
     class ConnectionError < FocusNfe::Error
     end
 
+    class WebhookError < FocusNfe::Error
+    end
+
     BY_STATUS: Hash[Integer, singleton(FocusNfe::Errors::HttpError)]
 
     def self?.class_for: (Integer status) -> singleton(FocusNfe::Errors::HttpError)

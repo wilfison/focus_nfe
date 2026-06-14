@@ -7,7 +7,7 @@ module FocusNfe
     # compartilham o mesmo schema — expondo os campos comuns e predicados de
     # status. Campos não mapeados continuam acessíveis via {#[]}/{#dados}.
     class Documento
-      # @return [FocusNfe::HTTP::Response] resposta original que originou o documento
+      # @return [FocusNfe::HTTP::Response, nil] resposta original que originou o documento (nil em webhooks inbound)
       attr_reader :response
 
       # @return [String, nil] referência informada na chamada (nem sempre presente no corpo)
@@ -55,14 +55,25 @@ module FocusNfe
       # @param ref [String, nil] referência conhecida pela chamada, injetada quando ausente do corpo
       # @return [FocusNfe::Modelos::Documento]
       def self.from_response(response, ref: nil)
-        new(response: response, ref: ref)
+        new(dados: response.body, ref: ref, response: response)
       end
 
-      # @param response [FocusNfe::HTTP::Response] resposta de emissão/consulta
+      # Constrói um {Documento} a partir do corpo já parseado de um webhook
+      # inbound — sem {HTTP::Response} associada.
+      #
+      # @param corpo [Hash] corpo do webhook, com o mesmo schema das respostas
+      # @param ref [String, nil] referência conhecida, injetada quando ausente do corpo
+      # @return [FocusNfe::Modelos::Documento]
+      def self.from_payload(corpo, ref: nil)
+        new(dados: corpo, ref: ref)
+      end
+
+      # @param dados [Object] corpo da resposta/webhook (usa {} quando não é Hash)
       # @param ref [String, nil] referência conhecida pela chamada
-      def initialize(response:, ref: nil)
+      # @param response [FocusNfe::HTTP::Response, nil] resposta original, quando houver
+      def initialize(dados:, ref: nil, response: nil)
         @response = response
-        @dados = response.body.is_a?(Hash) ? response.body : {}
+        @dados = dados.is_a?(Hash) ? dados : {}
         @ref = ref || @dados["ref"]
         freeze
       end

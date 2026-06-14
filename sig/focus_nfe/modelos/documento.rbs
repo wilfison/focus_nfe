@@ -1,13 +1,15 @@
 module FocusNfe
   module Modelos
     class Documento
-      attr_reader response: FocusNfe::HTTP::Response
+      attr_reader response: FocusNfe::HTTP::Response?
       attr_reader ref: String?
       attr_reader dados: Hash[untyped, untyped]
 
       def self.from_response: (FocusNfe::HTTP::Response response, ?ref: String?) -> FocusNfe::Modelos::Documento
 
-      def initialize: (response: FocusNfe::HTTP::Response, ?ref: String?) -> void
+      def self.from_payload: (untyped corpo, ?ref: String?) -> FocusNfe::Modelos::Documento
+
+      def initialize: (dados: untyped, ?ref: String?, ?response: FocusNfe::HTTP::Response?) -> void
 
       def status: () -> untyped
       def status_sefaz: () -> untyped

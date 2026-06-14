@@ -1,0 +1,11 @@
+module FocusNfe
+  module Webhook
+    def self?.parse: (untyped raw_body, ?ref: String?) -> FocusNfe::Modelos::Documento
+
+    def self?.autenticado?: (headers: untyped, authorization: String, authorization_header: String) -> bool
+
+    def self?.valor_do_header: (untyped headers, String nome) -> untyped
+
+    def self?.comparacao_segura?: (String esquerda, String direita) -> bool
+  end
+end

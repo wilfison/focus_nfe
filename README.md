@@ -183,9 +183,40 @@ client.ncms.consultar("01012100")
 # Cadastro de empresa (apenas produção); dry_run valida sem persistir.
 client.empresas.criar(dados: dados_empresa, dry_run: true)
 
-# Webhooks (a gem ajuda a registrar; a entrega é externa à gem).
-client.webhooks.criar(dados: { event: "nfe", url: "https://meu.app/hooks/nfe", cnpj: "12345678000123" })
+# Webhooks (a gem registra o gatilho e processa a chamada de volta).
+client.webhooks.criar(dados: {
+  event: "nfe",
+  url: "https://meu.app/hooks/nfe",
+  cnpj: "12345678000123",
+  authorization_header: "X-Focus-Authorization", # header que a Focus enviará no callback
+  authorization: "um-segredo-forte"              # valor esperado nesse header
+})
 ```
+
+### Recebendo webhooks (inbound)
+
+Quando a Focus muda o status de um documento, ela chama a URL cadastrada. A gem
+converte o corpo recebido no mesmo `Modelos::Documento` de emissão/consulta e
+autentica a chamada comparando o header com o `authorization` do gatilho:
+
+```ruby
+# Em um controller Rails:
+def focus_callback
+  autenticado = FocusNfe::Webhook.autenticado?(
+    headers: request.headers,
+    authorization: ENV.fetch("FOCUS_WEBHOOK_AUTH"),
+    authorization_header: "X-Focus-Authorization"
+  )
+  return head(:unauthorized) unless autenticado
+
+  documento = FocusNfe::Webhook.parse(request.raw_post)
+  AtualizaNota.call(ref: documento.ref) if documento.autorizado?
+  head :ok
+end
+```
+
+`parse` aceita a String crua ou um `Hash` já parseado e levanta
+`FocusNfe::Errors::WebhookError` se o corpo não for JSON válido.
 
 ## Erros tipados
 

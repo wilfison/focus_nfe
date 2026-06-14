@@ -81,6 +81,10 @@ module FocusNfe
     # Falha de transporte (timeout, conexão recusada, excesso de redirects).
     class ConnectionError < Error; end
 
+    # Falha ao processar um webhook inbound (corpo malformado) — client-side,
+    # não envolve resposta HTTP.
+    class WebhookError < Error; end
+
     # @return [Hash{Integer=>Class}] status HTTP específico => classe de exceção
     BY_STATUS = {
       400 => BadRequest,

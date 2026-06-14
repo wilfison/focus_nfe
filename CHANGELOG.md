@@ -1,5 +1,6 @@
 ## [Unreleased]
 
+- Recebimento de webhooks inbound: `FocusNfe::Webhook.parse(raw_body)` devolve um `Modelos::Documento` e `FocusNfe::Webhook.autenticado?(headers:, authorization:, authorization_header:)` valida a chamada comparando o header recebido com o `authorization` do gatilho (comparação em tempo constante). Inclui `Modelos::Documento.from_payload` e o erro `Errors::WebhookError`.
 - Eventos próprios do MDF-e via novo `Recursos::Concerns::Eventavel`: `Mdfe#encerrar`, `Mdfe#incluir_condutor` e `Mdfe#incluir_dfe`, devolvendo `Modelos::Documento`.
 - **Breaking:** `NfesRecebidas#emitir_evento` e `NfesRecebidas#cancelar_evento` passam a devolver `Modelos::Documento` (antes `Hash` cru), reescritos sobre o `Concerns::Eventavel`.
 - Suporte aos dois tokens da Focus NFe: `Configuration#token_empresa` (emissão/consulta de documentos) e `Configuration#token_conta` (consultas auxiliares e gestão de empresas). O `Client` mantém uma conexão por token e roteia cada recurso para a correta — `ceps`, `municipios`, `cfops`, `cnaes`, `ncms`, `cnpjs` e `empresas` passam a usar o `token_conta`. **Breaking:** o antigo `token` foi renomeado para `token_empresa`.

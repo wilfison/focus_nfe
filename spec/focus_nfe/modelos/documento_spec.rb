@@ -61,6 +61,42 @@ RSpec.describe FocusNfe::Modelos::Documento do
     end
   end
 
+  describe ".from_payload" do
+    it "mapeia os campos a partir de um Hash cru", :aggregate_failures do
+      corpo = { "status" => "autorizado", "chave_nfe" => "3520", "numero" => "42" }
+      doc = described_class.from_payload(corpo)
+
+      expect(doc).to have_attributes(status: "autorizado", chave_nfe: "3520", numero: "42")
+    end
+
+    it "extrai a ref do próprio corpo" do
+      doc = described_class.from_payload({ "status" => "autorizado", "ref" => "pedido-42" })
+
+      expect(doc.ref).to eq("pedido-42")
+    end
+
+    it "injeta a ref informada quando o corpo não a traz" do
+      doc = described_class.from_payload({ "status" => "autorizado" }, ref: "pedido-42")
+
+      expect(doc.ref).to eq("pedido-42")
+    end
+
+    it "não guarda resposta HTTP" do
+      expect(described_class.from_payload({ "status" => "autorizado" }).response).to be_nil
+    end
+
+    it "usa dados vazios quando o corpo não é um Hash", :aggregate_failures do
+      doc = described_class.from_payload(["x"])
+
+      expect(doc.dados).to eq({})
+      expect(doc.status).to be_nil
+    end
+
+    it "congela a instância" do
+      expect(described_class.from_payload({ "status" => "autorizado" })).to be_frozen
+    end
+  end
+
   describe "predicados de status" do
     def doc(status)
       described_class.from_response(response(body: { "status" => status }))

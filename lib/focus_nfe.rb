@@ -22,6 +22,9 @@ require_relative "focus_nfe/client"
 # +autoload+ e carregados sob demanda — quem só emite um tipo de documento não
 # paga o custo de carregar os demais.
 module FocusNfe
+  # Recebimento de webhooks inbound (parse + autenticação da chamada).
+  autoload :Webhook, "focus_nfe/webhook"
+
   # Modelos de resposta da API (documento fiscal, página de listagem).
   module Modelos
     autoload :Documento, "focus_nfe/modelos/documento"
