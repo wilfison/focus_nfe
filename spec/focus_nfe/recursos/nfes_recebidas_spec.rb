@@ -45,23 +45,25 @@ RSpec.describe FocusNfe::Recursos::NfesRecebidas do
   end
 
   describe "#emitir_evento" do
-    it "faz POST em /{chave}/evento com tipo_evento e dados extras" do
+    it "faz POST em /{chave}/evento e devolve um Documento", :aggregate_failures do
       corpo = '{"tipo_evento":"imobilizacao_item","item":1}'
       stub = stub_envio(:post, "nfes_recebidas/#{chave}/evento", body: corpo)
 
-      recurso.emitir_evento(chave, tipo_evento: "imobilizacao_item", item: 1)
+      doc = recurso.emitir_evento(chave, tipo_evento: "imobilizacao_item", item: 1)
 
       expect(stub).to have_been_requested
+      expect(doc).to be_a(FocusNfe::Modelos::Documento)
     end
   end
 
   describe "#cancelar_evento" do
-    it "faz DELETE em /{chave}/evento" do
+    it "faz DELETE em /{chave}/evento e devolve um Documento", :aggregate_failures do
       stub = stub_envio(:delete, "nfes_recebidas/#{chave}/evento")
 
-      recurso.cancelar_evento(chave)
+      doc = recurso.cancelar_evento(chave)
 
       expect(stub).to have_been_requested
+      expect(doc).to be_a(FocusNfe::Modelos::Documento)
     end
   end
 end

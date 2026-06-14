@@ -1,0 +1,12 @@
+module FocusNfe
+  module Recursos
+    module Concerns
+      module Eventavel : FocusNfe::Recursos::Base
+        private
+
+        def emitir_evento_em: (String ref, caminho: String, **untyped dados) -> FocusNfe::Modelos::Documento
+        def cancelar_evento_em: (String ref, caminho: String) -> FocusNfe::Modelos::Documento
+      end
+    end
+  end
+end

@@ -4,11 +4,12 @@ module FocusNfe
       include FocusNfe::Recursos::Concerns::Listavel
       include FocusNfe::Recursos::Concerns::Baixavel
       include FocusNfe::Recursos::Concerns::Notificavel
+      include FocusNfe::Recursos::Concerns::Eventavel
 
       def consultar: (String chave, ?completa: bool) -> untyped
       def manifestar: (String chave, tipo: String, ?justificativa: String?) -> untyped
-      def emitir_evento: (String chave, tipo_evento: String, **untyped dados) -> untyped
-      def cancelar_evento: (String chave) -> untyped
+      def emitir_evento: (String chave, tipo_evento: String, **untyped dados) -> FocusNfe::Modelos::Documento
+      def cancelar_evento: (String chave) -> FocusNfe::Modelos::Documento
     end
   end
 end

@@ -49,6 +49,7 @@ module FocusNfe
       autoload :Emitivel, "focus_nfe/recursos/concerns/emitivel"
       autoload :Consultavel, "focus_nfe/recursos/concerns/consultavel"
       autoload :Cancelavel, "focus_nfe/recursos/concerns/cancelavel"
+      autoload :Eventavel, "focus_nfe/recursos/concerns/eventavel"
       autoload :Corrigivel, "focus_nfe/recursos/concerns/corrigivel"
       autoload :Inutilizavel, "focus_nfe/recursos/concerns/inutilizavel"
       autoload :Listavel, "focus_nfe/recursos/concerns/listavel"

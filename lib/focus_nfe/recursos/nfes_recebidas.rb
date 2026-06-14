@@ -9,6 +9,7 @@ module FocusNfe
       include Concerns::Listavel
       include Concerns::Baixavel
       include Concerns::Notificavel
+      include Concerns::Eventavel
 
       caminho_base "nfes_recebidas"
 
@@ -37,17 +38,17 @@ module FocusNfe
       # @param chave [String] chave de acesso da NF-e
       # @param tipo_evento [String] tipo do evento suportado pela API
       # @param dados [Hash] campos adicionais do evento
-      # @return [Hash] corpo cru da resposta
+      # @return [FocusNfe::Modelos::Documento]
       def emitir_evento(chave, tipo_evento:, **dados)
-        connection.post("#{caminho_referencia(chave)}/evento", body: { tipo_evento: tipo_evento, **dados }).body
+        emitir_evento_em(chave, caminho: "evento", tipo_evento: tipo_evento, **dados)
       end
 
       # Cancela o último evento emitido para a NF-e recebida.
       #
       # @param chave [String] chave de acesso da NF-e
-      # @return [Hash] corpo cru da resposta
+      # @return [FocusNfe::Modelos::Documento]
       def cancelar_evento(chave)
-        connection.delete("#{caminho_referencia(chave)}/evento").body
+        cancelar_evento_em(chave, caminho: "evento")
       end
     end
   end

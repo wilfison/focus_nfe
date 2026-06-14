@@ -4,8 +4,13 @@ module FocusNfe
       include FocusNfe::Recursos::Concerns::Emitivel
       include FocusNfe::Recursos::Concerns::Consultavel
       include FocusNfe::Recursos::Concerns::Cancelavel
+      include FocusNfe::Recursos::Concerns::Eventavel
 
       MODAIS: Hash[String, String]
+
+      def encerrar: (String ref, data: untyped, sigla_uf: untyped, nome_municipio: untyped) -> FocusNfe::Modelos::Documento
+      def incluir_condutor: (String ref, nome: untyped, cpf: untyped) -> FocusNfe::Modelos::Documento
+      def incluir_dfe: (String ref, protocolo: untyped, codigo_municipio_carregamento: untyped, documentos: untyped, ?nome_municipio_carregamento: untyped) -> FocusNfe::Modelos::Documento
 
       private
 
