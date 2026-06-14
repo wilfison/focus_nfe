@@ -2,22 +2,28 @@ module FocusNfe
   module Esquemas
     class Campo
       ESCALAR: Regexp
+      CODIGO_ENUM: Regexp
 
       @definicao: Hash[untyped, untyped]
       @tipo: Symbol?
       @tamanho_minimo: Integer?
       @tamanho_maximo: Integer?
+      @decimal: FocusNfe::Esquemas::Decimal?
+      @valores_enum: Array[String]?
       @esquema_colecao: FocusNfe::Esquemas::Esquema?
 
       attr_reader tipo: Symbol?
       attr_reader tamanho_minimo: Integer?
       attr_reader tamanho_maximo: Integer?
+      attr_reader decimal: FocusNfe::Esquemas::Decimal?
 
       def initialize: (Hash[untyped, untyped] definicao) -> void
       def nome: () -> String
       def descricao: () -> String?
       def tipo_bruto: () -> String?
       def enum: () -> untyped
+      def valores_enum: () -> Array[String]
+      def enum?: () -> bool
       def tag: () -> String?
       def to_h: () -> Hash[Symbol, untyped]
       def obrigatorio?: () -> bool
@@ -30,8 +36,12 @@ module FocusNfe
       def parsear_tipo: () -> void
       def tipo_nao_escalar: (String? bruto) -> Symbol
       def parsear_escalar: (MatchData match) -> void
+      def validar_tipo: (untyped valor) -> String?
       def validar_string: (untyped valor) -> String?
       def validar_integer: (untyped valor) -> String?
+      def validar_decimal: (untyped valor) -> String?
+      def validar_data: (untyped valor, untyped classe) -> String?
+      def validar_enum: (untyped valor) -> String?
     end
   end
 end

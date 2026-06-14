@@ -7,8 +7,8 @@ module FocusNfe
     # Recorre em coleções: para cada item do Array valida seus subcampos contra o
     # sub-esquema da coleção, em profundidade arbitrária, prefixando os erros com o
     # caminho — a posição do item é base 1 (ex.: +itens[1].descricao+,
-    # +itens[1].adicoes[3].numero+). Enums,
-    # datas e decimais não são restringidos nesta etapa.
+    # +itens[1].adicoes[3].numero+). A restrição de cada campo (tipo/tamanho,
+    # decimal, data e enum) é delegada a {Campo#validar_valor}.
     #
     # Além do esquema de topo, aceita sub-esquemas +aninhados+ — indexados pela
     # chave do payload que os contém (ex.: +modal_rodoviario+) — para validar

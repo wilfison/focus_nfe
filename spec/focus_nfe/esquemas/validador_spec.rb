@@ -36,6 +36,20 @@ RSpec.describe FocusNfe::Esquemas::Validador do
       expect(erros).to eq([])
     end
 
+    it "propaga erro de decimal de dentro de uma coleção" do
+      erros = validador.validar("natureza_operacao" => "Venda", "items" => [{ "valor" => "10.123" }])
+
+      expect(erros.join).to include("items[1].valor")
+    end
+
+    it "propaga erro de enum de um campo de topo" do
+      esquema = FocusNfe::Esquemas::Esquema.new(
+        [{ "name" => "indicador", "type" => nil, "enum" => "* +0+: Não\\n* +1+: Sim", "required" => true }]
+      )
+
+      expect(described_class.new(esquema).validar("indicador" => "9").join).to include("indicador")
+    end
+
     it "aceita chaves String e Symbol no payload", :aggregate_failures do
       expect(validador.validar(natureza_operacao: "Venda", items: [])).to eq([])
       expect(validador.validar("natureza_operacao" => "Venda", "items" => [])).to eq([])

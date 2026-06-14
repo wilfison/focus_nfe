@@ -1,0 +1,25 @@
+module FocusNfe
+  module Esquemas
+    class Decimal
+      ESPEC: Regexp
+      VALOR: Regexp
+
+      @inteiros: Integer
+      @casas_minimas: Integer
+      @casas_maximas: Integer
+
+      attr_reader inteiros: Integer
+      attr_reader casas_minimas: Integer
+      attr_reader casas_maximas: Integer
+
+      def self.parsear: (String? bruto) -> FocusNfe::Esquemas::Decimal?
+      def initialize: (MatchData match) -> void
+      def validar: (untyped valor) -> String?
+      def to_h: () -> Hash[Symbol, Integer]
+
+      private
+
+      def erro_de_tamanho: (String inteira, String? fracionaria) -> String?
+    end
+  end
+end

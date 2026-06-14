@@ -35,6 +35,7 @@ module FocusNfe
     autoload :Esquema, "focus_nfe/esquemas/esquema"
     autoload :ErroDeValidacao, "focus_nfe/esquemas/esquema"
     autoload :Campo, "focus_nfe/esquemas/campo"
+    autoload :Decimal, "focus_nfe/esquemas/decimal"
     autoload :Validador, "focus_nfe/esquemas/validador"
   end
 

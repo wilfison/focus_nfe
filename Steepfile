@@ -8,6 +8,7 @@ target :lib do
   library "uri"
   library "net-http"
   library "timeout"
+  library "date"
 
   configure_code_diagnostics(Steep::Diagnostic::Ruby.default) do |hash|
     hash[Steep::Diagnostic::Ruby::UnannotatedEmptyCollection] = nil

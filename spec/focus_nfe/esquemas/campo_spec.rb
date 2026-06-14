@@ -43,12 +43,51 @@ RSpec.describe FocusNfe::Esquemas::Campo do
       expect(c.tamanho_maximo).to eq(9)
     end
 
-    it "interpreta Decimal[13.2] como decimal" do
-      expect(campo("name" => "x", "type" => "Decimal[13.2]").tipo).to eq(:decimal)
+    it "interpreta Decimal[13.2] como inteiros e casas fixas", :aggregate_failures do
+      c = campo("name" => "x", "type" => "Decimal[13.2]")
+
+      expect(c.tipo).to eq(:decimal)
+      expect(c.decimal.inteiros).to eq(13)
+      expect(c.decimal.casas_minimas).to eq(2)
+      expect(c.decimal.casas_maximas).to eq(2)
+    end
+
+    it "interpreta Decimal[13.2-4] como faixa de casas", :aggregate_failures do
+      c = campo("name" => "x", "type" => "Decimal[13.2-4]")
+
+      expect(c.decimal.casas_minimas).to eq(2)
+      expect(c.decimal.casas_maximas).to eq(4)
+    end
+
+    it "interpreta Decimal[13.] como zero casas", :aggregate_failures do
+      c = campo("name" => "x", "type" => "Decimal[13.]")
+
+      expect(c.decimal.inteiros).to eq(13)
+      expect(c.decimal.casas_minimas).to eq(0)
+      expect(c.decimal.casas_maximas).to eq(0)
+    end
+
+    it "interpreta Decimal[2] sem ponto como zero casas", :aggregate_failures do
+      c = campo("name" => "x", "type" => "Decimal[2]")
+
+      expect(c.decimal.inteiros).to eq(2)
+      expect(c.decimal.casas_maximas).to eq(0)
+    end
+
+    it "interpreta Decimal[11.0-10] com casas a partir de zero", :aggregate_failures do
+      c = campo("name" => "x", "type" => "Decimal[11.0-10]")
+
+      expect(c.decimal.inteiros).to eq(11)
+      expect(c.decimal.casas_minimas).to eq(0)
+      expect(c.decimal.casas_maximas).to eq(10)
     end
 
     it "interpreta DateTime" do
       expect(campo("name" => "x", "type" => "DateTime").tipo).to eq(:datetime)
+    end
+
+    it "interpreta Date" do
+      expect(campo("name" => "x", "type" => "Date").tipo).to eq(:date)
     end
 
     it "interpreta type nulo como enum quando há enum" do
@@ -151,10 +190,102 @@ RSpec.describe FocusNfe::Esquemas::Campo do
       expect(mensagem).to include("5 dígitos")
     end
 
-    it "não restringe enums, datetime, coleções nem tipos desconhecidos", :aggregate_failures do
-      expect(campo("name" => "x", "type" => nil, "enum" => "* +1+: Sim").validar_valor("9")).to be_nil
-      expect(campo("name" => "x", "type" => "DateTime").validar_valor("qualquer")).to be_nil
+    it "não restringe coleções nem tipos desconhecidos", :aggregate_failures do
       expect(campo("name" => "x", "type" => "Coleção[0-5]", "collection" => {}).validar_valor([])).to be_nil
+      expect(campo("name" => "x", "type" => "Algo[1-2]").validar_valor("qualquer")).to be_nil
+    end
+
+    context "com decimais" do
+      it "aceita decimal dentro de inteiros e casas" do
+        expect(campo("name" => "valor", "type" => "Decimal[13.2]").validar_valor("10.50")).to be_nil
+      end
+
+      it "aceita menos casas que o mínimo" do
+        expect(campo("name" => "valor", "type" => "Decimal[13.2]").validar_valor("10")).to be_nil
+      end
+
+      it "aceita Numeric além de String" do
+        expect(campo("name" => "valor", "type" => "Decimal[13.2]").validar_valor(10.5)).to be_nil
+      end
+
+      it "rejeita inteiros demais", :aggregate_failures do
+        mensagem = campo("name" => "valor", "type" => "Decimal[2.2]").validar_valor("1234.5")
+
+        expect(mensagem).to include("valor")
+      end
+
+      it "rejeita casas decimais além do máximo" do
+        expect(campo("name" => "valor", "type" => "Decimal[13.2]").validar_valor("10.123")).to include("valor")
+      end
+
+      it "rejeita valor não numérico" do
+        expect(campo("name" => "valor", "type" => "Decimal[13.2]").validar_valor("abc")).to include("valor")
+      end
+    end
+
+    context "com enums" do
+      it "aceita valor dentro do conjunto declarado" do
+        expect(campo("name" => "modalidade", "type" => nil, "enum" => "* +1+: Sim").validar_valor("1")).to be_nil
+      end
+
+      it "aceita Integer correspondente ao código String" do
+        expect(campo("name" => "modalidade", "type" => nil, "enum" => "* +1+: Sim").validar_valor(1)).to be_nil
+      end
+
+      it "rejeita valor fora do conjunto" do
+        c = campo("name" => "modalidade", "type" => nil, "enum" => "* +0+: Não\\n* +1+: Sim")
+
+        expect(c.validar_valor("9")).to include("modalidade")
+      end
+
+      it "valida o conjunto mesmo quando o campo também tem tipo escalar" do
+        c = campo("name" => "indicador", "type" => "Integer[1-1]", "enum" => "* +0+: Não\\n* +1+: Sim")
+
+        expect(c.validar_valor(9)).to include("indicador")
+      end
+
+      it "rejeita o tipo escalar antes do enum" do
+        c = campo("name" => "indicador", "type" => "Integer[1-1]", "enum" => "* +1+: Sim")
+
+        expect(c.validar_valor("x")).to include("indicador")
+      end
+    end
+
+    context "com datas" do
+      it "aceita Date em ISO 8601" do
+        expect(campo("name" => "data", "type" => "Date").validar_valor("2026-06-14")).to be_nil
+      end
+
+      it "rejeita Date inválida" do
+        expect(campo("name" => "data", "type" => "Date").validar_valor("14/06/2026")).to include("data")
+      end
+
+      it "aceita DateTime com offset" do
+        expect(campo("name" => "emissao", "type" => "DateTime").validar_valor("2026-06-14T10:00:00-03:00")).to be_nil
+      end
+
+      it "rejeita DateTime inválido" do
+        expect(campo("name" => "emissao", "type" => "DateTime").validar_valor("qualquer")).to include("emissao")
+      end
+    end
+  end
+
+  describe "#valores_enum" do
+    it "extrai códigos do formato com espaço" do
+      c = campo("name" => "x", "type" => nil, "enum" => "* +0+: Correios\\n* +1+: Conta própria")
+
+      expect(c.valores_enum).to eq(%w[0 1])
+    end
+
+    it "extrai códigos do formato sem espaço e multi-caractere" do
+      c = campo("name" => "x", "type" => nil, "enum" => "*+01+: Repasse\\n*+99+: Outros")
+
+      expect(c.valores_enum).to eq(%w[01 99])
+    end
+
+    it "devolve vazio para enum em branco", :aggregate_failures do
+      expect(campo("name" => "x", "type" => "String[1-2]", "enum" => "").valores_enum).to eq([])
+      expect(campo("name" => "x", "type" => "String[1-2]").enum?).to be(false)
     end
   end
 end
