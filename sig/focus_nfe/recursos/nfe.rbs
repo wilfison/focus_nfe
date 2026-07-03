@@ -8,6 +8,16 @@ module FocusNfe
       include FocusNfe::Recursos::Concerns::Inutilizavel
       include FocusNfe::Recursos::Concerns::Visualizavel
       include FocusNfe::Recursos::Concerns::Notificavel
+      include FocusNfe::Recursos::Concerns::Enviavel
+      include FocusNfe::Recursos::Concerns::Eventavel
+      include FocusNfe::Recursos::Concerns::Conciliavel
+
+      def importar: (String xml, ?ref: String?) -> FocusNfe::Modelos::Documento
+      def emitir_evento: (String ref, tipo_evento: untyped, **untyped dados) -> FocusNfe::Modelos::Documento
+      def cancelar_evento: (String ref, tipo_evento: untyped) -> FocusNfe::Modelos::Documento
+      def registrar_ator_interessado: (String ref, permite_autorizacao_terceiros: untyped, ?cpf: untyped, ?cnpj: untyped) -> FocusNfe::Modelos::Documento
+      def registrar_insucesso_entrega: (String ref, data_tentativa_entrega: untyped, motivo_insucesso: untyped, hash_tentativa_entrega: untyped, **untyped dados) -> FocusNfe::Modelos::Documento
+      def cancelar_insucesso_entrega: (String ref) -> FocusNfe::Modelos::Documento
     end
   end
 end

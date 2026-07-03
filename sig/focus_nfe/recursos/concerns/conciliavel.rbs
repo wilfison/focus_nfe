@@ -1,0 +1,15 @@
+module FocusNfe
+  module Recursos
+    module Concerns
+      module Conciliavel : FocusNfe::Recursos::Base
+        def registrar_econf: (String ref, detalhes_pagamento: untyped) -> FocusNfe::Modelos::Documento
+        def consultar_econf: (String ref, String numero_protocolo) -> FocusNfe::Modelos::Documento
+        def cancelar_econf: (String ref, String numero_protocolo) -> FocusNfe::Modelos::Documento
+
+        private
+
+        def caminho_econf: (String ref, String numero_protocolo) -> String
+      end
+    end
+  end
+end

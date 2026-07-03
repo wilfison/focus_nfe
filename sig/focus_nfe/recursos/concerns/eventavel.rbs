@@ -5,7 +5,7 @@ module FocusNfe
         private
 
         def emitir_evento_em: (String ref, caminho: String, **untyped dados) -> FocusNfe::Modelos::Documento
-        def cancelar_evento_em: (String ref, caminho: String) -> FocusNfe::Modelos::Documento
+        def cancelar_evento_em: (String ref, caminho: String, **untyped dados) -> FocusNfe::Modelos::Documento
       end
     end
   end

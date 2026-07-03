@@ -15,6 +15,18 @@ RSpec.describe FocusNfe::HTTP::Adapters::NetHttp do
     http
   end
 
+  def bytes_escritos(request)
+    escrito = +""
+    sock = Object.new
+    sock.define_singleton_method(:write) do |data|
+      escrito << data.to_s
+      data.to_s.bytesize
+    end
+    sock.define_singleton_method(:continue_timeout) { nil }
+    request.exec(sock, "1.1", "/recurso")
+    escrito
+  end
+
   it "é um Adapter" do
     expect(adapter).to be_a(FocusNfe::HTTP::Adapter)
   end
@@ -53,6 +65,14 @@ RSpec.describe FocusNfe::HTTP::Adapters::NetHttp do
       adapter.call(:delete, url, body: '{"justificativa":"erro"}')
 
       expect(stub).to have_been_requested
+    end
+
+    it "de fato grava corpo e Content-Length ao serializar um Net::HTTP::Delete", :aggregate_failures do
+      request = adapter.send(:build_request, :delete, URI(url), json, '{"tipo_evento":"x"}')
+      escrito = bytes_escritos(request)
+
+      expect(escrito).to include('{"tipo_evento":"x"}')
+      expect(escrito).to match(/content-length: 19/i)
     end
 
     it "respeita um Content-Type não-JSON no corpo da requisição" do

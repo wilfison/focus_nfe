@@ -5,4 +5,6 @@ RSpec.describe FocusNfe::Recursos::Nfce do
   it_behaves_like "um recurso consultável", "nfce"
   it_behaves_like "um recurso cancelável", "nfce"
   it_behaves_like "um recurso inutilizável", "nfce"
+  it_behaves_like "um recurso enviável por email", "nfce"
+  it_behaves_like "um recurso conciliável", "nfce"
 end

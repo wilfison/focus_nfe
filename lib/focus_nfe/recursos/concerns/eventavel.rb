@@ -30,13 +30,14 @@ module FocusNfe
         #
         # @param ref [String] referência do documento
         # @param caminho [String] sub-caminho do evento (ex.: +evento+)
+        # @param dados [Hash] campos do corpo do cancelamento; omitidos não enviam corpo
         # @return [FocusNfe::Modelos::Documento]
         # @raise [ArgumentError] se a +ref+ for inválida
         # @raise [FocusNfe::Errors::HttpError] em respostas não-2xx
-        def cancelar_evento_em(ref, caminho:)
+        def cancelar_evento_em(ref, caminho:, **dados)
           validar_referencia!(ref)
 
-          response = connection.delete("#{caminho_referencia(ref)}/#{caminho}")
+          response = connection.delete("#{caminho_referencia(ref)}/#{caminho}", body: dados.empty? ? nil : dados)
           Modelos::Documento.from_response(response, ref: ref)
         end
       end

@@ -1,0 +1,15 @@
+module FocusNfe
+  module Recursos
+    module Concerns
+      module Enviavel : FocusNfe::Recursos::Base
+        MAX_EMAILS: Integer
+
+        def enviar_email: (String ref, emails: Array[String]) -> untyped
+
+        private
+
+        def validar_emails!: (untyped emails) -> void
+      end
+    end
+  end
+end
