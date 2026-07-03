@@ -9,6 +9,7 @@ module FocusNfe
       include Concerns::Emitivel
       include Concerns::Consultavel
       include Concerns::Cancelavel
+      include Concerns::Notificavel
       include Concerns::Eventavel
 
       caminho_base "mdfe"

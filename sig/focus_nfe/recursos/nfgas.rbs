@@ -4,6 +4,7 @@ module FocusNfe
       include FocusNfe::Recursos::Concerns::Emitivel
       include FocusNfe::Recursos::Concerns::Consultavel
       include FocusNfe::Recursos::Concerns::Cancelavel
+      include FocusNfe::Recursos::Concerns::Notificavel
     end
   end
 end

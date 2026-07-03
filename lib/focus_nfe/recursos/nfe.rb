@@ -13,6 +13,7 @@ module FocusNfe
       include Concerns::Corrigivel
       include Concerns::Inutilizavel
       include Concerns::Visualizavel
+      include Concerns::Notificavel
 
       caminho_base "nfe"
       caminho_base_previa "nfe/danfe"

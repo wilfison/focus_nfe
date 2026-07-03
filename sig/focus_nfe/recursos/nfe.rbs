@@ -7,6 +7,7 @@ module FocusNfe
       include FocusNfe::Recursos::Concerns::Corrigivel
       include FocusNfe::Recursos::Concerns::Inutilizavel
       include FocusNfe::Recursos::Concerns::Visualizavel
+      include FocusNfe::Recursos::Concerns::Notificavel
     end
   end
 end

@@ -8,6 +8,7 @@ module FocusNfe
       include Concerns::Emitivel
       include Concerns::Consultavel
       include Concerns::Cancelavel
+      include Concerns::Notificavel
 
       caminho_base "cte_os"
 

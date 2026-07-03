@@ -10,8 +10,11 @@ module FocusNfe
         #
         # @param identificador [String] chave ou referência do documento
         # @return [Hash, Array, nil] corpo cru da resposta
+        # @raise [ArgumentError] se o +identificador+ for inválido
         # @raise [FocusNfe::Errors::HttpError] em respostas não-2xx
         def reenviar_hook(identificador)
+          validar_referencia!(identificador)
+
           connection.post("#{caminho_referencia(identificador)}/hook").body
         end
       end

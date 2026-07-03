@@ -19,6 +19,7 @@ RSpec.describe FocusNfe::Recursos::Nfe do
   it_behaves_like "um recurso corrigível", "nfe"
   it_behaves_like "um recurso inutilizável", "nfe"
   it_behaves_like "um recurso visualizável", "nfe/danfe"
+  it_behaves_like "um recurso notificável", "nfe"
 
   describe "#emitir" do
     before { stub_nfe(:post, "nfe?ref=pedido-42", status: 202, body: processando) }

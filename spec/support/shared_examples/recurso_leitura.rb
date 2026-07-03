@@ -109,6 +109,10 @@ RSpec.shared_examples "um recurso notificável" do |caminho|
 
       expect(stub).to have_been_requested
     end
+
+    it "rejeita ref inválida sem requisição" do
+      expect { recurso.reenviar_hook("pedido 42") }.to raise_error(ArgumentError)
+    end
   end
 end
 
