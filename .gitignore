@@ -10,6 +10,9 @@
 /tmp/
 /tasks/
 
+# Ignore build artifacts
+*.gem
+
 # Ignore ai related files
 .claude/
 AGENTS.md
