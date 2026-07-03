@@ -56,9 +56,6 @@ jobs:
       - name: Build da gem
         run: gem build focus_nfe.gemspec
 
-      - name: Publica no RubyGems (trusted publishing)
-        uses: rubygems/release-gem@v1
-
       - name: Gera o corpo da release
         env:
           TAG: ${{ inputs.ref || github.ref_name }}
@@ -117,3 +114,8 @@ jobs:
               --notes-file body.md \
               --latest
           fi
+
+      # Último passo de propósito: só publica em produção (RubyGems, irreversível)
+      # depois que build, validações e a GitHub Release já passaram.
+      - name: Publica no RubyGems (trusted publishing)
+        uses: rubygems/release-gem@v1
