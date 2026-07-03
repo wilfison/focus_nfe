@@ -22,7 +22,7 @@ jobs:
           - 'ruby'
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - name: Set up Ruby
@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Steep type check
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - name: Set up Ruby
@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Docs generate cleanly
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - name: Set up Ruby
