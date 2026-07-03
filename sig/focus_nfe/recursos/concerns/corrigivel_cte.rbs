@@ -1,0 +1,17 @@
+module FocusNfe
+  module Recursos
+    module Concerns
+      module CorrigivelCte : FocusNfe::Recursos::Base
+        def corrigir: (String ref, campo_corrigido: String, valor_corrigido: String,
+                       ?grupo_corrigido: String?, ?numero_item_grupo_corrigido: String?,
+                       ?campo_api: (Integer | String)?) -> FocusNfe::Modelos::Documento
+
+        private
+
+        def validar_campos_correcao!: (untyped campo_corrigido, untyped valor_corrigido) -> void
+
+        def string_preenchida?: (untyped valor) -> bool
+      end
+    end
+  end
+end

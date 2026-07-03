@@ -227,6 +227,84 @@ RSpec.shared_examples "um recurso corrigível" do |caminho|
   end
 end
 
+RSpec.shared_examples "um recurso corrigível por campo" do |caminho|
+  subject(:recurso) { described_class.new(client.connection) }
+
+  let(:client) { FocusNfe::Client.new(token_empresa: "tok", environment: environment) }
+  let(:environment) { :homologacao }
+  let(:json) { { "Content-Type" => "application/json" } }
+
+  def homologacao = "https://homologacao.focusnfe.com.br"
+  def producao = "https://api.focusnfe.com.br"
+
+  def stub_recurso(verb, path, host: homologacao, status: 200, body: "{}")
+    stub_request(verb, "#{host}/v2/#{path}").to_return(status: status, body: body, headers: json)
+  end
+
+  describe "#corrigir" do
+    let(:autorizada) { '{"status":"autorizado","numero_carta_correcao":"1","caminho_xml":"/cce.xml"}' }
+
+    before { stub_recurso(:post, "#{caminho}/pedido-42/carta_correcao", body: autorizada) }
+
+    it "envia POST em /v2/#{caminho}/{ref}/carta_correcao com o campo e o valor" do
+      recurso.corrigir("pedido-42", campo_corrigido: "observacoes", valor_corrigido: "Nova observação")
+
+      url = "#{homologacao}/v2/#{caminho}/pedido-42/carta_correcao"
+      corpo = JSON.generate(campo_corrigido: "observacoes", valor_corrigido: "Nova observação")
+
+      expect(a_request(:post, url).with(body: corpo)).to have_been_made
+    end
+
+    it "devolve um Documento com os dados da carta de correção", :aggregate_failures do
+      doc = recurso.corrigir("pedido-42", campo_corrigido: "observacoes", valor_corrigido: "Nova observação")
+
+      expect(doc).to be_a(FocusNfe::Modelos::Documento)
+      expect(doc).to be_autorizado
+      expect(doc.numero_carta_correcao).to eq("1")
+    end
+
+    it "inclui grupo, número do item e campo_api no corpo quando informados" do
+      opcionais = { grupo_corrigido: "cargas", numero_item_grupo_corrigido: "1", campo_api: 0 }
+      recurso.corrigir("pedido-42", campo_corrigido: "peso", valor_corrigido: "1000", **opcionais)
+
+      url = "#{homologacao}/v2/#{caminho}/pedido-42/carta_correcao"
+      corpo = JSON.generate(campo_corrigido: "peso", valor_corrigido: "1000", **opcionais)
+
+      expect(a_request(:post, url).with(body: corpo)).to have_been_made
+    end
+
+    it "rejeita campo_corrigido vazio sem requisição", :aggregate_failures do
+      expect { recurso.corrigir("pedido-42", campo_corrigido: "", valor_corrigido: "x") }.to raise_error(ArgumentError)
+      expect(a_request(:post, "#{homologacao}/v2/#{caminho}/pedido-42/carta_correcao")).not_to have_been_made
+    end
+
+    it "rejeita valor_corrigido vazio sem requisição", :aggregate_failures do
+      expect do
+        recurso.corrigir("pedido-42", campo_corrigido: "peso", valor_corrigido: "")
+      end.to raise_error(ArgumentError)
+      expect(a_request(:post, "#{homologacao}/v2/#{caminho}/pedido-42/carta_correcao")).not_to have_been_made
+    end
+
+    it "rejeita ref inválida sem requisição" do
+      expect do
+        recurso.corrigir("pedido 42", campo_corrigido: "peso", valor_corrigido: "1000")
+      end.to raise_error(ArgumentError)
+    end
+
+    context "quando o ambiente é produção" do
+      let(:environment) { :producao }
+
+      it "usa o host de produção" do
+        stub = stub_recurso(:post, "#{caminho}/pedido-42/carta_correcao", host: producao, body: autorizada)
+
+        recurso.corrigir("pedido-42", campo_corrigido: "observacoes", valor_corrigido: "Nova observação")
+
+        expect(stub).to have_been_requested
+      end
+    end
+  end
+end
+
 RSpec.shared_examples "um recurso inutilizável" do |caminho|
   subject(:recurso) { described_class.new(client.connection) }
 

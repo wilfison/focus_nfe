@@ -3,12 +3,13 @@
 module FocusNfe
   module Recursos
     # Recurso de Conhecimento de Transporte eletrônico (CT-e). Emissão
-    # assíncrona (síncrona opcional) com consulta de estado e cancelamento.
-    # Operações próprias (CC-e, modais) chegam em fase posterior.
+    # assíncrona (síncrona opcional) com consulta de estado, cancelamento e
+    # Carta de Correção Eletrônica (CC-e) por campo.
     class Cte < Base
       include Concerns::Emitivel
       include Concerns::Consultavel
       include Concerns::Cancelavel
+      include Concerns::CorrigivelCte
       include Concerns::Notificavel
 
       caminho_base "cte"
