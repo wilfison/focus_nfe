@@ -13,8 +13,8 @@ module FocusNfe
 
       # @param chave [String] chave de acesso da NFS-e
       # @return [String] DANFSe em HTML cru
-      def baixar_html(chave)
-        baixar(chave, formato: :html)
+      def download_html(chave)
+        download(chave, formato: :html)
       end
     end
   end

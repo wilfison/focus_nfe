@@ -162,8 +162,8 @@ proxima_versao = pagina.versao_maxima
 
 # Consulta, downloads e manifestação do destinatário:
 client.nfes_recebidas.consultar(chave, completa: true)
-xml = client.nfes_recebidas.baixar_xml(chave)
-pdf = client.nfes_recebidas.baixar_pdf(chave)
+xml = client.nfes_recebidas.download_xml(chave)
+pdf = client.nfes_recebidas.download_pdf(chave)
 client.nfes_recebidas.manifestar(chave, tipo: "confirmacao")
 ```
 

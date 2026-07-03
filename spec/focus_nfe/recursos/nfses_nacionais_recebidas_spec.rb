@@ -7,11 +7,11 @@ RSpec.describe FocusNfe::Recursos::NfsesNacionaisRecebidas do
 
   include_context "com recurso conectado"
 
-  describe "#baixar_html" do
+  describe "#download_html" do
     it "baixa o DANFSe em HTML cru" do
       stub_get("nfsens_recebidas/CHAVE.html", body: "<html></html>", headers: { "Content-Type" => "text/html" })
 
-      expect(recurso.baixar_html("CHAVE")).to eq("<html></html>")
+      expect(recurso.download_html("CHAVE")).to eq("<html></html>")
     end
   end
 end

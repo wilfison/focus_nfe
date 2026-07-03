@@ -52,32 +52,32 @@ end
 RSpec.shared_examples "um recurso baixável" do |caminho|
   include_context "com recurso conectado"
 
-  describe "#baixar" do
+  describe "#download" do
     it "baixa o PDF seguindo o 302 para a URL pré-assinada" do
       origem = "#{homologacao}/v2/#{caminho}/CHAVE.pdf"
       destino = "https://arquivos.focusnfe.com.br/danfe.pdf"
       stub_request(:get, origem).to_return(status: 302, headers: { "Location" => destino })
       stub_request(:get, destino).to_return(status: 200, body: "%PDF")
 
-      expect(recurso.baixar_pdf("CHAVE")).to eq("%PDF")
+      expect(recurso.download_pdf("CHAVE")).to eq("%PDF")
     end
 
     it "baixa o XML cru" do
       stub_get("#{caminho}/CHAVE.xml", body: "<nfe/>", headers: { "Content-Type" => "application/xml" })
 
-      expect(recurso.baixar_xml("CHAVE")).to eq("<nfe/>")
+      expect(recurso.download_xml("CHAVE")).to eq("<nfe/>")
     end
 
     it "baixa o JSON cru, sem parsear (raw_body)" do
       stub_get("#{caminho}/CHAVE.json", body: '{"a":1}')
 
-      expect(recurso.baixar_json("CHAVE")).to eq('{"a":1}')
+      expect(recurso.download_json("CHAVE")).to eq('{"a":1}')
     end
 
     it "escapa o formato, sem injetar query no path" do
       stub_request(:get, /focusnfe/).to_return(status: 200, body: "ok", headers: json)
 
-      recurso.baixar("CHAVE", formato: "pdf?x=1")
+      recurso.download("CHAVE", formato: "pdf?x=1")
 
       enviado = a_request(:get, /focusnfe/)
                 .with { |req| req.uri.query.nil? && req.uri.path.include?("CHAVE.pdf%3F") }

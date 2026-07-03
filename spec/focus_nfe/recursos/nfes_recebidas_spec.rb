@@ -67,21 +67,21 @@ RSpec.describe FocusNfe::Recursos::NfesRecebidas do
     end
   end
 
-  describe "#baixar_xml_cancelamento" do
+  describe "#download_xml_cancelamento" do
     it "faz GET em /{chave}/cancelamento.xml e devolve o XML cru" do
       stub_get("nfes_recebidas/#{chave}/cancelamento.xml",
                body: "<procEventoNFe/>", headers: { "Content-Type" => "application/xml" })
 
-      expect(recurso.baixar_xml_cancelamento(chave)).to eq("<procEventoNFe/>")
+      expect(recurso.download_xml_cancelamento(chave)).to eq("<procEventoNFe/>")
     end
   end
 
-  describe "#baixar_xml_carta_correcao" do
+  describe "#download_xml_carta_correcao" do
     it "faz GET em /{chave}/carta_correcao.xml e devolve o XML cru" do
       stub_get("nfes_recebidas/#{chave}/carta_correcao.xml",
                body: "<procEventoNFe/>", headers: { "Content-Type" => "application/xml" })
 
-      expect(recurso.baixar_xml_carta_correcao(chave)).to eq("<procEventoNFe/>")
+      expect(recurso.download_xml_carta_correcao(chave)).to eq("<procEventoNFe/>")
     end
   end
 end

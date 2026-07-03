@@ -5,7 +5,7 @@ module FocusNfe
       include FocusNfe::Recursos::Concerns::Baixavel
       include FocusNfe::Recursos::Concerns::Notificavel
 
-      def baixar_html: (String chave) -> String?
+      def download_html: (String chave) -> String?
     end
   end
 end

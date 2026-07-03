@@ -2,10 +2,10 @@ module FocusNfe
   module Recursos
     module Concerns
       module Baixavel : FocusNfe::Recursos::Base
-        def baixar: (String identificador, formato: (String | Symbol)) -> String?
-        def baixar_json: (String identificador) -> String?
-        def baixar_xml: (String identificador) -> String?
-        def baixar_pdf: (String identificador) -> String?
+        def download: (String identificador, formato: (String | Symbol)) -> String?
+        def download_json: (String identificador) -> String?
+        def download_xml: (String identificador) -> String?
+        def download_pdf: (String identificador) -> String?
       end
     end
   end
