@@ -1,5 +1,10 @@
 # FocusNfe
 
+[![Gem Version](https://badge.fury.io/rb/focus_nfe.svg)](https://badge.fury.io/rb/focus_nfe)
+[![CI](https://github.com/wilfison/focus_nfe/actions/workflows/ci.yml/badge.svg)](https://github.com/wilfison/focus_nfe/actions/workflows/ci.yml)
+[![Ruby](https://img.shields.io/badge/ruby-%3E%3D%203.3-CC342D?logo=ruby&logoColor=white)](https://www.ruby-lang.org)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE.txt)
+
 Cliente Ruby **não-oficial** para a API da [Focus NFe](https://focusnfe.com.br) —
 serviço brasileiro de emissão de documentos fiscais eletrônicos (NFe, NFCe, NFSe,
 CTe, MDFe, NFCom, DCe e outros).

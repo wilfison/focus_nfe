@@ -5,6 +5,12 @@ e versionamento em [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-07-03
+
+### Documentação
+
+- Adiciona badges no `README` (versão da gem, CI, versão do Ruby e licença).
+
 ## [1.0.0] - 2026-07-03
 
 Primeira versão pública. Cliente Ruby não-oficial para a API da

@@ -2,5 +2,5 @@
 
 module FocusNfe
   # @return [String] versão da gem
-  VERSION = "1.0.0"
+  VERSION = "1.0.1"
 end
