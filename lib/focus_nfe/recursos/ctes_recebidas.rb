@@ -32,6 +32,18 @@ module FocusNfe
       def consultar_desacordo(chave)
         connection.get("#{caminho_referencia(chave)}/desacordo").body
       end
+
+      # @param chave [String] chave de acesso do CT-e
+      # @return [String, nil] XML do último cancelamento
+      def baixar_xml_cancelamento(chave)
+        connection.get("#{caminho_referencia(chave)}/cancelamento.xml").raw_body
+      end
+
+      # @param chave [String] chave de acesso do CT-e
+      # @return [String, nil] XML da última carta de correção
+      def baixar_xml_carta_correcao(chave)
+        connection.get("#{caminho_referencia(chave)}/carta_correcao.xml").raw_body
+      end
     end
   end
 end

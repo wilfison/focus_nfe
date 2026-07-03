@@ -6,10 +6,14 @@ module FocusNfe
 
       def listar_codigos_tributarios: (String codigo_municipio, **untyped filtros) -> FocusNfe::Modelos::Pagina
       def listar_itens_lista_servico: (String codigo_municipio, **untyped filtros) -> FocusNfe::Modelos::Pagina
+      def consultar_codigo_tributario: (String codigo_municipio, String codigo) -> untyped
+      def consultar_item_lista_servico: (String codigo_municipio, String codigo) -> untyped
+      def consultar_json: (String codigo_municipio) -> untyped
 
       private
 
       def sub_listagem: (String codigo_municipio, String sufixo, Hash[untyped, untyped] filtros) -> FocusNfe::Modelos::Pagina
+      def sub_consulta: (String codigo_municipio, String sufixo, String codigo) -> untyped
     end
   end
 end

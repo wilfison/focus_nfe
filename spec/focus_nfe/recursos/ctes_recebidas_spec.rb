@@ -35,4 +35,22 @@ RSpec.describe FocusNfe::Recursos::CtesRecebidas do
       expect(recurso.consultar_desacordo(chave)).to eq("status" => "registrado")
     end
   end
+
+  describe "#baixar_xml_cancelamento" do
+    it "faz GET em /{chave}/cancelamento.xml e devolve o XML cru" do
+      stub_get("ctes_recebidas/#{chave}/cancelamento.xml",
+               body: "<procEventoCTe/>", headers: { "Content-Type" => "application/xml" })
+
+      expect(recurso.baixar_xml_cancelamento(chave)).to eq("<procEventoCTe/>")
+    end
+  end
+
+  describe "#baixar_xml_carta_correcao" do
+    it "faz GET em /{chave}/carta_correcao.xml e devolve o XML cru" do
+      stub_get("ctes_recebidas/#{chave}/carta_correcao.xml",
+               body: "<procEventoCTe/>", headers: { "Content-Type" => "application/xml" })
+
+      expect(recurso.baixar_xml_carta_correcao(chave)).to eq("<procEventoCTe/>")
+    end
+  end
 end
