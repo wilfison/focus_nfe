@@ -3,13 +3,12 @@ module FocusNfe
     class CtesRecebidas < FocusNfe::Recursos::Base
       include FocusNfe::Recursos::Concerns::Listavel
       include FocusNfe::Recursos::Concerns::Baixavel
+      include FocusNfe::Recursos::Concerns::BaixavelEventos
       include FocusNfe::Recursos::Concerns::Notificavel
 
       def consultar: (String chave) -> untyped
       def desacordo: (String chave, observacoes: String) -> untyped
       def consultar_desacordo: (String chave) -> untyped
-      def baixar_xml_cancelamento: (String chave) -> String?
-      def baixar_xml_carta_correcao: (String chave) -> String?
     end
   end
 end

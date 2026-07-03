@@ -8,6 +8,7 @@ module FocusNfe
     class NfesRecebidas < Base
       include Concerns::Listavel
       include Concerns::Baixavel
+      include Concerns::BaixavelEventos
       include Concerns::Notificavel
       include Concerns::Eventavel
 
@@ -49,18 +50,6 @@ module FocusNfe
       # @return [FocusNfe::Modelos::Documento]
       def cancelar_evento(chave)
         cancelar_evento_em(chave, caminho: "evento")
-      end
-
-      # @param chave [String] chave de acesso da NF-e
-      # @return [String, nil] XML do último cancelamento
-      def baixar_xml_cancelamento(chave)
-        connection.get("#{caminho_referencia(chave)}/cancelamento.xml").raw_body
-      end
-
-      # @param chave [String] chave de acesso da NF-e
-      # @return [String, nil] XML da última carta de correção
-      def baixar_xml_carta_correcao(chave)
-        connection.get("#{caminho_referencia(chave)}/carta_correcao.xml").raw_body
       end
     end
   end

@@ -3,6 +3,7 @@ module FocusNfe
     class NfesRecebidas < FocusNfe::Recursos::Base
       include FocusNfe::Recursos::Concerns::Listavel
       include FocusNfe::Recursos::Concerns::Baixavel
+      include FocusNfe::Recursos::Concerns::BaixavelEventos
       include FocusNfe::Recursos::Concerns::Notificavel
       include FocusNfe::Recursos::Concerns::Eventavel
 
@@ -10,8 +11,6 @@ module FocusNfe
       def manifestar: (String chave, tipo: String, ?justificativa: String?) -> untyped
       def emitir_evento: (String chave, tipo_evento: String, **untyped dados) -> FocusNfe::Modelos::Documento
       def cancelar_evento: (String chave) -> FocusNfe::Modelos::Documento
-      def baixar_xml_cancelamento: (String chave) -> String?
-      def baixar_xml_carta_correcao: (String chave) -> String?
     end
   end
 end

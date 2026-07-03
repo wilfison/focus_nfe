@@ -1,0 +1,14 @@
+module FocusNfe
+  module Recursos
+    module Concerns
+      module BaixavelEventos : FocusNfe::Recursos::Base
+        def baixar_xml_cancelamento: (String chave) -> String?
+        def baixar_xml_carta_correcao: (String chave) -> String?
+
+        private
+
+        def baixar_xml_evento: (String chave, evento: String) -> String?
+      end
+    end
+  end
+end
