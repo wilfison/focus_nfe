@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
                      "status HTTP e validação client-side opt-in por schemas, sem dependências de runtime."
   spec.homepage = "https://github.com/wilfison/focus_nfe"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.2.0"
+  spec.required_ruby_version = ">= 3.3.0"
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/wilfison/focus_nfe"
   spec.metadata["changelog_uri"] = "https://github.com/wilfison/focus_nfe/blob/main/CHANGELOG.md"

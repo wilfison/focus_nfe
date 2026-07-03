@@ -29,7 +29,7 @@ Yes → **Portuguese**. The gem's own machinery → **English**.
 - Debated boundaries: `environment` is English (resolves the base URL; `ambiente` is not an API field);
   `referencia` is Portuguese (the API's `ref`).
 
-General Ruby/gem best practices: `frozen_string_literal`, double-quoted strings, Ruby 3.2 target (`.rubocop.yml`).
+General Ruby/gem best practices: `frozen_string_literal`, double-quoted strings, Ruby 3.3 target (`.rubocop.yml`).
 
 ### Comments
 
@@ -64,7 +64,7 @@ classes, methods, branches arrive test-first; each bug fix starts with a reprodu
   configured atop `spec/spec_helper.rb`, line+branch; `coverage/` git-ignored).
 - `bundle exec rake install` / `release` — build/publish (gemspec metadata still has TODOs).
 
-CI (`.github/workflows/ci.yml`) pins Ruby `4.0.2`; gemspec requires `>= 3.2.0`.
+CI (`.github/workflows/ci.yml`) pins Ruby `4.0.2`; gemspec requires `>= 3.3.0`.
 
 ## Git hooks / commits (overcommit + Conventional Commits)
 
@@ -97,7 +97,7 @@ every PR and fails on any diff.
 ## Type signatures (RBS + Steep)
 
 Hand-written RBS under `sig/`, checked by Steep — `steep check` must stay green (CI `typecheck` job, Ruby 3.4;
-local `bundle exec rake steep`, standalone to keep the 3.2–4.0 matrix fast). `Steepfile` has one `target :lib`
+local `bundle exec rake steep`, standalone to keep the 3.3–4.0 matrix fast). `Steepfile` has one `target :lib`
 checking `lib` against `sig` with stdlib `json`, `uri`, `net-http`, `timeout` (no `rbs_collection` — zero
 runtime deps). `sig/` is packaged with the gem; `Steepfile`/`rbs_collection.*` are excluded via the gemspec
 reject-list.
