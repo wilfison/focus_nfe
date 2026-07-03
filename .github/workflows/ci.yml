@@ -11,15 +11,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: Ruby ${{ matrix.ruby }}
-    continue-on-error: ${{ matrix.ruby == '4.0' }}
+    continue-on-error: ${{ matrix.ruby == '4.0' || matrix.ruby == 'ruby' }}
     strategy:
       fail-fast: false
       matrix:
         ruby:
-          - '3.2'
           - '3.3'
           - '3.4'
           - '4.0'
+          - 'ruby'
 
     steps:
       - uses: actions/checkout@v4
