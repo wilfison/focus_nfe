@@ -630,6 +630,14 @@
     "tag": "cObra"
   },
   {
+    "name": "codigo_cib_obra",
+    "description": "Código do Cadastro Imobiliário Brasileiro (CIB) da obra.",
+    "type": "String[8]",
+    "required": false,
+    "reforma_tributaria": true,
+    "tag": "cCIB"
+  },
+  {
     "name": "cep_obra",
     "description": "Código de Endereçamento Postal numérico do endereço nacional da obra.",
     "type": "Integer[8]",
@@ -1549,8 +1557,8 @@
   },
   {
     "name": "codigo_cib_imovel",
-    "description": "Código do Cadastro Imobiliário Brasileiro - CIB.",
-    "type": "String[1-30]",
+    "description": "Código do Cadastro Imobiliário Brasileiro (CIB) do imóvel.",
+    "type": "String[8]",
     "required": false,
     "reforma_tributaria": true,
     "tag": "cCIB"

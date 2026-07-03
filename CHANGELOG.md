@@ -11,6 +11,11 @@ e versionamento em [SemVer](https://semver.org/lang/pt-BR/).
 
 - Adiciona badges no `README` (versão da gem, CI, versão do Ruby e licença).
 
+### Schemas
+
+- Atualiza o schema da NFS-e Nacional com o campo `codigo_cib_obra` (CIB da
+  obra) e ajusta o `codigo_cib_imovel` conforme a reforma tributária.
+
 ## [1.0.0] - 2026-07-03
 
 Primeira versão pública. Cliente Ruby não-oficial para a API da
